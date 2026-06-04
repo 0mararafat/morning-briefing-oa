@@ -35,6 +35,7 @@ import os
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 try:
     import yaml
@@ -1231,6 +1232,8 @@ def generate_signal_scan(voices, rss_content, briefing_data, cfg):
     rss_context     = []
     search_targets  = []
 
+    today_iso = datetime.date.today().isoformat()
+
     for voice in voices:
         name     = voice["name"]
         handle   = voice.get("x_handle")
@@ -1248,11 +1251,19 @@ def generate_signal_scan(voices, rss_content, briefing_data, cfg):
                     block += f"  {it['summary'][:300]}…\n"
             rss_context.append(block)
 
-        # Always search X/web for every voice — complements RSS where available
-        if custom_q:
-            search_targets.append(f"{name}: search [{custom_q}]")
-        elif handle:
-            search_targets.append(f"{name} (@{handle}): search recent X/Twitter posts")
+            # Only search X if RSS content is not from today — skip if already fresh
+            rss_fresh = any(it.get("published", "") == today_iso for it in items)
+            if not rss_fresh:
+                if custom_q:
+                    search_targets.append(f"{name}: search [{custom_q}]")
+                elif handle:
+                    search_targets.append(f"{name} (@{handle}): search recent X/Twitter posts")
+        else:
+            # No RSS at all — always search
+            if custom_q:
+                search_targets.append(f"{name}: search [{custom_q}]")
+            elif handle:
+                search_targets.append(f"{name} (@{handle}): search recent X/Twitter posts")
 
     rss_block    = "\n".join(rss_context) or "No RSS content retrieved."
     search_block = "\n".join(search_targets) or "None."
@@ -1290,12 +1301,13 @@ For each voice, combine their RSS content (if available above) with their most r
 
 Signal levels: "strong" = substantive piece or thread (>200 words). "light" = brief post or short take. "none" = nothing in the last 7 days.
 Skip purely promotional, congratulatory, or off-topic content.
+IMPORTANT: Make at most 1 web search per voice. Do not search exhaustively.
 Return ONLY the JSON array. No markdown, no preamble."""
 
     def attempt(n):
         response = client.messages.create(
             model="claude-sonnet-4-6",
-            max_tokens=3000,
+            max_tokens=6000,
             tools=[{"type": "web_search_20250305", "name": "web_search"}],
             messages=[{"role": "user", "content": prompt}],
         )
@@ -1303,8 +1315,11 @@ Return ONLY the JSON array. No markdown, no preamble."""
             b.text for b in response.content
             if hasattr(b, "text") and b.text.strip()
         ]
-        data = extract_json("\n".join(text_parts))
+        full_text = "\n".join(text_parts)
+        data = extract_json(full_text)
         if data is None or not isinstance(data, list):
+            # Log the raw response tail for debugging
+            print(f"  Raw response tail: {full_text[-300:]}")
             raise ValueError("Signal scan returned no valid JSON array")
         active = sum(1 for s in data if s.get("signal") in ("strong", "light"))
         print(f"  ✓ {len(data)} voices scanned, {active} with recent signal")
@@ -1526,45 +1541,39 @@ def main():
     start = time.time()
     print(f"=== Morning Briefing — {date_str} ===\n")
 
-    voices = cfg.get("voices", DEFAULT_CONFIG["voices"])
+    voices     = cfg.get("voices", DEFAULT_CONFIG["voices"])
+    do_dive    = sections.get("deep_dive",    True)
+    do_signal  = sections.get("signal_scan",  True) and bool(voices)
+    do_pattern = sections.get("pattern_watch",True)
 
-    # 1 — Main briefing
-    print("[1/6] Main briefing (Sonnet + web search)...")
-    data = generate_briefing_data(cfg, output_dir)
+    # ── Stage 1: independent calls — run in parallel ──────────────────────────
+    print("[1/3] Stage 1 (parallel): main briefing + deep dive + RSS fetch...")
 
-    # 2 — Deep dive
-    if sections.get("deep_dive", True):
-        print("[2/6] Deep dive (Sonnet + web search)...")
-        data["deep_dive"] = generate_deep_dive(cfg, output_dir)
-    else:
-        print("[2/6] Deep dive disabled in config — skipping.")
-        data["deep_dive"] = None
+    with ThreadPoolExecutor(max_workers=3) as ex:
+        f_main = ex.submit(generate_briefing_data, cfg, output_dir)
+        f_dive = ex.submit(generate_deep_dive, cfg, output_dir) if do_dive else None
+        f_rss  = ex.submit(fetch_rss_feeds, voices)              if do_signal else None
 
-    # 3 — Signal scan
-    if sections.get("signal_scan", True) and voices:
-        print("[3/6] Signal scan (RSS + Sonnet + web search)...")
-        print("  Fetching RSS feeds...")
-        rss_content = fetch_rss_feeds(voices)
-        data["signal_scan"] = generate_signal_scan(voices, rss_content, data, cfg)
-    else:
-        print("[3/6] Signal scan disabled in config — skipping.")
-        data["signal_scan"] = []
+        data        = f_main.result()
+        deep_dive   = f_dive.result() if f_dive else None
+        rss_content = f_rss.result()  if f_rss  else {}
 
-    # 4 — Pattern watch
-    if sections.get("pattern_watch", True):
-        print("[4/6] Pattern analysis (Haiku)...")
-        data["pattern_watch"] = generate_patterns(data)
-    else:
-        print("[4/6] Pattern watch disabled in config — skipping.")
-        data["pattern_watch"] = []
+    data["deep_dive"] = deep_dive
 
-    # 5 — Save raw JSON
-    print("[5/6] Saving data...")
+    # ── Stage 2: both need `data` — run in parallel ───────────────────────────
+    print("[2/3] Stage 2 (parallel): signal scan + pattern watch...")
+
+    with ThreadPoolExecutor(max_workers=2) as ex:
+        f_sig = ex.submit(generate_signal_scan, voices, rss_content, data, cfg) if do_signal  else None
+        f_pat = ex.submit(generate_patterns, data)                               if do_pattern else None
+
+        data["signal_scan"]   = f_sig.result() if f_sig else []
+        data["pattern_watch"] = f_pat.result() if f_pat else []
+
+    # ── Stage 3: save and build ───────────────────────────────────────────────
+    print("[3/3] Saving and building dashboard...")
     with open(json_path, "w") as f:
         json.dump(data, f, indent=2)
-
-    # 6 — Build HTML + archive
-    print("[6/6] Building dashboard...")
     html = build_dashboard(data, date_str, cfg)
     with open(html_path, "w") as f:
         f.write(html)
