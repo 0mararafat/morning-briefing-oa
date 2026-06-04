@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Morning Briefing — Setup</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -185,6 +186,63 @@
   .yaml-bool-true { color: #0284C7; }
   .yaml-bool-false { color: #9CA3AF; }
   .yaml-comment { color: #9CA3AF; font-style: italic; }
+
+  /* Banner */
+  .banner {
+    display: none; align-items: center; gap: 10px;
+    padding: 10px 16px; border-radius: 8px; margin-bottom: 20px;
+    font-size: 13px; font-weight: 500;
+  }
+  .banner.loading { display: flex; background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; }
+  .banner.success { display: flex; background: #F0FDF4; color: #15803D; border: 1px solid #BBF7D0; }
+  .banner.error   { display: flex; background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+  .banner-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+  .banner.loading .banner-dot { animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Save button */
+  .save-btn {
+    font-size: 12px; font-weight: 600; color: #fff;
+    border: none; border-radius: 6px; padding: 5px 14px;
+    background: #111827; cursor: pointer; font-family: inherit;
+    transition: background 0.15s;
+  }
+  .save-btn:hover { background: #374151; }
+  .save-btn:disabled { background: #9CA3AF; cursor: default; }
+  .save-btn.saved { background: #059669; }
+
+  /* PAT modal */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4); z-index: 100;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 12px; padding: 28px 28px 24px;
+    max-width: 440px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .modal h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .modal p { font-size: 13px; color: #6B7280; line-height: 1.6; margin-bottom: 16px; }
+  .modal a { color: #3B82F6; }
+  .modal-input {
+    width: 100%; font-size: 13px; border: 1px solid #D1D5DB; border-radius: 6px;
+    padding: 8px 12px; font-family: 'JetBrains Mono', monospace; margin-bottom: 8px;
+    color: #111827;
+  }
+  .modal-input:focus { outline: none; border-color: #9CA3AF; }
+  .modal-note { font-size: 11px; color: #9CA3AF; margin-bottom: 16px; }
+  .modal-btns { display: flex; gap: 8px; justify-content: flex-end; }
+  .modal-cancel {
+    font-size: 13px; font-weight: 500; color: #6B7280; background: none;
+    border: 1px solid #E5E7EB; border-radius: 6px; padding: 7px 16px;
+    cursor: pointer; font-family: inherit;
+  }
+  .modal-confirm {
+    font-size: 13px; font-weight: 600; color: #fff; background: #111827;
+    border: none; border-radius: 6px; padding: 7px 16px;
+    cursor: pointer; font-family: inherit;
+  }
 </style>
 </head>
 <body>
@@ -193,8 +251,9 @@
   <div class="header">
     <div class="header-label">Morning Briefing</div>
     <h1>Set up your briefing</h1>
-    <p>Fill in the form to generate your <code>config.yaml</code>. Then paste it into your repo and trigger the workflow — your briefing runs automatically from there.</p>
+    <p>Customise your topics, sources, and schedule. Changes save directly to your repo — no copy-pasting required.</p>
   </div>
+  <div class="banner" id="banner"><span class="banner-dot"></span><span id="banner-text"></span></div>
 
   <div class="layout">
     <div class="form-col">
@@ -277,12 +336,30 @@
     <div class="output-panel">
       <div class="output-header">
         <span class="output-title">config.yaml</span>
-        <button class="copy-btn" id="copy-btn" onclick="copyYaml()">Copy</button>
+        <div style="display:flex;gap:6px;">
+          <button class="copy-btn" id="copy-btn" onclick="copyYaml()">Copy</button>
+          <button class="save-btn" id="save-btn" onclick="saveToGitHub()">Save to GitHub</button>
+        </div>
       </div>
       <pre class="yaml-pre" id="yaml-output"></pre>
     </div>
   </div>
 
+</div>
+
+<!-- PAT modal -->
+<div class="modal-overlay" id="pat-modal">
+  <div class="modal">
+    <h3>Connect to GitHub</h3>
+    <p>Paste a GitHub Personal Access Token with <strong>Contents: Read and write</strong> permission. This lets the setup page commit your config directly to your repo.<br><br>
+    <a href="https://github.com/settings/tokens?type=beta" target="_blank">Create a fine-grained token →</a></p>
+    <input class="modal-input" id="pat-input" type="password" placeholder="github_pat_...">
+    <div class="modal-note">Stored in your browser only — never sent anywhere except GitHub's API.</div>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closePatModal()">Cancel</button>
+      <button class="modal-confirm" onclick="confirmPat()">Save &amp; continue</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -534,8 +611,184 @@ function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+// ── Banner ────────────────────────────────────────────────────────────────────
+
+function showBanner(msg, type) {
+  const el = document.getElementById('banner');
+  const txt = document.getElementById('banner-text');
+  el.className = 'banner ' + type;
+  txt.textContent = msg;
+}
+function hideBanner() {
+  document.getElementById('banner').className = 'banner';
+}
+
+// ── GitHub repo detection ─────────────────────────────────────────────────────
+
+function detectRepo() {
+  const host = window.location.hostname;
+  const path = window.location.pathname;
+  if (!host.endsWith('.github.io')) return null;
+  const owner = host.replace('.github.io', '');
+  const repo  = path.split('/').filter(Boolean)[0];
+  return (owner && repo) ? { owner, repo } : null;
+}
+
+// ── Auto-load current config.yaml ─────────────────────────────────────────────
+
+async function autoLoad() {
+  const gh = detectRepo();
+  if (!gh) return; // running locally — skip
+  try {
+    showBanner('Loading your current config…', 'loading');
+    const url = `https://raw.githubusercontent.com/${gh.owner}/${gh.repo}/main/config.yaml`;
+    const res = await fetch(url + '?t=' + Date.now());
+    if (!res.ok) { hideBanner(); return; }
+    const cfg = jsyaml.load(await res.text());
+    populateFromConfig(cfg);
+    showBanner('Loaded from your repo — make changes and hit Save to GitHub.', 'success');
+    setTimeout(hideBanner, 4000);
+  } catch(e) {
+    hideBanner();
+  }
+}
+
+function populateFromConfig(cfg) {
+  if (cfg.topics && cfg.topics.length) {
+    topics = cfg.topics.map(t => ({
+      name: t.name || '',
+      desc: String(t.description || '').replace(/\s+/g, ' ').trim()
+    }));
+  }
+  if (cfg.sources) {
+    preferredSources = new Set(cfg.sources.preferred || []);
+    // Add any non-preset sources to customSources
+    const allCfgSources = [
+      ...(cfg.sources.preferred || []),
+      ...(cfg.sources.supplementary || [])
+    ];
+    customSources = allCfgSources.filter(s => !PRESET_SOURCES.includes(s));
+  }
+  if (cfg.sections) {
+    Object.keys(sections).forEach(k => {
+      if (cfg.sections[k] !== undefined) sections[k] = Boolean(cfg.sections[k]);
+    });
+  }
+  if (cfg.schedule) {
+    const cron = cfg.schedule.cron_gmt || cfg.schedule.cron || '';
+    if (cron) parseCronIntoForm(cron);
+  }
+  render();
+}
+
+function parseCronIntoForm(cron) {
+  const p = cron.trim().split(/\s+/);
+  if (p.length < 5) return;
+  const [min, hour, , , days] = p;
+  const h = parseInt(hour), m = parseInt(min);
+  if (!isNaN(h) && !isNaN(m)) {
+    document.getElementById('sched-time').value =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+    document.getElementById('sched-tz').value = '0'; // cron is in UTC
+  }
+  if (days === '*') {
+    activeDays = new Set([0,1,2,3,4,5,6]);
+  } else if (days === '1-5') {
+    activeDays = new Set([1,2,3,4,5]);
+  } else {
+    activeDays = new Set(days.split(',').map(Number).filter(n => !isNaN(n)));
+  }
+}
+
+// ── Save to GitHub ─────────────────────────────────────────────────────────────
+
+let _pendingSave = false;
+
+function saveToGitHub() {
+  const gh = detectRepo();
+  if (!gh) {
+    showBanner('Cannot detect your repo. Copy the YAML and paste it into GitHub manually.', 'error');
+    setTimeout(hideBanner, 5000);
+    return;
+  }
+  const stored = localStorage.getItem('gh_pat');
+  if (stored) { doSave(gh, stored); }
+  else { _pendingSave = true; openPatModal(); }
+}
+
+function openPatModal()  { document.getElementById('pat-modal').classList.add('open'); }
+function closePatModal() { document.getElementById('pat-modal').classList.remove('open'); _pendingSave = false; }
+
+function confirmPat() {
+  const val = document.getElementById('pat-input').value.trim();
+  if (!val) return;
+  localStorage.setItem('gh_pat', val);
+  closePatModal();
+  if (_pendingSave) {
+    _pendingSave = false;
+    const gh = detectRepo();
+    if (gh) doSave(gh, val);
+  }
+}
+
+async function doSave(gh, token) {
+  const btn = document.getElementById('save-btn');
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  showBanner('Committing config.yaml to your repo…', 'loading');
+
+  try {
+    // Get current file SHA (needed for updates)
+    const metaRes = await fetch(
+      `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/config.yaml`,
+      { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+    );
+    if (metaRes.status === 401) {
+      localStorage.removeItem('gh_pat');
+      throw new Error('Token rejected — it may have expired. Click Save again to re-enter.');
+    }
+    if (!metaRes.ok) throw new Error(`GitHub returned ${metaRes.status}`);
+    const meta = await metaRes.json();
+
+    // Commit the updated config
+    const yaml = generateYaml();
+    const content = btoa(unescape(encodeURIComponent(yaml)));
+    const putRes = await fetch(
+      `https://api.github.com/repos/${gh.owner}/${gh.repo}/contents/config.yaml`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: 'Update config.yaml via setup page',
+          content: content,
+          sha: meta.sha
+        })
+      }
+    );
+    if (!putRes.ok) throw new Error(`Save failed (${putRes.status})`);
+
+    btn.textContent = 'Saved ✓';
+    btn.classList.add('saved');
+    showBanner('Saved. Go to Actions → Morning Briefing → Run workflow to apply now, or wait for the next scheduled run.', 'success');
+    setTimeout(() => { btn.textContent = 'Save to GitHub'; btn.classList.remove('saved'); btn.disabled = false; }, 4000);
+
+  } catch(e) {
+    btn.textContent = 'Save to GitHub';
+    btn.disabled = false;
+    showBanner(e.message || 'Save failed — check your token and try again.', 'error');
+    setTimeout(hideBanner, 6000);
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+
 // Init
 render();
+autoLoad();
 </script>
 </body>
 </html>

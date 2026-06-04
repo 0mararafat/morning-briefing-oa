@@ -18,9 +18,11 @@ name: Morning Briefing
 
 on:
   schedule:
-    # 5:30 AM Pacific Standard Time (UTC-8) = 13:30 UTC
-    # During daylight saving (PDT, UTC-7) this runs at 6:30 AM PDT.
-    - cron: '30 13 * * 1-5'
+    # 5:30 AM GMT (UTC+0, Oct–Mar)
+    - cron: '30 5 * * 1-5'
+    # 5:30 AM BST (UTC+1, Mar–Oct)
+    # The "already exists" check in the script prevents the second run doing any work.
+    - cron: '30 4 * * 1-5'
 
   # Manual trigger — tick "Force regenerate" to rebuild today's briefing even if it already exists
   workflow_dispatch:
