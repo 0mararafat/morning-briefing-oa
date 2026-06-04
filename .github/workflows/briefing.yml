@@ -51,12 +51,12 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Create output directory
-        run: mkdir -p docs/briefings
+        run: mkdir -p docs
 
       - name: Generate briefing
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          BRIEFING_OUTPUT_DIR: docs/briefings
+          BRIEFING_OUTPUT_DIR: docs
         run: python morning_dashboard_v4.py
 
       - name: Commit generated files
