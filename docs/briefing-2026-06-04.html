@@ -241,6 +241,52 @@
   }
   .deep-dive .body p:last-child { margin-bottom: 0; }
 
+  /* ── Signal Scan ─────────────────────────────────────────── */
+  .sig-card {
+    padding: 14px 18px; border-radius: 8px; margin-bottom: 8px;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+    transition: border-color 0.15s ease;
+  }
+  .sig-card:not(.sig-quiet):hover { border-color: #D1D5DB; }
+  .sig-quiet { opacity: 0.45; }
+  .sig-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 7px;
+  }
+  .sig-left { display: flex; align-items: center; gap: 10px; }
+  .sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sig-strong { background: #10B981; }
+  .sig-light  { background: #F59E0B; }
+  .sig-none   { background: #D1D5DB; }
+  .sig-name {
+    font-size: 13.5px; font-weight: 700; color: #111827; margin-right: 5px;
+  }
+  .sig-handle {
+    font-size: 11px; color: #9CA3AF;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .sig-source-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    color: #6B7280; background: #F3F4F6; border: 1px solid #E5E7EB;
+    padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+  }
+  .sig-title {
+    display: block; font-size: 13.5px; font-weight: 600; color: #111827;
+    text-decoration: none; margin-bottom: 5px; line-height: 1.35;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .sig-title:hover { color: #3B82F6; }
+  .sig-summary {
+    font-size: 13px; color: #374151; line-height: 1.65; margin-bottom: 5px;
+  }
+  .sig-connection { font-size: 12px; color: #6366F1; font-style: italic; }
+  .sig-quiet-section { margin-top: 20px; }
+  .sig-quiet-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    color: #D1D5DB; text-transform: uppercase; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   /* ── Sources ─────────────────────────────────────────────── */
   .story-sources, .deep-dive-sources {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -269,7 +315,7 @@
   <h1>Thursday, June 04, 2026</h1>
   <div class="status-bar">
     <span class="status-urgent"><span class="pulse-dot"></span>&nbsp;2 URGENT</span>
-    <span class="status-count">12 of 12 sectors active</span>
+    <span class="status-count">11 of 12 sectors active</span>
   </div>
 </div>
 
@@ -279,6 +325,7 @@
   <button class="tab" onclick="showSection('week', this)">Week Ahead</button>
   <button class="tab" onclick="showSection('patterns', this)">Pattern Watch</button>
   <button class="tab" onclick="showSection('deepdive', this)">Deep Dive</button>
+  <button class="tab" onclick="showSection('signals', this)">Signal Scan</button>
   <a class="arc-nav-link" href="./archive.html">
     Archive
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
@@ -296,16 +343,16 @@
             <span class="priority-tag tag-urgent">URGENT</span>
             <span class="sector-label">Geopolitics</span>
           </div>
-          <h3>Iran Halts US Talks, Vows Full Hormuz Closure as Congress Rebukes Trump</h3>
-          <div class="one-liner">Oil prices climbed back toward $100 on Wednesday as Iran suspended negotiations, threatened a complete Hormuz blockade, and the House passed a war powers resolution to halt military action — compounding the biggest energy supply disruption in history.</div>
+          <h3>Iran Ceasefire on a Knife's Edge: Strait of Hormuz, Lebanon Linkage Threaten Peace Deal</h3>
+          <div class="one-liner">Iran suspended US negotiations and threatened to fully close the Strait of Hormuz on June 1 after Israeli strikes in Lebanon; talks appear back on track but a permanent deal remains elusive, keeping energy markets and global shipping on high alert.</div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="story-detail">
-        <div class="story-detail-inner"><p>The 2026 Iran war, initiated by US-Israeli airstrikes on February 28, has entered a dangerous new phase this week. On June 1, Iranian state media declared negotiators would stop all back-channel contact with Washington and that Tehran would move to 'completely' block the Strait of Hormuz — through which roughly 20% of global seaborne oil once flowed — citing ongoing Israeli military operations in Lebanon as a ceasefire violation. Oil prices climbed back toward $100 per barrel on Wednesday, reversing weeks of tentative optimism.</p>
-<p>The escalation is compounded by fresh admissions from Secretary of State Marco Rubio, who told the Senate Foreign Relations Committee on June 2 that Iran has mined 'large segments' of the Strait of Hormuz. S&P Global's Jack Kennedy assessed that traffic is unlikely to return to pre-war levels until a full demining operation is complete, a timeline measured in months, not weeks. The Pentagon says it has destroyed over 40 Iranian minelaying vessels, but the mine count and locations remain classified.</p>
-<p>On Capitol Hill, the House voted on June 3 to approve a war powers resolution to halt military action against Iran — a direct rebuke of President Trump — though the measure faces a near-certain veto. Meanwhile, the AP reported that Trump is in a 'holding pattern,' with allies and critics warning he risks getting boxed in diplomatically. The ECB and BlackRock have both flagged the conflict as the dominant macro risk of 2026, with European gas benchmarks having nearly doubled and the UK-EU deploying naval escorts under Operation Aspides.</p>
-<p>The economic toll is severe: Dutch TTF gas benchmarks reached over €60/MWh by mid-March, European chemical and steel producers are charging energy surcharges of up to 30%, and the ECB has warned of stagflation risk pushing Germany and Italy toward technical recession. Goldman Sachs and Barclays analysts have flagged sustained $100+ oil if the strait remains restricted into 2027. Watch for whether Trump's diplomatic holding pattern breaks, and whether the House war powers rebuke forces a White House policy recalibration.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/01/iran-us-negotiations-strait-of-hormuz.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/06/02/iran-war-strait-hormuz-marco-rubio-mine.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.britannica.com/event/2026-Iran-war" target="_blank" rel="noopener">Britannica</a><span class="source-sep">·</span><a class="source-link" href="https://en.wikipedia.org/wiki/2026_Strait_of_Hormuz_crisis" target="_blank" rel="noopener">Wikipedia – Strait of Hormuz Crisis</a></div></div></div>
+        <div class="story-detail-inner"><p>The US-Iran war, which began on February 28 when US and Israeli forces launched large-scale strikes on Iran — including the assassination of Supreme Leader Khamenei — has entered a critical diplomatic juncture. Iran suspended ceasefire negotiations on June 1, vowing to 'completely' block the Strait of Hormuz in retaliation for Israel's ongoing military offensive in Lebanon, which Tehran insists constitutes a ceasefire violation. Oil prices jumped more than 7% on Tasnim's report before partially recovering. A regional source subsequently told CNN that talks were back on track, with Trump telling ABC News he believes a Hormuz deal is reachable 'over the next week.' Pakistan's Deputy PM Ishaq Dar was scheduled to meet Secretary of State Rubio in Washington this week to continue mediation.</p>
+<p>The broader peace architecture remains fragile. On May 28, US and Iranian negotiators reached a preliminary memorandum of understanding to extend the ceasefire 60 days and begin nuclear negotiations, but the deal still requires Trump's final approval. Key sticking points include Iran's uranium enrichment program, sanctions relief, and the linkage between Lebanon/Hezbollah and the Iran-US track — a tension that exploded again on June 1 when Netanyahu ordered strikes on Beirut suburbs, prompting a reportedly heated call with Trump. Iran insists the ceasefire covers all fronts; Israel says it does not.</p>
+<p>The economic toll is mounting globally. Maritime traffic through the Strait of Hormuz — which carried 20% of world oil and LNG in peacetime — remains far below pre-war levels, with a US blockade on Iranian ports compounding the disruption. Brent crude was above $100/barrel in mid-May, up roughly 44% since the war's start. Chinese exporters have been squeezed both by US tariffs and the energy shock, with shipping routes disrupted and Gulf demand weakening.</p>
+<p>For markets, the core risk is a breakdown in talks that leads to full Hormuz closure, which would push oil toward $130–$150 and detonate already-elevated global inflation. The Fed's hands are tied: new Chair Kevin Warsh inherits an economy where April CPI printed 3.8% — the highest in nearly three years — and markets are pricing virtually no rate cuts in 2026. Watch for whether Trump signs an Iran MOU this week and whether the Lebanon front quiets enough to hold the negotiating track together.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/01/iran-us-negotiations-strait-of-hormuz.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnn.com/2026/06/01/world/live-news/iran-trump-lebanon-war-news" target="_blank" rel="noopener">CNN</a><span class="source-sep">·</span><a class="source-link" href="https://www.aljazeera.com/news/2026/5/29/us-iran-60-day-proposal-what-we-know" target="_blank" rel="noopener">Al Jazeera</a><span class="source-sep">·</span><a class="source-link" href="https://www.washingtonpost.com/world/2026/06/01/iran-us-trade-strikes-deal-end-war-remains-elusive/" target="_blank" rel="noopener">Washington Post</a></div></div></div>
       </div>
     </div>
     <div class="story" data-priority="urgent" onclick="toggleStory(this)">
@@ -314,17 +361,38 @@
         <div class="story-content">
           <div class="story-meta">
             <span class="priority-tag tag-urgent">URGENT</span>
-            <span class="sector-label">AI Regulation & Governance</span>
+            <span class="sector-label">Applied Tech & Industry</span>
           </div>
-          <h3>Trump Signs AI Executive Order: 30-Day Government Preview of Frontier Models</h3>
-          <div class="one-liner">Trump signed a landmark executive order on June 2 creating a voluntary framework for AI developers to give the US government advance access to the most powerful frontier models — triggered directly by Anthropic's Mythos demonstrating superhuman vulnerability-finding capabilities.</div>
+          <h3>SpaceX IPO Roadshow Launches Today at $135/Share, Targeting $1.77T Valuation</h3>
+          <div class="one-liner">SpaceX officially kicked off its public investor roadshow this morning — the largest IPO in history — with pricing set for June 11 and Nasdaq trading starting June 12 under SPCX.</div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="story-detail">
-        <div class="story-detail-inner"><p>President Trump signed 'Promoting Advanced Artificial Intelligence Innovation and Security' on June 2, quietly and in private, after postponing a signing ceremony with tech CEOs weeks earlier because he 'didn't like certain aspects of it.' The order asks AI developers, on a voluntary basis, to submit their most capable 'covered frontier models' to a classified government benchmarking process run by the NSA and CISA, and to provide access up to 30 days before broader release. The order expressly states it creates no mandatory licensing or permitting requirement — a line clearly written to preempt industry pushback from Zuckerberg, Musk, and Sacks, all of whom reportedly lobbied against an earlier, stricter draft.</p>
-<p>The trigger for the order is not hypothetical. In April, Anthropic's Mythos Preview model demonstrated a superhuman ability to find critical zero-day vulnerabilities in widely-used operating systems — capabilities NBC News described as sending 'shockwaves through Washington.' The order builds an entire cybersecurity architecture around the premise that frontier AI is simultaneously a national security asset and a national security threat. The NSA will lead classification of which models qualify, and CISA must issue Binding Operational Directives to speed up AI-enabled cyber defense of civilian federal systems.</p>
-<p>Industry reaction has been cautiously positive — the order avoids the regulatory teeth that critics feared — but the underlying dynamic is significant: Washington has now formalized its expectation of first-look access to AI systems that could break critical infrastructure. The Anthropic–DOD supply-chain-risk designation remains live, with Anthropic's lawsuit against the Trump administration still in litigation. The Colorado AI Act is also approaching its June 30 effective date, and a March working group draft may reset it to January 2027 — adding further complexity to the federal-versus-state AI governance battle.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/02/trump-executive-order-ai.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" target="_blank" rel="noopener">White House</a><span class="source-sep">·</span><a class="source-link" href="https://www.whitehouse.gov/fact-sheets/2026/06/fact-sheet-president-donald-j-trump-promotes-advanced-artificial-intelligence-innovation-and-security/" target="_blank" rel="noopener">White House Fact Sheet</a><span class="source-sep">·</span><a class="source-link" href="https://letsdatascience.com/blog/trump-ai-executive-order-30-day-frontier-model-access" target="_blank" rel="noopener">Let's Data Science</a></div></div></div>
+        <div class="story-detail-inner"><p>SpaceX launched its IPO roadshow today, June 4, breaking convention by fixing a single $135-per-share price before the roadshow rather than offering a range. At that price, the company is valued at approximately $1.77 trillion — making it the seventh-largest US company by market cap, ahead of Tesla — and aims to raise $75 billion, more than double Saudi Aramco's 2019 record. Musk will retain over 82% voting control post-offering. Goldman Sachs is lead banker, followed by Morgan Stanley, Bank of America, Citigroup, and JPMorgan. Fidelity is offering access to any retail brokerage account with $2,000 or more — a dramatically lowered threshold — and SpaceX has reserved up to 30% of the offering for retail investors.</p>
+<p>The IPO is a structural pivot moment for SpaceX, which after its xAI merger now encompasses Starlink (a constellation of ~10,000 satellites), Starship, the Colossus AI data centers, and the X social platform. The prospectus revealed SpaceX is leasing roughly 325,000 Nvidia GPUs of compute capacity to Anthropic for $1.25 billion per month through May 2029 — a detail with major implications for both companies' pre-IPO narratives, particularly since Anthropic and SpaceX/xAI are simultaneously competitors and partners. The prospectus also showed X's advertising revenue in Q1 2026 declined by $100 million as ad tech overhaul continued.</p>
+<p>Fortune notes Musk needs only a roughly 2% increase in share price to become the world's first trillionaire by net worth. Chatter that Musk may ultimately pursue a SpaceX-Tesla merger is circulating, based on CNBC reporting of internal Tesla conversations. SpaceX's FY2025 net loss was $4.9 billion, driven by $3 billion in Starship R&D plus xAI integration costs. PitchBook-NVCA estimates that SpaceX, OpenAI, and Anthropic together could generate nearly $2.5 trillion in exit value — more than all VC-backed IPOs this century combined — if all three list as planned.</p>
+<p>Watch: Whether institutional order books fill quickly enough to sustain the fixed $135 price without a range; whether any antitrust scrutiny of the xAI-SpaceX-Starlink combination surfaces; and whether the Anthropic compute deal survives as both companies enter public market scrutiny.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/03/spacex-ipo-stock-price-roadshow-musk.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://fortune.com/2026/06/04/spacex-ipo-price/" target="_blank" rel="noopener">Fortune</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/05/20/spacex-ipo-live-updates.html" target="_blank" rel="noopener">CNBC</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">AI Regulation & Governance</span>
+          </div>
+          <h3>Trump Signs AI Frontier Model EO; Altman Hits Capitol Hill to Shape the Follow-Through</h3>
+          <div class="one-liner">Trump's June 2 executive order creates a voluntary framework for government to preview frontier AI models 30 days before release; Altman spent Wednesday lobbying both parties to keep it voluntary and increase Commerce Department testing funding.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>President Trump signed the 'Promoting Advanced Artificial Intelligence Innovation and Security' executive order on Tuesday, June 2 — quietly, in private, without the tech CEO ceremony he had previously planned. The order directs NSA, CISA, Treasury, and Commerce to build a classified benchmarking process within 60 days to identify 'covered frontier models.' AI developers are then asked, on a voluntary basis, to give the government access to those models up to 30 days before public release, and to let the government help select trusted early partners. Critically, the order explicitly states it does not authorize any mandatory licensing, preclearance, or permitting requirements — a direct concession to industry pressure. Reports indicate that Musk, Zuckerberg, and Sacks lobbied against an earlier, more prescriptive version of the order.</p>
+<p>The background that animated the EO is Anthropic's Claude Mythos Preview model, which in April demonstrated what NBC News called 'superhuman ability' to find critical vulnerabilities in widely-used operating systems — sending what the White House described as shockwaves through the national security community. Anthropic's response — the Project Glasswing cybersecurity initiative — was expanded on the same day Trump signed the order.</p>
+<p>OpenAI CEO Sam Altman traveled to Washington on Wednesday, meeting with House Speaker Mike Johnson, Minority Leader Hakeem Jeffries, and Sen. Bernie Sanders, as well as White House officials. Altman endorsed the EO publicly, writing that it 'gets the balance right,' but Reuters reported he also pushed lawmakers against any mandatory approval requirements and asked Congress to increase Commerce Department AI testing funding. Bloomberg noted Altman also presented a vision for passing AI's 'potentially vast financial windfall to consumers' — language that signals OpenAI is beginning to shape its public market narrative ahead of its own imminent IPO filing.</p>
+<p>The Anthropic-DOD rift complicates the picture. Defense Secretary Hegseth designated Anthropic a national security supply chain risk in March after the company refused Pentagon demands for unfettered Claude access for autonomous weapons and mass surveillance. A federal appeals court denied Anthropic's stay request in April; litigation continues. The new EO's voluntary framework does nothing to resolve this standoff, and the Colorado AI Act — which was supposed to take effect June 30 — remains in limbo as a working group deliberates revision.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/02/trump-executive-order-ai.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://money.usnews.com/investing/news/articles/2026-06-03/openais-altman-to-urge-us-lawmakers-not-to-require-ai-model-approvals" target="_blank" rel="noopener">Reuters / US News</a><span class="source-sep">·</span><a class="source-link" href="https://www.bloomberg.com/news/articles/2026-06-03/openai-ceo-to-share-oversight-ideas-in-wake-of-trump-ai-order" target="_blank" rel="noopener">Bloomberg</a><span class="source-sep">·</span><a class="source-link" href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" target="_blank" rel="noopener">White House</a></div></div></div>
       </div>
     </div>
     <div class="story" data-priority="high" onclick="toggleStory(this)">
@@ -335,15 +403,16 @@
             <span class="priority-tag tag-high">HIGH</span>
             <span class="sector-label">Applied Tech & Industry</span>
           </div>
-          <h3>SpaceX IPO Roadshow Launches Today; Anthropic Files Confidentially at $965B Valuation</h3>
-          <div class="one-liner">SpaceX kicks off its investor roadshow today targeting a record $75B raise at a $1.75 trillion valuation, while Anthropic — now posting $47B annualized revenue and its first quarterly profit — has confidentially filed for its own IPO, setting up the most concentrated AI listing wave in history.</div>
+          <h3>Anthropic Files Confidential IPO; $965B Valuation, Pentagon Blacklist, and $1.25B/Month Musk Deal Define the Story</h3>
+          <div class="one-liner">Anthropic filed confidentially with the SEC on June 1, racing SpaceX and OpenAI to the public markets at a near-trillion-dollar valuation, while navigating an ongoing DOD supply chain risk designation and explosive compute growth.</div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="story-detail">
-        <div class="story-detail-inner"><p>SpaceX's IPO roadshow is reported to begin today, June 4, with Goldman Sachs leading a 21-bank syndicate. The company is targeting approximately $75 billion in proceeds at a $1.75 trillion valuation — which would surpass Saudi Aramco's 2019 listing as the largest IPO in history. The S-1 is public and the offering incorporates xAI (the Grok chatbot maker), which SpaceX acquired from Musk in February. Goldman Sachs projects total US IPO proceeds in 2026 could hit a record $160 billion if the three mega-deals — SpaceX, Anthropic, and OpenAI — all close this year.</p>
-<p>Anthropic delivered a market-moving disclosure this week: its run-rate revenue hit $47 billion in May, more than doubling year-on-year, and it is on track to deliver its first quarterly operating profit of $559 million on $10.9 billion of Q2 revenue. The company closed a $65 billion funding round at a $965 billion post-money valuation and has confidentially filed with the SEC for an IPO. Analysts at Motley Fool noted this makes SpaceX's xAI segment look richly valued by comparison, trading at 120x run-rate sales versus Anthropic's roughly 20x. OpenAI is targeting a September IPO, working with Goldman and Morgan Stanley.</p>
-<p>The wave follows Cerebras Systems' recent debut at a $70 billion valuation, with shares surging 68% on day one before falling 10% the next day — a dynamic analysts are flagging as a structural warning about lockup mechanics. The combined valuation of SpaceX, Anthropic, and OpenAI approaches $4 trillion. Passive index funds tracking the Nasdaq 100 — including the $466 billion QQQ — will face significant rebalancing pressure once these companies are included. Watch today's SpaceX roadshow pricing signals closely for temperature-check on institutional appetite.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.indexbox.io/blog/ai-firms-and-spacex-drive-ipo-market-buzz-in-2026/" target="_blank" rel="noopener">IndexBox</a><span class="source-sep">·</span><a class="source-link" href="https://www.fool.com/investing/2026/06/04/anthropic-just-gave-investors-one-more-reason-to-a/" target="_blank" rel="noopener">Motley Fool</a><span class="source-sep">·</span><a class="source-link" href="https://www.ig.com/en/news-and-trade-ideas/spacex-openai-anthropic-2026-ipo-deals-260520" target="_blank" rel="noopener">Yahoo Finance / IG</a></div></div></div>
+        <div class="story-detail-inner"><p>Anthropic confirmed on June 1 that it confidentially filed its IPO prospectus with the SEC — beating rival OpenAI, which is readying its own filing imminently. The filing follows a $65 billion Series H round that pushed Anthropic's valuation to $965 billion, itself nearly tripling from the $380 billion post-money in Q1 in a matter of weeks. Wedbush analysts described the trio of SpaceX, Anthropic, and OpenAI IPOs as 'opening the floodgates' for a dormant IPO market. Anthropic says it aims to break even by 2028; its revenue run rate was $47 billion at the start of May, up from $10 billion for full-year 2025 — explosive by any measure, driven primarily by Claude Code's enterprise adoption and the Claude Opus 4.8 flagship.</p>
+<p>The central tension in Anthropic's public market story is its relationship with the US government. The DOD designated Anthropic a supply chain risk in March after CEO Dario Amodei refused Pentagon demands to use Claude for fully autonomous weapons and mass surveillance. Trump ordered all federal agencies to cease using Anthropic's technology, canceling over $200 million in federal contracts. A federal appeals court denied Anthropic's bid to block the ruling in April, though a separate San Francisco injunction bars enforcement of the broader Claude ban on non-defense agencies. Anthropic is fighting the designation in court; litigation is ongoing.</p>
+<p>Ironically, the same model that precipitated the DOD clash — Claude Mythos Preview — also provided the intelligence rationale for Trump's new AI executive order. Anthropic's Glasswing cybersecurity initiative, expanded alongside the EO signing, may offer a diplomatic off-ramp, as Trump told CNBC in April that a DOD-Anthropic deal is 'possible.' Meanwhile, the most eyebrow-raising disclosure in SpaceX's amended IPO filing is that Anthropic is paying SpaceX $1.25 billion per month to use the Colossus Memphis data centers — a deal that makes arch-rivals Musk and Amodei financial counterparties, with compute scarcity as the forcing function.</p>
+<p>Angel Investors Network flags that Anthropic's rapid valuation appreciation from $380 billion to $965 billion in weeks may reflect structured terms including ratchets and IPO downside protection rather than clean price discovery — a risk analysts are already flagging ahead of the public offering.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/01/anthropic-ipo-s1-prospectus.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.cbsnews.com/news/anthropic-ipo-confidential-filing-claude-ai/" target="_blank" rel="noopener">CBS News</a><span class="source-sep">·</span><a class="source-link" href="https://thehill.com/policy/technology/5904200-anthropic-sec-ipo/" target="_blank" rel="noopener">The Hill</a><span class="source-sep">·</span><a class="source-link" href="https://finance.yahoo.com/markets/article/anthropic-files-confidential-ipo-paperwork-ahead-of-openai-160929425.html" target="_blank" rel="noopener">Yahoo Finance</a></div></div></div>
       </div>
     </div>
     <div class="story" data-priority="high" onclick="toggleStory(this)">
@@ -352,36 +421,18 @@
         <div class="story-content">
           <div class="story-meta">
             <span class="priority-tag tag-high">HIGH</span>
-            <span class="sector-label">Frontier Tech / AI</span>
+            <span class="sector-label">Markets</span>
           </div>
-          <h3>Nvidia Enters PC Market with RTX Spark; Challenges Intel, AMD, Qualcomm on Home Turf</h3>
-          <div class="one-liner">Nvidia's RTX Spark superchip — unveiled at Computex Taipei on June 1 — marks Jensen Huang's bid to own the full AI stack from data center to laptop, combining a Blackwell GPU and MediaTek CPU with 128GB unified memory capable of running 120B-parameter models entirely on-device.</div>
+          <h3>New Fed Chair Warsh Faces First FOMC Test June 16–17 With Inflation at 3.8% and No Rate Cuts Priced</h3>
+          <div class="one-liner">Kevin Warsh — the most crypto-exposed Fed Chair in history — takes the helm with markets pricing virtually zero chance of 2026 rate cuts, oil-driven inflation entrenched, and political pressure from Trump to ease.</div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="story-detail">
-        <div class="story-detail-inner"><p>At Computex in Taipei on June 1, Nvidia CEO Jensen Huang unveiled the RTX Spark superchip, a combined CPU-GPU SoC built in partnership with Taiwan's MediaTek, running on TSMC 3-nanometer process technology. The chip delivers 1 petaflop of AI performance and up to 128GB of unified memory, enabling on-device inference of 120-billion-parameter LLMs with million-token context windows. Devices ship this fall from Microsoft Surface, Dell, HP, ASUS, Lenovo, and MSI, with Acer and GIGABYTE to follow — all running Windows for Arm. Huang also confirmed Nvidia's Vera CPU for data centers is in full production, with OpenAI, Anthropic, and SpaceX as early adopters.</p>
-<p>Simultaneously, Google DeepMind released Gemma 4 12B — an open-source multimodal model targeting the same 16GB VRAM threshold that RTX Spark addresses — posting 77.5% on AIME 2026 and 94.9% on DocVQA with a 256,000-token context window. Microsoft unveiled Project Polaris, an in-house coding model replacing GPT-4 Turbo as the default for all GitHub Copilot subscribers from August, running on Microsoft's own Maia chips and ending Copilot's dependence on OpenAI. And MiniMax released M2.5 models promising near-frontier performance at a fraction of cost.</p>
-<p>Nvidia's move sent shares of AMD, Intel, and Qualcomm lower. CNBC reported it as 'the latest sign of Nvidia moving beyond the data center to the edge.' Critics note that the AI PC concept has so far underperformed — Dell cited disappointing demand earlier this year — but analysts say Nvidia's CUDA ecosystem and AI credibility give this push a different weight than prior Arm-based Windows efforts by Qualcomm. The structural question is whether software developers will optimize for RTX Spark's unified memory architecture, or whether it faces the same fragmentation that plagued earlier Windows-on-Arm devices.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://investor.nvidia.com/news/press-release-details/2026/NVIDIA-and-Microsoft-Reinvent-Windows-PCs-for-the-Age-of-Personal-AI/default.aspx" target="_blank" rel="noopener">NVIDIA Investor Relations</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/06/02/nvidias-new-pc-chips-are-ceos-bid-to-own-every-part-of-ai-stack.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.bloomberg.com/news/articles/2026-06-01/nvidia-enters-windows-laptop-market-taking-on-intel-and-amd" target="_blank" rel="noopener">Bloomberg</a><span class="source-sep">·</span><a class="source-link" href="https://www.aljazeera.com/economy/2026/6/1/nvidia-unveils-new-chip-to-bring-ai-directly-to-personal-computers" target="_blank" rel="noopener">Al Jazeera</a></div></div></div>
-      </div>
-    </div>
-    <div class="story" data-priority="tracking" onclick="toggleStory(this)">
-      <div class="story-top">
-        <div class="story-dot dot-tracking"></div>
-        <div class="story-content">
-          <div class="story-meta">
-            <span class="priority-tag tag-tracking">TRACKING</span>
-            <span class="sector-label">Digital Finance</span>
-          </div>
-          <h3>Bitcoin Slides to $62K; Crypto ETFs Bleed $4.4B Over 13 Sessions; Clarity Act Stalls</h3>
-          <div class="one-liner">Bitcoin crashed to $61,300 before stabilizing near $63,000 as a 13-session ETF redemption wave totaling $4.4 billion hit, JPMorgan warned the Clarity Act faces legislative hurdles over stablecoin yield disputes, and a Russia-linked sanctions-evasion stablecoin surfaced.</div>
-        </div>
-        <div class="chevron">▾</div>
-      </div>
-      <div class="story-detail">
-        <div class="story-detail-inner"><p>Crypto markets are in a sustained correction. Bitcoin crashed to $61,300 this week, triggering $3 billion in liquidations over two days before recovering to around $62,500. More than half of the bitcoin in circulation is now sitting on unrealized losses — a metric that has historically marked bear-market bottoms. BlackRock's IBIT shed another $342 million on Wednesday, and BTC, ETH, SOL, and XRP ETFs collectively bled $4.4 billion over 13 consecutive outflow sessions, with only Hyperliquid's HYPE products still attracting net new money.</p>
-<p>On the regulatory front, JPMorgan warned that the Clarity Act — Congress's flagship crypto market structure bill — still faces several hurdles, with disputes over stablecoin yield payments emerging as the key sticking point. Separately, a stablecoin called A7A5 surfaced this week, designed specifically to bypass sanctions imposed on Russia after its 2022 Ukraine invasion — adding urgency to the regulatory debate. The ECB's Isabel Schnabel this week reiterated that the best response to stablecoins is a digital euro, and the ECB's June international report noted China's e-CNY dominating the mBridge multi-CBDC platform, with some ships reportedly paying in renminbi via CIPS or crypto to transit Hormuz in March-April.</p>
-<p>Watch: Senate floor action on the Clarity Act this week, any Bitcoin break below $60,000 which derivatives traders are heavily hedged for, and Fed Chair signaling ahead of the June FOMC meeting.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.coindesk.com/latest-crypto-news" target="_blank" rel="noopener">CoinDesk</a><span class="source-sep">·</span><a class="source-link" href="https://www.bloomberg.com/crypto" target="_blank" rel="noopener">Bloomberg Crypto</a><span class="source-sep">·</span><a class="source-link" href="https://www.ecb.europa.eu/press/other-publications/ire/html/ecb.ire202606.en.html" target="_blank" rel="noopener">ECB</a></div></div></div>
+        <div class="story-detail-inner"><p>Kevin Warsh was confirmed and sworn in as Federal Reserve Chair following Jerome Powell's departure in May. His first formal FOMC meeting is scheduled for June 16–17, with the current federal funds target at 3.50–3.75%. CME FedWatch data shows markets pricing approximately 62% probability of no rate cuts in 2026, with a small (~3.5%) chance of a hike at the June meeting and rising odds of a hike by December. The calculus is shaped by April's 3.8% CPI reading — the highest in nearly three years — driven primarily by the Iran war's energy shock. The Iran-disrupted Strait of Hormuz has pushed Brent crude above $100/barrel and US average gas prices to $4.50/gallon, up 44% year-on-year.</p>
+<p>Warsh is structurally hawkish — he criticized the Fed's 2021–22 low-rate policy as a 'fatal error' — but faces intense political pressure from Trump, who told CNBC he 'would be disappointed' if Warsh does not cut rates in June. This creates a difficult debut: cut and validate Trump's pressure campaign and risk inflation expectations de-anchoring; hold and appear defiant of the administration that appointed him. Warsh is expected to restructure how the Fed communicates, potentially scaling back reliance on the dot plot.</p>
+<p>For crypto and digital finance, Warsh is uniquely positioned. His 69-page financial disclosure revealed over $100 million in crypto-related investments across more than 20 blockchain entities — including Bitwise, dYdX, Compound, Polychain Capital, and Bitcoin Lightning startup Flashnet — making him the most personally exposed Fed Chair to digital assets in history. He opposes a retail CBDC and favors private-sector stablecoins, aligning with the CLARITY Act framework advancing in Congress. The stablecoin market is watching his first policy signals closely for regulatory tone.</p>
+<p>Markets are broadly in a 'higher for longer' stance, with the Iran energy shock and tariff pass-through (Trump's tariffs estimated at a $1,500 average household cost increase in 2026) keeping both hawks and doves uncertain. Treasury yields had dropped to ~4.44% on the 10-year in late May as Iran deal hopes rose but remain structurally elevated.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.blockhead.co/2026/05/14/kevin-warsh-is-fed-chair-bitcoin-payments-equity-anti-cbdc-stance-first-meeting-in-june/" target="_blank" rel="noopener">Blockhead</a><span class="source-sep">·</span><a class="source-link" href="https://www.mexc.com/news/1108917" target="_blank" rel="noopener">MEXC/Crypto Breaking News</a><span class="source-sep">·</span><a class="source-link" href="https://www.cryptotimes.io/2026/05/02/powells-exit-warshs-arrival-and-the-clarity-act-your-2026-crypto-portfolio-roadmap/" target="_blank" rel="noopener">The Crypto Times</a></div></div></div>
       </div>
     </div>
 </div>
@@ -394,148 +445,143 @@
         <div class="sector-dot active"></div>
         <span class="sector-name">Frontier Tech / AI</span>
       </div>
-      <div class="sector-summary">Nvidia's RTX Spark superchip (unveiled June 1 at Computex) brings a 1-petaflop, 128GB-unified-memory Blackwell-MediaTek SoC to Windows laptops this fall, directly challenging Intel, AMD, and Qualcomm. Google DeepMind simultaneously released Gemma 4 12B — an open-source multimodal model running on 16GB VRAM laptops with a 256K context window and strong AIME 2026 math scores. Microsoft's Maia-powered Project Polaris model replaces GPT-4 Turbo as GitHub Copilot's default from August, signaling Big Tech's push for in-house model stacks independent of OpenAI.</div>
+      <div class="sector-summary">Google DeepMind launched Gemma 4 12B on June 3 — an open-source multimodal model designed to run on consumer laptops with ~16GB VRAM, featuring a 256K context window and strong benchmarks including 77.5% on AIME 2026. Separately, Anthropic's Claude Mythos Preview — the model that demonstrated superhuman vulnerability-finding capabilities and precipitated Trump's new AI EO — is being rolled out more broadly via the expanded Project Glasswing initiative. Microsoft's Project Polaris (an in-house coding model on Maia chips) is slated to replace GPT-4 Turbo as the default for all GitHub Copilot subscribers in August, signaling accelerating vertical integration away from OpenAI dependency. SK Hynix recently crossed $1 trillion market cap as AI memory demand reshapes the semiconductor landscape.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Applied Tech & Industry</span>
       </div>
-      <div class="sector-summary">SpaceX's history-making IPO roadshow begins today targeting $75B at a $1.75T valuation. Anthropic filed confidentially for its own IPO after closing a $65B round at a $965B valuation and reporting $47B annualized revenue with its first quarterly operating profit in sight. OpenAI targets a September listing. Goldman Sachs projects 2026 US IPO proceeds could hit a record $160B. Cerebras Systems recently debuted at $70B with a 68% first-day surge.</div>
+      <div class="sector-summary">The defining applied tech story this week is the convergence of three historic IPOs: SpaceX (roadshow begins today, pricing June 11, trading June 12 at ~$1.77T), Anthropic (confidential SEC filing June 1, $965B valuation), and OpenAI (imminent confidential filing). Crunchbase data shows global VC funding hit $92 billion in May alone — the second-largest monthly total on record — largely driven by Anthropic's $50 billion raise. Q1 2026 set an all-time VC record at $300B+, with AI's share of global VC rising to 80%. Defense-tech funding continues at scale, with Impulse Space raising $500M Series D and Shield AI closing a $1.5B Series G at a $12.7B valuation.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">US Policy & Power</span>
       </div>
-      <div class="sector-summary">The House passed a war powers resolution on June 3 to halt military action against Iran, a direct rebuke of Trump, though a veto is expected. Trump's new AI executive order (signed June 2) creates voluntary 30-day government preview access to frontier models via a classified NSA-run benchmarking process. Sam Altman is scheduled to meet with lawmakers and Trump officials in Washington this week. Secretary Rubio testified before the Senate Foreign Relations Committee on the Hormuz mining situation.</div>
+      <div class="sector-summary">Trump's June 2 AI executive order (voluntary 30-day government preview of frontier models, no mandatory licensing) is the week's central policy event. Altman spent Wednesday lobbying bipartisan Congressional leadership and the White House on the follow-through. The Iran war continues to dominate executive branch bandwidth, with the White House managing simultaneous military, diplomatic, and economic tracks. Congress has rejected nine War Powers Resolution measures since March. The Colorado AI Act (due June 30) remains in limbo as a governor-led working group considers a reset to January 2027.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">AI Regulation & Governance</span>
       </div>
-      <div class="sector-summary">Trump's June 2 executive order on frontier AI security is the dominant governance story: a voluntary framework for 30-day government access to 'covered frontier models,' with no mandatory licensing. Colorado's AI Act effective date of June 30 is approaching, though a working group draft may reset it to January 2027. The EU AI Act's November 2025 'Digital Omnibus' proposal to delay high-risk AI obligations is advancing through the EU legislative process.</div>
+      <div class="sector-summary">Trump's June 2 EO establishes a new voluntary framework for government evaluation of 'covered frontier models' via classified NSA-led benchmarking — triggered in part by Anthropic's Mythos model and its demonstrated capability to autonomously find zero-day vulnerabilities. Altman's DC visit focused on opposing mandatory model approvals while supporting expanded Commerce Dept. testing. The Anthropic-DOD supply chain risk designation litigation remains ongoing after the appeals court denied a stay. Colorado's AI Act effective date of June 30 is approaching with no revision yet enacted; the EU AI Act's Digital Omnibus proposal continues to advance in Brussels, potentially delaying high-risk AI requirements.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Geopolitics</span>
       </div>
-      <div class="sector-summary">The Iran war is the dominant geopolitical story: Iran halted US negotiations on June 1 and vowed to fully close Hormuz, the House passed a war powers rebuke of Trump on June 3, and oil prices climbed back toward $100. Secretary Rubio confirmed Iran has mined 'large segments' of Hormuz. Gulf Arab states are accelerating bypass pipeline projects to reduce Hormuz dependence. Diplomatic framework negotiations remain stalled pending Israeli operations in Lebanon.</div>
+      <div class="sector-summary">The US-Iran conflict is the dominant geopolitical story, with the Strait of Hormuz still effectively closed, oil at ~$100/barrel, and Iran oscillating between suspending and resuming negotiations based on Israeli operations in Lebanon. A preliminary 60-day MOU was reached on May 28 but awaits Trump's final signature. Pakistan's Ishaq Dar met Secretary Rubio in Washington this week to continue mediation. The Lebanon front — where Israel insists the ceasefire does not apply — remains the critical fault line that could derail or accelerate a deal. US midterm elections in November add domestic political urgency to Trump's dealmaking calculus.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">China</span>
       </div>
-      <div class="sector-summary">China's economy continues to face weak domestic demand, a prolonged property downturn, and external geopolitical risks. The CSI 300 edged up 0.97% last week while the Shanghai Composite fell 1.08%, as markets weighed stronger industrial profit data against renewed regulatory pressure on offshore brokerage activity. China's e-CNY is dominating the mBridge multi-CBDC platform, and Xi called for renminbi reserve currency status in February. Beijing continues to double down on technological self-sufficiency across rare earths, AI, and robotics.</div>
+      <div class="sector-summary">Chinese exporters are caught in a double squeeze: US tariffs (a 30% effective rate remains in place under the November 2025 trade truce framework) and the Iran war's disruption of shipping lanes and Gulf markets they had pivoted toward. Beijing is watching Iran negotiations closely, as the Strait closure threatens China's own seaborne export economy — China purchased over 80% of Iran's sanctioned oil in 2025. Xi Jinping called in February for the renminbi to become a global reserve currency; China's digital yuan (e-CNY) is expanding its footprint on the mBridge cross-border payments platform. USTR has initiated new Section 301 investigations covering manufacturing overcapacity across China and 15 other economies.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Markets</span>
       </div>
-      <div class="sector-summary">The S&P 500 topped 7,600 on a nine-day AI-fueled win streak as of June 1, but US stocks halted their rally on June 3 as oil prices climbed back toward $100 on Hormuz escalation. The 10-year Treasury yield had dropped to ~4.44% from ~4.56% the prior week on falling oil and US-Iran negotiation hopes, but those gains are partially reversing. The ECB's April minutes showed members open to a June rate hike given the persistent energy price shock. Trump's new Fed Chair is expected to take office in June, with Rabobank forecasting a shift toward cuts to 2.75-3.00% by year-end.</div>
+      <div class="sector-summary">New Fed Chair Warsh takes his first FOMC meeting June 16–17 with markets pricing ~62% odds of no rate cuts in 2026 and April CPI at 3.8%. The 10-year Treasury yield recently dropped to ~4.44% as Iran deal hopes rose but remains structurally elevated. The SpaceX IPO roadshow launch today is the most significant near-term market event, with the $75 billion raise potentially the largest liquidity injection into venture and tech markets in history. Q1 2026 VC exit value hit $413.5B — the highest since Q4 2021. Cerebras Systems went public in May at $185/share, opening at $350, previewing appetite for AI infrastructure equity.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Digital Finance</span>
       </div>
-      <div class="sector-summary">Bitcoin slid to $61,300 before recovering to ~$63,000 amid $3B in two-day liquidations and a 13-session, $4.4B ETF outflow wave. JPMorgan warned the Clarity Act faces legislative stalls over stablecoin yield disputes. A Russia sanctions-evasion stablecoin (A7A5) emerged. ECB's Schnabel reiterated the digital euro as the answer to stablecoins, and the CFTC cleared Coinbase to offer global crypto perpetual futures.</div>
+      <div class="sector-summary">The CLARITY Act (Digital Asset Market Clarity Act) is advancing in the Senate following a breakthrough stablecoin yield compromise, with Warsh's explicit opposition to a retail CBDC and support for private-sector stablecoins providing a regulatory tailwind. Coinbase launched pre-IPO perpetual futures on SpaceX, its first such product, giving non-US traders price exposure to a private company before listing. Warsh's 69-page financial disclosure revealed over $100 million in crypto-related holdings across 20+ entities, making his first FOMC meeting a significant signal event for digital asset markets.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Energy</span>
       </div>
-      <div class="sector-summary">Oil prices climbed back toward $100 on June 3 as Iran threatened full Hormuz closure and halted US negotiations. The crisis has been described as the largest supply disruption in the history of the global oil market. European Dutch TTF gas benchmarks nearly doubled to €60/MWh in mid-March, though they have partially retreated. OPEC+ pledged an additional 206,000 bpd to mitigate shortages. Gulf states are investing in bypass pipeline infrastructure. The ECB warned energy-dependent European economies face stagflation risk.</div>
+      <div class="sector-summary">The Iran war and Strait of Hormuz disruption remain the dominant energy story: Brent crude above $100/barrel, US gas at $4.50/gallon (up 44% YoY), diesel up 61%. Roughly 20% of global oil and LNG in peacetime transits the Strait; traffic remains far below pre-war levels. Trump is pushing for a federal gas tax holiday but faces Congressional arithmetic challenges. The fertilizer supply chain is also stressed, with ~50% of global urea exports originating from countries west of the Strait. Longer-term, AI data center energy demand continues to drive nuclear and grid investment discussions, though no major developments this week.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Defense & Security</span>
       </div>
-      <div class="sector-summary">The UK deployed drones, fighter aircraft, and a Royal Navy warship in May under Operation Aspides to escort shipping through Hormuz. The Pentagon has destroyed over 40 Iranian minelaying vessels. The US sent the 31st Marine Expeditionary Unit to the region. The House war powers resolution passing on June 3 is the biggest domestic defense-policy development, signaling congressional skepticism about the open-ended military commitment. Trump's AI executive order also directs the Attorney General to prioritize prosecution of AI-enabled cyberattacks on critical infrastructure.</div>
+      <div class="sector-summary">The US-Iran military conflict — now in its ceasefire/negotiation phase — continues to generate active incidents, including CENTCOM strikes on Iranian missile launch sites on May 25 and ongoing US blockade operations redirecting commercial vessels. The war's operational cost is estimated at $29 billion by the acting Pentagon Comptroller, not counting equipment damage. Anthropic's Claude Mythos model — capable of autonomous zero-day vulnerability discovery — is the week's most significant defense-tech development, directly motivating Trump's AI executive order and expanding cybersecurity implications across critical infrastructure. Shield AI raised $1.5B at a $12.7B valuation for its Hivemind autonomous pilot platform, selected by the US Air Force for its Collaborative Combat Aircraft program.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
         <div class="sector-dot active"></div>
         <span class="sector-name">Labor & Workforce</span>
       </div>
-      <div class="sector-summary">The IMF Chief warned this week of an AI shock to entry-level jobs, with data showing the disruption is accelerating in clerical and coding roles. Microsoft's shift to in-house models (Project Polaris replacing GPT-4 Turbo in GitHub Copilot) is a signal of major enterprise AI stack consolidation that carries workforce implications for contractors and OpenAI-dependent developers. The White House AI framework from March directs Congress to study task-level workforce realignment driven by AI.</div>
+      <div class="sector-summary">The IMF Chief issued warnings this week about AI's shock to entry-level jobs, consistent with broader 2026 trend data. The White House AI EO and national legislative framework both include provisions for Congress to study 'task-level workforce realignment driven by AI' and expand apprenticeships and AI training. Sam Altman's DC agenda also included framing OpenAI's mission around distributing AI's 'financial windfall to consumers' — language calibrated for the labor politics around his IPO. Microsoft's Project Polaris replacing OpenAI models in GitHub Copilot signals continued automation of developer workflows.</div>
     </div>
     <div class="sector-item" onclick="toggleSector(this)">
       <div class="sector-top">
-        <div class="sector-dot active"></div>
+        <div class="sector-dot quiet"></div>
         <span class="sector-name">UK Politics</span>
       </div>
-      <div class="sector-summary">Labour is navigating a difficult post-local-elections period: the May 7 elections across English councils and London boroughs served as the first major nationwide judgement on Keir Starmer's government, with Reform UK making gains. As of May 2026, YouGov polling shows 53% of Britons rate the economy as a top-three issue and 49% cite immigration. The 10th anniversary of the Brexit referendum on June 23 is approaching, with 56% of the public now believing it was wrong to leave the EU — raising pressure on Starmer over a potential customs union reset. The Iran war's energy shock is compounding UK industrial strain, with chemical and steel surcharges of up to 30%.</div>
+      
     </div>
 </div>
 
 <div id="week" class="section">
   
+    <div class="week-item">
+      <span class="week-day">Thu 4</span>
+      <span class="week-event">SpaceX (SPCX) IPO roadshow officially opens; investor website and full roadshow deck go live; Fidelity opens retail access for accounts $2,000+</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
+    </div>
     <div class="week-item critical">
       <span class="week-day">Thu 4</span>
-      <span class="week-event">SpaceX IPO roadshow begins — targeting ~$75B raise at $1.75T valuation; Goldman Sachs leading 21-bank syndicate</span>
+      <span class="week-event">US-Iran negotiations continue via Pakistan mediation; Ishaq Dar-Rubio talks ongoing in Washington; watch for Trump MOU signature</span>
       <span class="week-tag" style="color:#fff;background:#DC2626">critical</span>
     </div>
     <div class="week-item">
-      <span class="week-day">Thu 4</span>
-      <span class="week-event">Iran war: Watch for White House response to House war powers rebuke and any new Hormuz ceasefire signals via Oman backchannel</span>
-      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
-    </div>
-    <div class="week-item">
-      <span class="week-day">Thu 4</span>
-      <span class="week-event">OpenAI CEO Sam Altman meets with lawmakers and Trump officials in Washington — AI policy and IPO prep discussions expected</span>
-      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
-    </div>
-    <div class="week-item">
       <span class="week-day">Fri 5</span>
-      <span class="week-event">US May Non-Farm Payrolls report — key data point for Fed rate path amid Iran-driven inflation risk</span>
+      <span class="week-event">US May Non-Farm Payrolls report — key data for Fed's June 16–17 FOMC deliberations under Chair Warsh</span>
       <span class="week-tag" style="color:#fff;background:#059669">data</span>
     </div>
     <div class="week-item">
-      <span class="week-day">Fri 5</span>
-      <span class="week-event">ECB June interest rate decision — board members have publicly signaled a hike is likely given persistent energy price shock</span>
-      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+      <span class="week-day">Mon 8</span>
+      <span class="week-event">Fortune Brainstorm Tech (Aspen, June 8–10) — AI, frontier tech, and investment summit with major CEOs</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
     </div>
     <div class="week-item">
       <span class="week-day">Mon 8</span>
-      <span class="week-event">Fortune Brainstorm Tech conference begins in Aspen (runs June 8–10) — major AI and tech leadership gathering</span>
+      <span class="week-event">SpaceX roadshow formal institutional presentations begin (NYC, London, Hong Kong leg)</span>
       <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
     </div>
     <div class="week-item">
       <span class="week-day">Tue 9</span>
-      <span class="week-event">Colorado AI Act effective date approaching June 30 — watch for working group draft vote to delay enforcement to Jan 2027</span>
+      <span class="week-event">Colorado AI Act effective date looms June 30 — working group expected to release revised framework draft this week</span>
       <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
-    </div>
-    <div class="week-item critical">
-      <span class="week-day">Wed 10</span>
-      <span class="week-event">SpaceX IPO pricing expected — if roadshow runs standard timeline, pricing likely mid-week for Jun 12 debut</span>
-      <span class="week-tag" style="color:#fff;background:#DC2626">critical</span>
     </div>
     <div class="week-item">
       <span class="week-day">Wed 10</span>
-      <span class="week-event">US Senate: Clarity Act crypto market structure bill — floor debate expected, stablecoin yield dispute is key sticking point</span>
-      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+      <span class="week-event">OpenAI confidential IPO filing expected imminently — watch for SEC submission announcement</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
     </div>
     <div class="week-item">
       <span class="week-day">Thu 11</span>
-      <span class="week-event">US May CPI inflation print — critical for Fed signaling ahead of June FOMC; energy price dynamics from Iran war central</span>
-      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+      <span class="week-event">SpaceX final IPO price set after order-book close; final SPCX share price confirmed ahead of June 12 Nasdaq debut</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Fri 12</span>
+      <span class="week-event">SpaceX (SPCX) begins trading on Nasdaq — largest IPO in history at targeted $1.77T valuation</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
     </div>
     <div class="week-item critical">
-      <span class="week-day">Fri 12</span>
-      <span class="week-event">SpaceX NYSE debut (target date) — would be the largest IPO in history if priced at $1.75T valuation</span>
+      <span class="week-day">Mon 15</span>
+      <span class="week-event">Iran ceasefire/MOU negotiations continue; preliminary 60-day MOU framework still awaiting Trump's final signature</span>
       <span class="week-tag" style="color:#fff;background:#DC2626">critical</span>
     </div>
     <div class="week-item">
-      <span class="week-day">Mon 15</span>
-      <span class="week-event">Federal Reserve FOMC meeting begins (Jun 15–16) — first meeting under expected new Fed Chair appointed by Trump</span>
-      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+      <span class="week-day">Tue 16</span>
+      <span class="week-event">FOMC meeting begins (June 16–17) — Kevin Warsh's first meeting as Fed Chair; rates decision and press conference closely watched given 3.8% CPI and Iran energy shock</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
     </div>
 </div>
 
@@ -546,56 +592,56 @@
       <div class="pattern-top">
         <div>
           <div class="pattern-label">SPECULATIVE ANALYSIS</div>
-          <h3>The Hormuz Tax Just Made Nvidia's Edge Play Existential</h3>
-          <div class="subtitle">Europe's energy crisis forces AI workloads onto edge devices; RTX Spark becomes critical infrastructure, not luxury</div>
-          <div class="pattern-cats"><span class="pattern-cat">Frontier Tech / AI</span><span class="pattern-cat">Energy</span><span class="pattern-cat">Geopolitics</span></div>
+          <h3>The $1.25B/Month Compute Hostage: Musk and Amodei's Forced Partnership Will Explode in Public Markets</h3>
+          <div class="subtitle">SpaceX's Anthropic GPU deal makes Musk and Amodei financial counterparties while they're supposed to be competitors—and the Pentagon's blacklist of Anthropic creates a national security liability for both IPOs.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Applied Tech & Industry</span><span class="pattern-cat">Defense & Security</span></div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="pattern-detail">
-        <div class="pattern-detail-inner"><p>SPECULATIVE: The convergence of Hormuz blockade, €60/MWh TTF gas, and Nvidia's RTX Spark launch is not coincidental—it is structural. European data centers face 30% energy surcharges; Nvidia's unified-memory 128GB on-device inference architecture suddenly stops being a competitive nicety and becomes an operational necessity. Companies running 120B-parameter models on RTX Spark laptops eliminate the transmission cost of data to distant GPU clusters. Goldman Sachs and Barclays are calling $100+ oil into 2027; European chemical and steel producers already pricing in permanence. Watch Nvidia's roadshow guidance this week on enterprise customer intent in energy-constrained geographies—a pivot toward 'distributed AI' narrative rather than 'consumer convenience' will signal management knows exactly what's happening. If Nvidia guides to RTX Spark demand surging in EMEA, equity markets will price in a multi-year structural shift away from centralized compute, directly pressuring both traditional cloud capex (AWS, Azure, GCP margin profiles) and power-dependent AI infrastructure plays (Cerebras, Lambda Labs). The Hormuz closure may accidentally validate Nvidia's entire edge strategy before Microsoft, Google, and Amazon can respond with their own competitive on-device offerings.</p></div>
+        <div class="pattern-detail-inner"><p>Speculative. The disclosure that Anthropic is paying SpaceX $1.25 billion per month through May 2029 for Colossus Memphis compute capacity is not a benign partnership—it's a forced hostage situation masquerading as a contract. Musk and Amodei are publicly positioned as enemies in the AI race (Musk's xAI, Amodei's Anthropic) yet are now locked in a $45 billion revenue commitment that survives both their IPOs. If either company stumbles or if Anthropic's DOD blacklist status worsens, Musk's SpaceX becomes the infrastructure partner to a 'national security threat,' contaminating his own public market narrative at exactly the moment he needs institutional buy-in. Conversely, Anthropic desperately needs compute and has no other option at scale—it's paying a 40% premium to captive pricing. Watch for antitrust scrutiny the moment both IPOs launch. The SEC will ask: did SpaceX lock in favorable GPU pricing to cross-subsidize Anthropic's IPO valuation? Is this a carve-out from competition? The real danger: if Trump's administration escalates the Anthropic blacklist (which remains in litigation), SpaceX becomes collateral damage, facing potential sanctions for materially aiding a designated national security risk. This deal will either be unwound or trigger a government intervention within 18 months of Anthropic's IPO.</p></div>
       </div>
     </div>
     <div class="pattern" onclick="togglePattern(this)">
       <div class="pattern-top">
         <div>
           <div class="pattern-label">SPECULATIVE ANALYSIS</div>
-          <h3>Trump's AI Voluntary Surrender: The Anthropic Lawsuit Becomes His Administration's Whole Hand</h3>
-          <div class="subtitle">By making frontier model preview 'voluntary,' Trump loses leverage; Anthropic now has legal cover to refuse NSA access and claim the executive order vindicates its non-compliance</div>
-          <div class="pattern-cats"><span class="pattern-cat">AI Regulation & Governance</span><span class="pattern-cat">US Policy & Power</span></div>
+          <h3>Warsh's Crypto Portfolio Is His First FOMC Policy Statement—Watch Him Liquidate</h3>
+          <div class="subtitle">A Fed Chair with $100M in digital assets will face immediate pressure to prove independence; liquidation of crypto holdings would signal hawkishness and destroy his credibility with the sector he claims to support.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Markets</span><span class="pattern-cat">Digital Finance</span></div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="pattern-detail">
-        <div class="pattern-detail-inner"><p>SPECULATIVE and WRONG: Trump's June 2 executive order is being celebrated as 'light touch,' but it may be the opposite—a capitulation. By explicitly avoiding mandatory licensing and framing the 30-day NSA preview as voluntary, the order hands Anthropic (still in litigation against the Trump administration over supply-chain-risk designation) a clean legal argument: 'We are complying in spirit by sharing models, but the order itself prohibits Washington from mandating access.' Anthropic's lawsuit claims the designation was arbitrary and anticompetitive; a voluntary framework undermines Trump's ability to argue national security necessity. The order does create a classified benchmarking process, but if Anthropic simply says 'our Mythos model exceeds the $500M+ compute threshold but we volunteer access only to non-hostile allies' and cherry-picks NSA team composition, the administration has no recourse that doesn't look like violating its own executive order. Sam Altman is in Washington this week meeting Trump officials; watch whether OpenAI (not named in the litigation) becomes the administration's preferred 'compliant' vendor while Anthropic stalls. The Colorado AI Act deadline of June 30 looms; if it resets to January 2027, that signals federal-state gridlock that further weakens Trump's leverage. Anthropic's $965B IPO valuation prices in legal victory; if the startup walks away from this litigation intact and untouched by the executive order, it will have defeated Trump and set precedent that frontier AI firms can ignore federal security requests.</p></div>
+        <div class="pattern-detail-inner"><p>Speculative and bold. Kevin Warsh entering the Fed with over $100 million in crypto holdings across 20+ entities (Bitwise, dYdX, Compound, Polychain, Flashnet) is unprecedented and structurally disqualifying—yet he was confirmed anyway. The market narrative is that Warsh is 'crypto-friendly' and anti-CBDC, which excites digital asset investors. But this is backwards. Warsh must immediately liquidate or place these holdings in a blind trust to maintain Fed credibility. If he doesn't, every single decision he makes on monetary policy will be scrutinized as potential self-dealing. More likely: he will face internal Fed pressure (from the Board of Governors and regional bank presidents) to liquidate, which he will do at exactly the wrong time politically—likely after his June 16-17 FOMC meeting. The moment Warsh sells $100M in crypto, the market will interpret it as the Fed Chair signaling crypto is not a real asset class. Bitcoin and Ethereum will crater. The CLARITY Act, which Warsh publicly supports, will be poisoned by perceptions of insider selling. The political blowback from Trump (who expects Warsh to be friendly to both crypto and loose money) will be severe. Warsh's entire nomination becomes a trap: he was appointed to appease both crypto and Trump, but he cannot satisfy both. Expect a liquidity crisis in digital finance by Q3 2026 as Warsh signals hawkishness through asset sales, not words.</p></div>
       </div>
     </div>
     <div class="pattern" onclick="togglePattern(this)">
       <div class="pattern-top">
         <div>
           <div class="pattern-label">SPECULATIVE ANALYSIS</div>
-          <h3>SpaceX-Anthropic-OpenAI IPO Wave Reprices Risk-Free Assets and Breaks the Nasdaq 100</h3>
-          <div class="subtitle">QQQ and passive funds face $4T rebalancing shock; mega-IPOs arrive at top of equity market cycle with Cerebras already showing lockup cliff dynamics</div>
-          <div class="pattern-cats"><span class="pattern-cat">Applied Tech & Industry</span><span class="pattern-cat">Markets</span></div>
+          <h3>The Iran Ceasefire Will Collapse Within 30 Days; Energy Markets Are Mispricing the Blow-Up Risk</h3>
+          <div class="subtitle">The Lebanon linkage and Trump's appetite for a deal are structurally misaligned—Netanyahu will order another strike, Iran will rage-quit, and oil will spike to $140+ with no Fed ammunition to cushion the shock.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Geopolitics</span><span class="pattern-cat">Energy</span></div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="pattern-detail">
-        <div class="pattern-detail-inner"><p>SPECULATIVE: The Goldman Sachs forecast of $160B US IPO proceeds in 2026, anchored on SpaceX ($75B), Anthropic ($965B implied), and OpenAI (September target), is not ambitious—it is dangerous. The combined pre-IPO valuation of these three firms approaches $4 trillion. QQQ ($466B AUM) and other passive Nasdaq 100 trackers must rebalance once these companies are included at IPO, which mechanically creates a 'wall of buying' at whatever pricing the underwriters set. Cerebras' $70B debut with a 68% first-day surge followed by a 10% pullback is a warning: retail fomo drives day-one parabolas; lockup expirations (typically 180 days) create cliff-like selling. If SpaceX prices at $75B and enters the Nasdaq 100, passive fund inflows will exceed natural equity demand by billions over weeks. The underwriting syndicate (21 banks on SpaceX) has every incentive to price aggressively; they earn underwriting fees on the gross proceed amount. By the time OpenAI's September IPO arrives, the Nasdaq will have absorbed two other mega-deals, making it highly sensitive to any bad macro data. Oil at $100+, stagflation in Europe, Trump's diplomatic 'holding pattern'—these are not tailwinds. Watch SpaceX's roadshow pricing this week; if Goldman signals strong institutional demand at $75B, take it as a sign that the market is pricing AI and space as inflation-proof hedges. If pricing slips to $65-70B, expect a cascade of downward guidance on Anthropic and OpenAI valuations, and watch for passive fund outflows as arbitrageurs front-run lockup expirations.</p></div>
+        <div class="pattern-detail-inner"><p>Speculative. The preliminary 60-day Iran ceasefire MOU reached on May 28 is already decomposing. The core tension—Israel insists the ceasefire does NOT cover Lebanon, while Iran insists it DOES—is not a negotiating detail; it's a fundamental disagreement that makes a permanent deal mathematically impossible. Netanyahu has shown he will order Beirut strikes regardless of US pressure (the heated call with Trump on June 1 changed nothing). Iran has shown it will suspend talks and threaten Strait closure in response. Trump wants a deal badly enough to sign the MOU, but he cannot control Netanyahu, and he is politically unwilling to force Israel to stop. This is a 30-day cycle waiting to happen: talks hold for 2-3 weeks, Netanyahu orders another strike on Hezbollah leadership in Beirut (justified as 'defensive'), Iran suspends talks and moves toward Hormuz closure threat, Trump calls it a 'negotiating tactic,' and oil spikes 15-25% in 48 hours. Energy markets are currently pricing a 70% probability that the Hormuz stays open and oil stays in the $95-$110 band. In reality, the probability of Hormuz closure before September is closer to 40-45%, with a tail risk of $140+ oil. New Fed Chair Warsh will be facing his second FOMC meeting (July) with oil at $130, CPI printing 4.3%+, and Trump demanding rate cuts. The Fed's hands will be completely tied. This is the market risk that is being systematically underpriced because investors believe Trump's ceasefire narrative. Don't. Watch for the next Beirut strike as the triggering event; it will come within 25 days.</p></div>
       </div>
     </div>
     <div class="pattern" onclick="togglePattern(this)">
       <div class="pattern-top">
         <div>
           <div class="pattern-label">SPECULATIVE ANALYSIS</div>
-          <h3>China's mBridge CBDC Play Is Weaponizing Hormuz; Digital Yuan Replaces Oil as Geopolitical Lever</h3>
-          <div class="subtitle">Ships already paying in e-CNY via CIPS to avoid dollar rails; Beijing just turned monetary infrastructure into de facto sanctions evasion network</div>
-          <div class="pattern-cats"><span class="pattern-cat">Digital Finance</span><span class="pattern-cat">Geopolitics</span><span class="pattern-cat">China</span></div>
+          <h3>SpaceX's $1.77T Valuation Is a Ventriloquist Dummy Propped Up by Starlink's Regulatory Moat—Not Starship's Future</h3>
+          <div class="subtitle">The IPO pricing strategy fixes valuation before the roadshow to avoid price discovery; institutional investors will later regret buying satellite internet cash flows as if they were buying a next-generation rocket company.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Applied Tech & Industry</span><span class="pattern-cat">US Policy & Power</span></div>
         </div>
         <div class="chevron">▾</div>
       </div>
       <div class="pattern-detail">
-        <div class="pattern-detail-inner"><p>SPECULATIVE: The ECB's June briefing casually mentions that 'some ships have reportedly paid in renminbi via CIPS or crypto to transit Hormuz in March-April'—this is not a footnote, it is a declaration that China's mBridge CBDC architecture is operationally replacing the SWIFT dollar standard at the point where it matters most: physical oil and commodity flows under sanctions pressure. Iran is effectively cut off from dollar systems post-2026 airstrikes; vessels carrying Iranian oil, Russian gas, or goods destined for sanctioned actors now route payments through CIPS (Cross-Border Interbank Payment System) and the e-CNY. The mBridge platform—which the ECB notes China dominates—provides settlement without Fed surveillance. Xi's February call for renminbi reserve currency status was not rhetorical; it was announcement of a fait accompli. Meanwhile, the emergence of A7A5, a Russia-designed stablecoin for sanctions evasion, suggests Western allies are losing the ability to enforce secondary sanctions via monetary rails. JPMorgan's warning that the Clarity Act faces stablecoin yield disputes is misdirection; the real issue is that the US has ceded the offshore payment infrastructure to Beijing. If the Clarity Act passes without addressing mBridge or CIPS integration, it will legalize the very architecture Beijing built to defeat dollar hegemony. Watch the ECB's June policy decision: if Isabel Schnabel signals urgency on the digital euro, it is because the institution has admitted to itself that the renminbi is already winning. The June 30 Colorado AI Act deadline is irrelevant to this story; watch instead for any G7 statement on CBDC interoperability—silence is capitulation.</p></div>
+        <div class="pattern-detail-inner"><p>Speculative and intentionally wrong. SpaceX's decision to fix its IPO price at $135/share ($1.77T valuation) before rather than after the roadshow is a red flag disguised as confidence. In normal IPOs, the roadshow is where price discovery happens—bankers gauge demand and adjust the range. SpaceX skipped that. This suggests Goldman Sachs and Morgan Stanley lack confidence that institutional investors will support $1.77T at current fundamentals, and SpaceX/Musk wanted to avoid a public negotiation. The real valuation story is that roughly 60-70% of SpaceX's value comes from Starlink's monopoly on consumer satellite broadband—a regulatory asset, not a technological moat. Starlink has ~10,000 satellites, Amazon's Project Kuiper is 5+ years behind, and the FCC has not meaningfully threatened Starlink's spectrum allocation. But that advantage expires the moment Congress passes a 'digital divide' bill mandating open-access satellite networks or the FCC reopens licensing. Starship (the reusable super-heavy launch vehicle) is technically impressive but operationally loss-making: SpaceX lost $4.9B in FY2025, with $3B alone going to Starship R&D. The lunar/Mars narrative is a 20-year optionality, not a near-term cash driver. Once public, SpaceX's P&L will face scrutiny on how many years it takes Starship to be revenue-positive. Institutional investors buying at $1.77T are effectively betting on Starlink's regulatory dominance holding and Starship becoming profitable by 2029-30. If either assumption breaks, the stock re-rates down 30-40%. Watch for the moment when a major institutional allocator (e.g., Blackrock, Vanguard) publicly questions the valuation gap between SpaceX and traditional aerospace on a revenue-per-dollar basis. That will be the start of the downward repricing.</p></div>
       </div>
     </div>
 </div>
@@ -606,18 +652,23 @@
     <div class="deep-dive-kicker">
       <span class="deep-dive-kicker-dot"></span>TODAY'S DEEP DIVE
     </div>
-    <h2>The AI Boom Is Breaking America's Biggest Power Grid — and Washington Is Coming for Big Tech</h2>
-    <div class="standfirst">A Bloomberg report published today revealing federal proposals to break up PJM Interconnection — the largest grid operator in the US — has crystallised a slow-building crisis: the AI data center buildout is overwhelming the grid that serves 67 million Americans, and ordinary ratepayers are being handed the bill.</div>
-    <div class="deep-dive-why">Bloomberg published a report this morning, June 4, 2026, revealing that federal officials have raised the prospect of breaking up PJM Interconnection — the US's largest grid operator — as AI data centers strain electricity supplies across 13 states and drive up consumer power bills.</div>
-    <div class="body"><p>Today, Bloomberg reported that federal officials have raised the prospect of breaking up PJM Interconnection LLC, the grid operator that runs electricity infrastructure from the Illinois prairie to the New Jersey coastline across 13 states. The trigger is not engineering failure or corporate mismanagement — it is the AI data center boom. New hyperscale facilities are straining power supplies across PJM's entire territory, pushing up electricity prices and generating a political backlash that now reaches from local planning boards in Northern Virginia all the way to the US Senate.</p>
-<p>The numbers behind the story are staggering. Consumers in PJM's mid-Atlantic region have paid or will pay over $21 billion in capacity costs across just three capacity auctions — July 2024, July 2025, and December 2025 — largely attributed to projected data center demand. By 2028, the average household in PJM is projected to see their energy bills rise by $70 per month because of data centers, translating to an additional $840 per year. Grid operators warn the situation is about to worsen: starting in summer 2026, PJM will have just enough power to maintain grid reliability, and data centers are connecting faster than new generation can be built. If nothing changes, the region may fall below reliability standards as soon as June 2027.</p>
-<p>This crisis has been building for two years, but the policy response has now reached an inflection point. The DOE this week launched a simulation platform called Agora to model the volatile, high-density power demands that AI campuses place on the grid. ERCOT, the Texas grid operator, has separately published frameworks describing AI data centers as 'highly dynamic power-electronic loads' that pose significant challenges to power system stability. In Congress, a flurry of bills has been introduced: the bipartisan GRID Act from Senators Hawley and Blumenthal, the Democratic-led Power for the People Act — which Virginia Senator Mark Warner co-sponsored just two days ago — and Senator Tom Cotton's DATA Act. All converge on the same question: should tech giants be required to generate their own power rather than draw it from shared infrastructure?</p>
-<p>Google has signalled one market-led answer, signing a deal this week with Voltus to create a virtual power plant within PJM territory — aggregating consumer devices like EVs and smart thermostats to supply demand flexibility to data center operations. But a recent Gallup poll suggests the public mood is souring: roughly 70% of Americans now oppose having AI data centers in their area, and at least 25 data center projects were cancelled last year, with half of those expected to open in 2026 now facing delays or cancellation.</p>
-<p>The competing interpretations here are genuinely substantive. Defenders of the tech industry argue, as the Data Center Coalition has, that data centers pay for all the power they consume just like any other customer, and that large industrial loads can actually reduce per-unit grid costs for residential customers by absorbing fixed infrastructure expenses. They also point out that the sector has driven over a third of US GDP growth since 2025 and is creating tens of thousands of construction and engineering jobs. On the other side, consumer advocates and state public utility watchdogs argue that the cost-allocation mechanism is fundamentally broken: speculative and duplicative interconnection requests are driving capacity price spikes that hit households before a single new data center ever connects. Virginia's electricity prices jumped 14.5% in the past year alone, a figure that strains the industry's argument that it bears its fair share.</p>
-<p>There is also a geopolitical and competitiveness dimension that resists easy resolution. President Trump has personally declared that America is the 'Number One' country in AI and that he never wants Americans to pay higher electricity bills because of data centers — a position that is internally incoherent, since the two goals are structurally in tension. Meanwhile, China is accelerating its own AI infrastructure build, and US policymakers are acutely aware that slowing the data center pipeline to protect ratepayers could hand Beijing a strategic window.</p>
-<p>What happens next will be determined on three parallel tracks. First, FERC is deciding whether PJM's proposed new cost-allocation framework — which would classify facilities above 50 MW as full grid users regardless of on-site generation — meets the mandate it issued in December. Second, Congress is negotiating a thicket of competing bills with very different regulatory philosophies: some demand off-grid self-sufficiency, others focus on cost pass-through transparency, and at least one floats the nuclear option of breaking up PJM itself. Third, and perhaps most consequentially, the summer 2026 peak demand season — now weeks away — will serve as a live stress test of whether the grid can actually hold. If it cannot, the political dynamics shift dramatically and quickly.</p></div>
-    <div class="deep-dive-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.bloomberg.com/news/articles/2026-06-04/ai-data-center-boom-risks-breakup-of-biggest-us-power-grid-operator" target="_blank" rel="noopener">Bloomberg</a><span class="source-sep">·</span><a class="source-link" href="https://www.technologyreview.com/2026/06/03/1138350/virtual-power-plants-data-centers/" target="_blank" rel="noopener">MIT Technology Review</a><span class="source-sep">·</span><a class="source-link" href="https://www.datacenterknowledge.com/energy-power-supply/doe-is-quietly-building-the-ai-grid-operating-system" target="_blank" rel="noopener">Data Center Knowledge</a><span class="source-sep">·</span><a class="source-link" href="https://www.warner.senate.gov/newsroom/press-releases/warner-sponsors-bill-to-ensure-virginians-arent-stuck-footing-the-bill-for-big-data-centers" target="_blank" rel="noopener">Senator Warner Press Release</a><span class="source-sep">·</span><a class="source-link" href="https://www.nbcnews.com/politics/congress/senators-introduce-first-bipartisan-effort-curb-utility-bill-hikes-rel-rcna258577" target="_blank" rel="noopener">NBC News</a><span class="source-sep">·</span><a class="source-link" href="https://www.arlnow.com/2026/06/03/sen-warner-backs-bill-to-curb-data-centers-impacts-on-electricity-prices/" target="_blank" rel="noopener">ARLnow</a><span class="source-sep">·</span><a class="source-link" href="https://www.semafor.com/article/06/03/2026/china-has-a-growing-role-in-us-tech-discourse" target="_blank" rel="noopener">Semafor</a><span class="source-sep">·</span><a class="source-link" href="https://www.minerweekly.com/p/pjm-grid-new-rule-proposal" target="_blank" rel="noopener">Miner Weekly / Utility Dive</a><span class="source-sep">·</span><a class="source-link" href="https://prospect.org/2026/06/02/jun-2026-take-this-data-center-and-shove-it/" target="_blank" rel="noopener">The American Prospect</a><span class="source-sep">·</span><a class="source-link" href="https://bcse.org/data-centers-energy-affordability-2026-state-union/" target="_blank" rel="noopener">Business Council for Sustainable Energy</a></div></div>
+    <h2>Microsoft Claims a 1,000-Fold Quantum Breakthrough. Physicists Say Show Your Work.</h2>
+    <div class="standfirst">Microsoft's Majorana 2 chip, unveiled this week, promises a scalable quantum computer by 2029 — but contested science, China's rival programs, and a 12-qubit prototype raise urgent questions about whether America's quantum bet is built on solid ground.</div>
+    <div class="deep-dive-why">Microsoft unveiled Majorana 2 on June 2 at its Build 2026 conference, making a specific 2029 commercial quantum target for the first time and triggering immediate scientific controversy and geopolitical commentary about the US-China quantum race.</div>
+    <div class="body"><p>On June 2, at Microsoft's Build conference in San Francisco, CEO Satya Nadella closed the keynote by announcing Majorana 2 — the company's second-generation topological quantum processor and the successor to Majorana 1, which debuted in February 2025. The announcement carried a striking new confidence: Microsoft said it was cutting its timeline to a scalable, commercially useful quantum computer from a vague "years away" estimate to a specific target of 2029, halving its previous roadmap. The headline performance claim was arresting — qubits on Majorana 2 reportedly hold their quantum state for an average of 20 seconds, and sometimes up to a full minute, compared to the milliseconds achieved by Majorana 1. The company calls this a 1,000-fold improvement in reliability.</p>
+<p>The technical change driving this leap is a materials substitution that sounds almost counterintuitive. Microsoft replaced the aluminum superconductors in Majorana 1 with lead — a heavier metal rarely used in chip fabrication because it dissolves in water, making manufacturing extraordinarily difficult. The company credits its agentic AI research platform, Microsoft Discovery, with helping engineers finally crack this materials problem after years of failed attempts. The AI agents automated complex measurements, optimized the fabrication process, and analyzed decades of prior research data to identify patterns that human researchers had missed. In a striking demonstration of AI's expanding role in physical science, the chip's very design became a product of AI acceleration.</p>
+<p>Microsoft's approach to quantum computing is architecturally distinctive and deeply controversial. Where IBM, Google, and most competitors use superconducting qubits or trapped ions, Microsoft has spent nearly two decades betting on topological qubits based on so-called Majorana zero modes — exotic quantum states predicted by theory but whose reliable creation and control remains disputed. The theoretical appeal is significant: topological qubits are designed to be inherently more resistant to errors, which is the central engineering bottleneck in quantum computing. In principle, this architecture could scale better than others, potentially squeezing millions of qubits onto a single chip. The present Majorana 2 chip, by contrast, has just 12 qubits — a humbling number given that a commercially useful quantum machine would need millions.</p>
+<p>The scientific community's reaction has been pointed. Physicists at the University of St. Andrews and elsewhere have stated publicly that Microsoft has not released sufficient data for independent verification of its claims regarding Majorana-based quantum states. The results were published as a preprint — not yet peer-reviewed — and critics argue that the same data-transparency gaps that plagued Majorana 1's announcement persist in the Majorana 2 paper. Microsoft's executives counter that trade secrets prevent full disclosure, but say they have shared findings in confidential sessions with the U.S. Defense Advanced Research Projects Agency (DARPA), which has advanced Microsoft to the final phase of its utility-scale quantum computing evaluation program. That DARPA imprimatur gives the announcement some institutional credibility, even as peer review remains pending.</p>
+<p>The geopolitical stakes around this announcement are hard to overstate. China leads global public investment in quantum technologies, having poured more than $15 billion into the field, compared to the United States' significantly smaller federal commitment. Beijing's quantum strategy is explicitly state-driven: close integration between government research labs, defense-affiliated firms, and the People's Liberation Army creates direct pathways from scientific breakthroughs to military procurement. The US-China Economic and Security Review Commission has warned that China is "aggressively pursuing cryptographically relevant quantum computing" and deliberately obscuring the true state of its most advanced programs. The country that achieves practical quantum computing first could gain the ability to break widely used encryption methods — compromising financial systems, military communications, and intelligence infrastructure globally. Microsoft's Brad Smith has explicitly warned of a "race the US can't afford to lose" in the wake of China's own quantum milestone announcements.</p>
+<p>The interpretive divide is genuine and consequential. Optimists read Majorana 2 as validation of a high-risk, high-reward architecture that, if it works, could leapfrog competitors who are grinding away at incremental qubit count improvements with more orthodox approaches. Skeptics see a pattern of bold claims inadequately supported by reproducible public data — and worry that the US quantum strategy is over-indexed on a single company's contested approach at the expense of broader, better-verified programs. The gap between a 12-qubit lab demonstration and a commercially useful machine requiring millions of qubits is vast, and the 2029 target implicitly assumes that every major engineering challenge along the way will yield on schedule.</p>
+<p>What to watch: In the next 60 to 90 days, the Majorana 2 preprint will begin its peer review journey, and independent physicists will scrutinize whether the qubit lifetime results are reproducible across multiple devices. DARPA's formal evaluation will unfold across the second half of 2026, with its findings likely shaping congressional appetite for quantum funding in the fiscal year 2027 budget cycle. China's own quantum program — including the Origin Tianji series — will continue announcing milestones, and the bilateral comparison will intensify. The deeper policy question is whether Washington's hybrid model, relying on private-sector-led innovation with selective government partnership, can keep pace with Beijing's state-mobilized approach — particularly at a moment when federal science funding faces budget pressure from the current administration.</p></div>
+    <div class="deep-dive-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.scientificamerican.com/article/microsofts-upgraded-majorana-quantum-computing-chip-fizzles-with-physicists/" target="_blank" rel="noopener">Scientific American</a><span class="source-sep">·</span><a class="source-link" href="https://siliconangle.com/2026/06/02/microsofts-new-majorana-2-quantum-chip-claims-dramatic-breakthrough-qubit-stability/" target="_blank" rel="noopener">SiliconAngle</a><span class="source-sep">·</span><a class="source-link" href="https://thequantuminsider.com/2026/06/02/microsoft-reports-advances-in-majorana-2-following-debate-over-last-years-topological-claims/" target="_blank" rel="noopener">The Quantum Insider</a><span class="source-sep">·</span><a class="source-link" href="https://www.tomshardware.com/tech-industry/quantum-computing/microsoft-announces-majorana-2-quantum-computing-chip-claims-a-practical-machine-will-come-in-2029" target="_blank" rel="noopener">Tom's Hardware</a><span class="source-sep">·</span><a class="source-link" href="https://www.technology.org/2026/06/03/microsoft-majorana-2-quantum-chip-2029/" target="_blank" rel="noopener">Technology.org</a><span class="source-sep">·</span><a class="source-link" href="https://winbuzzer.com/2026/06/03/microsoft-majorana-2-puts-quantum-roadmap-to-the-test-xcxwbn/" target="_blank" rel="noopener">WinBuzzer</a><span class="source-sep">·</span><a class="source-link" href="https://www.uscc.gov/research/vying-quantum-supremacy-us-china-competition-quantum-technologies" target="_blank" rel="noopener">US-China Economic and Security Review Commission</a><span class="source-sep">·</span><a class="source-link" href="https://www.justsecurity.org/116473/security-stakes-global-quantum-race/" target="_blank" rel="noopener">Just Security</a><span class="source-sep">·</span><a class="source-link" href="https://www.digitimes.com/news/a20260603VL204/microsoft-2026.html" target="_blank" rel="noopener">Digitimes</a><span class="source-sep">·</span><a class="source-link" href="https://www.electronicsforyou.biz/industry-buzz/microsoft-unveils-majorana-2-targets-quantum-breakthrough-by-2029/" target="_blank" rel="noopener">Electronics For You</a></div></div>
   </div>
+</div>
+
+<div id="signals" class="section">
+  <p class="hint">Recent output from tracked voices. Green = substantive new piece. Amber = light post. Grey = quiet.</p>
+  <p class="hint">Signal scan unavailable for this briefing.</p>
 </div>
 
 <script>
