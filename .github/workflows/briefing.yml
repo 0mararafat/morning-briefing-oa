@@ -20,11 +20,15 @@ on:
   schedule:
     # 5:30 AM Pacific Standard Time (UTC-8) = 13:30 UTC
     # During daylight saving (PDT, UTC-7) this runs at 6:30 AM PDT.
-    # To target 5:30 AM year-round, use two cron entries or a timezone-aware action.
     - cron: '30 13 * * 1-5'
 
-  # Allow manual trigger from the GitHub Actions UI
+  # Manual trigger — tick "Force regenerate" to rebuild today's briefing even if it already exists
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force regenerate today even if already exists'
+        type: boolean
+        default: false
 
 permissions:
   contents: write   # to commit the generated HTML back to the repo
@@ -53,11 +57,15 @@ jobs:
       - name: Create output directory
         run: mkdir -p docs
 
+      - name: Copy static assets
+        run: |
+          [ -f setup.html ] && cp setup.html docs/setup.html || true
+
       - name: Generate briefing
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           BRIEFING_OUTPUT_DIR: docs
-        run: python morning_dashboard_v4.py
+        run: python morning_dashboard_v4.py ${{ github.event.inputs.force == 'true' && '--force' || '' }}
 
       - name: Commit generated files
         run: |
