@@ -72,3 +72,78 @@ schedule:
 
 output:
   dir: "~/briefings"
+
+# ── Voices ────────────────────────────────────────────────────────────────────
+# Tracked thinkers for the Signal Scan section.
+# rss: feed URL (null if none available)
+# x_handle: Twitter/X username without @ (null if not on X)
+# search_query: custom search string for voices without RSS or X (optional)
+#
+# Note: RSS URLs are best-effort — some may change. If a feed stops working,
+# set rss to null and the script will fall back to X search.
+
+voices:
+  - name: "Leopold Aschenbrenner"
+    rss: "https://situational.substack.com/feed"
+    x_handle: "leopoldasch"
+
+  - name: "Dan Wang"
+    rss: "https://danwwang.substack.com/feed"
+    x_handle: "dkwang"
+
+  - name: "Nathan Benaich"
+    rss: "https://nathanbenaich.substack.com/feed"
+    x_handle: "nathanbenaich"
+
+  - name: "Stanley Druckenmiller"
+    rss: null
+    x_handle: null
+    search_query: "Stanley Druckenmiller interview remarks site:cnbc.com OR site:bloomberg.com OR site:ft.com"
+
+  - name: "Byrne Hobart"
+    rss: "https://thediff.co/feed"
+    x_handle: "byrnehobart"
+
+  - name: "Michael Burry"
+    rss: null
+    x_handle: "michaeljburry"
+
+  - name: "Ben Thompson"
+    rss: "https://stratechery.com/feed/"
+    x_handle: "stratechery"
+
+  - name: "Paul Graham"
+    rss: "https://www.aaronsw.com/2002/feeds/pgessays.rss"
+    x_handle: "paulg"
+
+  - name: "Benedict Evans"
+    rss: "https://www.ben-evans.com/benedictevans/rss.xml"
+    x_handle: "benedictevans"
+
+  - name: "Packy McCormick"
+    rss: "https://www.notboring.co/feed"
+    x_handle: "packym"
+
+  - name: "CJ Gustafson"
+    rss: "https://www.mostlymetrics.com/feed"
+    x_handle: "cjgus"
+
+  - name: "Lenny Rachitsky"
+    rss: "https://www.lennysnewsletter.com/feed"
+    x_handle: "lennysan"
+
+  - name: "Andrej Karpathy"
+    rss: "https://karpathy.github.io/feed.xml"
+    x_handle: "karpathy"
+
+  - name: "Ilya Sutskever"
+    rss: null
+    x_handle: "ilyasut"
+
+  - name: "Noam Brown"
+    rss: null
+    x_handle: "noambrown"
+
+  - name: "François Chollet"
+    rss: null
+    x_handle: "fchollet"
