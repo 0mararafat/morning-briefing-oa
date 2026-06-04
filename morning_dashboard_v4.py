@@ -11,13 +11,14 @@ Improvements over v3:
   · --force flag to regenerate an existing day's briefing
   · GitHub Actions ready — see .github/workflows/briefing.yml
 
-Three API calls per run:
+Four API calls per run:
   1. Claude Sonnet + web search  — top stories, sectors, week ahead
   2. Claude Sonnet + web search  — deep dive (rotating long-form)
-  3. Claude Haiku (no search)    — pattern watch (~20x cheaper)
+  3. Claude Sonnet + web search  — signal scan (voices RSS + X fallback)
+  4. Claude Haiku (no search)    — pattern watch (~20x cheaper)
 
 Setup:
-    pip3 install anthropic pyyaml
+    pip3 install anthropic pyyaml feedparser
     export ANTHROPIC_API_KEY="sk-ant-..."
 
 Usage:
@@ -40,6 +41,12 @@ try:
     YAML_AVAILABLE = True
 except ImportError:
     YAML_AVAILABLE = False
+
+try:
+    import feedparser
+    FEEDPARSER_AVAILABLE = True
+except ImportError:
+    FEEDPARSER_AVAILABLE = False
 
 # ── Runtime constants ────────────────────────────────────────────────────────
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
@@ -127,7 +134,27 @@ DEFAULT_CONFIG = {
         "week_ahead": True,
         "pattern_watch": True,
         "deep_dive": True,
+        "signal_scan": True,
     },
+    "voices": [
+        {"name": "Leopold Aschenbrenner", "rss": "https://situational.substack.com/feed",          "x_handle": "leopoldasch"},
+        {"name": "Dan Wang",              "rss": "https://danwwang.substack.com/feed",              "x_handle": "dkwang"},
+        {"name": "Nathan Benaich",        "rss": "https://nathanbenaich.substack.com/feed",         "x_handle": "nathanbenaich"},
+        {"name": "Stanley Druckenmiller", "rss": None,                                              "x_handle": None,
+         "search_query": "Stanley Druckenmiller interview remarks site:cnbc.com OR site:bloomberg.com OR site:ft.com"},
+        {"name": "Byrne Hobart",          "rss": "https://thediff.co/feed",                        "x_handle": "byrnehobart"},
+        {"name": "Michael Burry",         "rss": None,                                              "x_handle": "michaeljburry"},
+        {"name": "Ben Thompson",          "rss": "https://stratechery.com/feed/",                   "x_handle": "stratechery"},
+        {"name": "Paul Graham",           "rss": "https://www.aaronsw.com/2002/feeds/pgessays.rss", "x_handle": "paulg"},
+        {"name": "Benedict Evans",        "rss": "https://www.ben-evans.com/benedictevans/rss.xml", "x_handle": "benedictevans"},
+        {"name": "Packy McCormick",       "rss": "https://www.notboring.co/feed",                   "x_handle": "packym"},
+        {"name": "CJ Gustafson",          "rss": "https://www.mostlymetrics.com/feed",              "x_handle": "cjgus"},
+        {"name": "Lenny Rachitsky",       "rss": "https://www.lennysnewsletter.com/feed",           "x_handle": "lennysan"},
+        {"name": "Andrej Karpathy",       "rss": "https://karpathy.github.io/feed.xml",             "x_handle": "karpathy"},
+        {"name": "Ilya Sutskever",        "rss": None,                                              "x_handle": "ilyasut"},
+        {"name": "Noam Brown",            "rss": None,                                              "x_handle": "noambrown"},
+        {"name": "François Chollet",      "rss": None,                                              "x_handle": "fchollet"},
+    ],
     "output": {
         "dir": "~/briefings",
     },
@@ -553,6 +580,52 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
   .deep-dive .body p:last-child { margin-bottom: 0; }
 
+  /* ── Signal Scan ─────────────────────────────────────────── */
+  .sig-card {
+    padding: 14px 18px; border-radius: 8px; margin-bottom: 8px;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+    transition: border-color 0.15s ease;
+  }
+  .sig-card:not(.sig-quiet):hover { border-color: #D1D5DB; }
+  .sig-quiet { opacity: 0.45; }
+  .sig-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 7px;
+  }
+  .sig-left { display: flex; align-items: center; gap: 10px; }
+  .sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sig-strong { background: #10B981; }
+  .sig-light  { background: #F59E0B; }
+  .sig-none   { background: #D1D5DB; }
+  .sig-name {
+    font-size: 13.5px; font-weight: 700; color: #111827; margin-right: 5px;
+  }
+  .sig-handle {
+    font-size: 11px; color: #9CA3AF;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .sig-source-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    color: #6B7280; background: #F3F4F6; border: 1px solid #E5E7EB;
+    padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+  }
+  .sig-title {
+    display: block; font-size: 13.5px; font-weight: 600; color: #111827;
+    text-decoration: none; margin-bottom: 5px; line-height: 1.35;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .sig-title:hover { color: #3B82F6; }
+  .sig-summary {
+    font-size: 13px; color: #374151; line-height: 1.65; margin-bottom: 5px;
+  }
+  .sig-connection { font-size: 12px; color: #6366F1; font-style: italic; }
+  .sig-quiet-section { margin-top: 20px; }
+  .sig-quiet-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    color: #D1D5DB; text-transform: uppercase; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   /* ── Sources ─────────────────────────────────────────────── */
   .story-sources, .deep-dive-sources {
     display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
@@ -591,6 +664,7 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <button class="tab" onclick="showSection('week', this)">Week Ahead</button>
   <button class="tab" onclick="showSection('patterns', this)">Pattern Watch</button>
   <button class="tab" onclick="showSection('deepdive', this)">Deep Dive</button>
+  <button class="tab" onclick="showSection('signals', this)">Signal Scan</button>
   <a class="arc-nav-link" href="./archive.html">
     Archive
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
@@ -618,6 +692,11 @@ HTML_TEMPLATE = """<!DOCTYPE html>
 
 <div id="deepdive" class="section">
   {{DEEP_DIVE_HTML}}
+</div>
+
+<div id="signals" class="section">
+  <p class="hint">Recent output from tracked voices. Green = substantive new piece. Amber = light post. Grey = quiet.</p>
+  {{SIGNAL_SCAN_HTML}}
 </div>
 
 <script>
@@ -796,27 +875,86 @@ def build_deep_dive_html(deep_dive):
   </div>"""
 
 
+def build_signal_scan_html(signals):
+    if not signals:
+        return '<p class="hint">Signal scan unavailable for this briefing.</p>'
+
+    active = [s for s in signals if s.get("signal") in ("strong", "light")]
+    quiet  = [s for s in signals if s.get("signal") == "none"]
+
+    def card(s, is_quiet=False):
+        signal  = s.get("signal", "none")
+        name    = s.get("name", "")
+        handle  = s.get("handle", "")
+        source  = s.get("source", "")
+        summary = s.get("summary", "")
+        conn    = s.get("connection", "")
+        url     = s.get("url", "")
+        title   = s.get("latest_title", "")
+
+        dot_cls    = {"strong": "sig-strong", "light": "sig-light"}.get(signal, "sig-none")
+        quiet_cls  = " sig-quiet" if is_quiet else ""
+        handle_html = f'<span class="sig-handle">{handle}</span>' if handle else ""
+        badge_html  = f'<span class="sig-source-badge">{source.upper()}</span>' if source else ""
+
+        if title and url:
+            title_html = f'<a class="sig-title" href="{url}" target="_blank" rel="noopener">{title}</a>'
+        elif title:
+            title_html = f'<div class="sig-title" style="cursor:default">{title}</div>'
+        else:
+            title_html = ""
+
+        summary_html = f'<div class="sig-summary">{summary}</div>' if summary else ""
+        conn_html    = f'<div class="sig-connection">↳ {conn}</div>' if conn else ""
+
+        return f"""
+    <div class="sig-card{quiet_cls}">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot {dot_cls}"></div>
+          <div><span class="sig-name">{name}</span>{handle_html}</div>
+        </div>
+        {badge_html}
+      </div>
+      {title_html}{summary_html}{conn_html}
+    </div>"""
+
+    html = "".join(card(s) for s in active)
+
+    if quiet:
+        q_cards = "".join(card(s, is_quiet=True) for s in quiet)
+        html += f"""
+    <div class="sig-quiet-section">
+      <div class="sig-quiet-label">QUIET THIS PERIOD — {len(quiet)} voices</div>
+      {q_cards}
+    </div>"""
+
+    return html
+
+
 def build_dashboard(data, date_str, cfg):
-    stories_html   = build_stories_html(data["top_stories"])
-    sectors_html   = build_sectors_html(data["sectors"])
-    week_html      = build_week_html(data["week_ahead"])
-    patterns_html  = build_patterns_html(data.get("pattern_watch", []))
-    deep_dive_html = build_deep_dive_html(data.get("deep_dive"))
+    stories_html      = build_stories_html(data["top_stories"])
+    sectors_html      = build_sectors_html(data["sectors"])
+    week_html         = build_week_html(data["week_ahead"])
+    patterns_html     = build_patterns_html(data.get("pattern_watch", []))
+    deep_dive_html    = build_deep_dive_html(data.get("deep_dive"))
+    signal_scan_html  = build_signal_scan_html(data.get("signal_scan", []))
 
     urgent_count  = sum(1 for s in data["top_stories"] if s["priority"] == "urgent")
     active_count  = sum(1 for s in data["sectors"] if s["has_news"])
     total_sectors = len(data["sectors"])
 
     html = HTML_TEMPLATE
-    html = html.replace("{{DATE}}",          date_str)
-    html = html.replace("{{STORIES_HTML}}",  stories_html)
-    html = html.replace("{{SECTORS_HTML}}",  sectors_html)
-    html = html.replace("{{WEEK_HTML}}",     week_html)
-    html = html.replace("{{PATTERNS_HTML}}", patterns_html)
-    html = html.replace("{{DEEP_DIVE_HTML}}",deep_dive_html)
-    html = html.replace("{{URGENT_COUNT}}",  str(urgent_count))
-    html = html.replace("{{ACTIVE_COUNT}}",  str(active_count))
-    html = html.replace("{{TOTAL_SECTORS}}", str(total_sectors))
+    html = html.replace("{{DATE}}",             date_str)
+    html = html.replace("{{STORIES_HTML}}",     stories_html)
+    html = html.replace("{{SECTORS_HTML}}",     sectors_html)
+    html = html.replace("{{WEEK_HTML}}",        week_html)
+    html = html.replace("{{PATTERNS_HTML}}",    patterns_html)
+    html = html.replace("{{DEEP_DIVE_HTML}}",   deep_dive_html)
+    html = html.replace("{{SIGNAL_SCAN_HTML}}", signal_scan_html)
+    html = html.replace("{{URGENT_COUNT}}",     str(urgent_count))
+    html = html.replace("{{ACTIVE_COUNT}}",     str(active_count))
+    html = html.replace("{{TOTAL_SECTORS}}",    str(total_sectors))
     return html
 
 
@@ -1031,6 +1169,154 @@ def generate_patterns(briefing_data):
         }]
 
 
+# ── Signal Scan ───────────────────────────────────────────────────────────────
+
+def fetch_rss_feeds(voices):
+    """Fetch recent items from RSS feeds. Returns {name: [items]}."""
+    if not FEEDPARSER_AVAILABLE:
+        print("  feedparser not installed — skipping RSS fetch. Run: pip install feedparser")
+        return {v["name"]: [] for v in voices}
+
+    cutoff = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=7)
+    results = {}
+
+    for voice in voices:
+        name    = voice["name"]
+        rss_url = voice.get("rss")
+        if not rss_url:
+            results[name] = []
+            continue
+        try:
+            feed = feedparser.parse(rss_url, agent="MorningBriefing/1.0")
+            items = []
+            for entry in feed.entries[:5]:
+                pub = None
+                for attr in ("published_parsed", "updated_parsed"):
+                    val = getattr(entry, attr, None)
+                    if val:
+                        try:
+                            pub = datetime.datetime(*val[:6], tzinfo=datetime.timezone.utc)
+                        except Exception:
+                            pass
+                        break
+
+                if pub is None or pub > cutoff:
+                    summary = getattr(entry, "summary", "") or ""
+                    # Strip HTML tags from summary
+                    summary = re.sub(r"<[^>]+>", " ", summary)
+                    summary = re.sub(r"\s+", " ", summary).strip()[:400]
+                    items.append({
+                        "title":     getattr(entry, "title", "").strip(),
+                        "url":       getattr(entry, "link",  "").strip(),
+                        "published": pub.strftime("%Y-%m-%d") if pub else "",
+                        "summary":   summary,
+                    })
+            results[name] = items
+            if items:
+                print(f"    {name}: {len(items)} RSS item(s)")
+        except Exception as e:
+            print(f"    RSS fetch failed for {name}: {e}")
+            results[name] = []
+
+    return results
+
+
+def generate_signal_scan(voices, rss_content, briefing_data, cfg):
+    """One Sonnet + web_search call: process RSS + search X for handles without RSS."""
+    print("  Calling Claude Sonnet (web search) — signal scan...")
+    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    today  = datetime.date.today().strftime("%A, %B %d, %Y")
+
+    # Build RSS context and identify voices needing X search
+    rss_context     = []
+    search_targets  = []
+
+    for voice in voices:
+        name     = voice["name"]
+        handle   = voice.get("x_handle")
+        items    = rss_content.get(name, [])
+        custom_q = voice.get("search_query")
+
+        if items:
+            block = f"### {name}" + (f" (@{handle})" if handle else "") + "\n"
+            for it in items[:3]:
+                block += f"- [{it['title']}]({it['url']})"
+                if it["published"]:
+                    block += f" — {it['published']}"
+                block += "\n"
+                if it["summary"]:
+                    block += f"  {it['summary'][:300]}…\n"
+            rss_context.append(block)
+
+        # Always search X/web for every voice — complements RSS where available
+        if custom_q:
+            search_targets.append(f"{name}: search [{custom_q}]")
+        elif handle:
+            search_targets.append(f"{name} (@{handle}): search recent X/Twitter posts")
+
+    rss_block    = "\n".join(rss_context) or "No RSS content retrieved."
+    search_block = "\n".join(search_targets) or "None."
+    topics_str   = ", ".join(t["name"] for t in cfg["topics"])
+    headlines    = " | ".join(s.get("headline", "") for s in briefing_data.get("top_stories", []))
+    all_names    = [v["name"] for v in voices]
+
+    prompt = f"""Today is {today}.
+
+Review recent output from a curated list of thinkers and analysts, then return a signal scan.
+
+TODAY'S TOP STORIES: {headlines}
+TODAY'S TOPIC AREAS: {topics_str}
+
+RSS CONTENT RETRIEVED (last 7 days):
+{rss_block}
+
+VOICES TO SEARCH ON X / WEB (search ALL of these — combine with any RSS content above):
+{search_block}
+
+For each voice, combine their RSS content (if available above) with their most recent X posts, then return a JSON array covering ALL {len(all_names)} voices in this exact order: {', '.join(all_names)}
+
+[
+  {{
+    "name": "Exact name as listed above",
+    "handle": "@handle or empty string",
+    "source": "substack" | "newsletter" | "x" | "essay" | "blog" | "mixed",
+    "signal": "strong" | "light" | "none",
+    "latest_title": "Title of most recent piece or post, or empty string",
+    "url": "Direct URL, or empty string",
+    "summary": "1-2 sentences on what they wrote or said. Empty string if nothing in 7 days.",
+    "connection": "How this connects to today's stories/topics. Empty string if none."
+  }}
+]
+
+Signal levels: "strong" = substantive piece or thread (>200 words). "light" = brief post or short take. "none" = nothing in the last 7 days.
+Skip purely promotional, congratulatory, or off-topic content.
+Return ONLY the JSON array. No markdown, no preamble."""
+
+    def attempt(n):
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=3000,
+            tools=[{"type": "web_search_20250305", "name": "web_search"}],
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text_parts = [
+            b.text for b in response.content
+            if hasattr(b, "text") and b.text.strip()
+        ]
+        data = extract_json("\n".join(text_parts))
+        if data is None or not isinstance(data, list):
+            raise ValueError("Signal scan returned no valid JSON array")
+        active = sum(1 for s in data if s.get("signal") in ("strong", "light"))
+        print(f"  ✓ {len(data)} voices scanned, {active} with recent signal")
+        return data
+
+    try:
+        return _retry(attempt, "signal scan")
+    except Exception as e:
+        print(f"  Signal scan failed: {e}")
+        return []
+
+
 # ── Archive ───────────────────────────────────────────────────────────────────
 
 def update_archive(output_dir):
@@ -1240,33 +1526,45 @@ def main():
     start = time.time()
     print(f"=== Morning Briefing — {date_str} ===\n")
 
+    voices = cfg.get("voices", DEFAULT_CONFIG["voices"])
+
     # 1 — Main briefing
-    print("[1/5] Main briefing (Sonnet + web search)...")
+    print("[1/6] Main briefing (Sonnet + web search)...")
     data = generate_briefing_data(cfg, output_dir)
 
     # 2 — Deep dive
     if sections.get("deep_dive", True):
-        print("[2/5] Deep dive (Sonnet + web search)...")
+        print("[2/6] Deep dive (Sonnet + web search)...")
         data["deep_dive"] = generate_deep_dive(cfg, output_dir)
     else:
-        print("[2/5] Deep dive disabled in config — skipping.")
+        print("[2/6] Deep dive disabled in config — skipping.")
         data["deep_dive"] = None
 
-    # 3 — Pattern watch
+    # 3 — Signal scan
+    if sections.get("signal_scan", True) and voices:
+        print("[3/6] Signal scan (RSS + Sonnet + web search)...")
+        print("  Fetching RSS feeds...")
+        rss_content = fetch_rss_feeds(voices)
+        data["signal_scan"] = generate_signal_scan(voices, rss_content, data, cfg)
+    else:
+        print("[3/6] Signal scan disabled in config — skipping.")
+        data["signal_scan"] = []
+
+    # 4 — Pattern watch
     if sections.get("pattern_watch", True):
-        print("[3/5] Pattern analysis (Haiku)...")
+        print("[4/6] Pattern analysis (Haiku)...")
         data["pattern_watch"] = generate_patterns(data)
     else:
-        print("[3/5] Pattern watch disabled in config — skipping.")
+        print("[4/6] Pattern watch disabled in config — skipping.")
         data["pattern_watch"] = []
 
-    # 4 — Save raw JSON
-    print("[4/5] Saving data...")
+    # 5 — Save raw JSON
+    print("[5/6] Saving data...")
     with open(json_path, "w") as f:
         json.dump(data, f, indent=2)
 
-    # 5 — Build HTML + archive
-    print("[5/5] Building dashboard...")
+    # 6 — Build HTML + archive
+    print("[6/6] Building dashboard...")
     html = build_dashboard(data, date_str, cfg)
     with open(html_path, "w") as f:
         f.write(html)
