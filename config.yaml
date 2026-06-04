@@ -1,3 +1,15 @@
+# Morning Briefing — config.yaml
+#
+# This file controls everything the briefing generates.
+# Edit it to match your interests, then run morning_dashboard_v4.py.
+#
+# For GitHub Actions: fork the repo, add ANTHROPIC_API_KEY as a secret,
+# edit this file, push — and you're done.
+
+# ── Topics ────────────────────────────────────────────────────────────────────
+# Listed in priority order. The briefing weights them accordingly.
+# Add, remove, or rewrite any topic. Use 1-3 sentences per description.
+
 topics:
   - name: "Frontier Tech / AI"
     description: >
@@ -6,18 +18,18 @@ topics:
 
   - name: "Applied Tech & Industry"
     description: >
-      Big Tech strategy, startups & VC, enterprise AI adoption, major
-      M&A/funding/IPOs/earnings, platform shifts, talent signals
+      Big Tech strategy, startups & VC, enterprise AI adoption,
+      major M&A/funding/IPOs/earnings, platform shifts, talent signals
 
   - name: "US Policy & Power"
     description: >
-      Tech regulation, fiscal/monetary, defense & industrial policy, White
-      House & Congress, budget, judicial decisions, elections, science policy
+      Tech regulation, fiscal/monetary, defense & industrial policy,
+      White House & Congress, budget, judicial decisions, elections, science policy
 
   - name: "AI Regulation & Governance"
     description: >
-      US executive orders, EU AI Act, global frameworks, industry
-      self-regulation, safety institutes
+      US executive orders, EU AI Act, global frameworks,
+      industry self-regulation, safety institutes
 
   - name: "Geopolitics"
     description: "US-China, Middle East, India, UK/EU, Latin America, Africa"
@@ -27,8 +39,8 @@ topics:
 
   - name: "Markets"
     description: >
-      Equities, rates/Fed, VC, commodities, central banks, inflation, bonds,
-      currencies
+      Equities, rates/Fed, VC, commodities, central banks,
+      inflation, bonds, currencies
 
   - name: "Digital Finance"
     description: "Crypto regulation, CBDCs, stablecoins, DeFi"
@@ -42,8 +54,10 @@ topics:
   - name: "Labor & Workforce"
     description: "AI displacement, immigration/talent, unions, remote work"
 
-  - name: "UK Politics"
-    description: "UK political developments, future outlook"
+
+# ── Sources ───────────────────────────────────────────────────────────────────
+# preferred: weighted heavily — cited first whenever available
+# supplementary: used only when preferred sources don't cover a topic
 
 sources:
   preferred:
@@ -55,23 +69,52 @@ sources:
     - AP
     - The Economist
     - The Atlantic
-    - Bloomberg
-    - New York Times
-    - MIT Technology Review
+
+  supplementary:
+    - Ars Technica
+    - TechCrunch
+    - Defense One
+
+
+# ── Sections ──────────────────────────────────────────────────────────────────
+# Set any section to false to skip it entirely (saves API cost too).
 
 sections:
-  top_stories: true
-  sector_scan: true
-  week_ahead: true
-  pattern_watch: true
-  deep_dive: true
+  top_stories:  true    # 3-5 priority news items with full analysis
+  sector_scan:  true    # all topic areas — green dot = news today
+  week_ahead:   true    # scheduled events for the rest of the week
+  pattern_watch: true   # speculative cross-sector dot-connecting (Haiku)
+  deep_dive:    true    # long-form wildcard analysis, rotates daily (Sonnet)
+  signal_scan:  true    # recent output from tracked voices (RSS + X)
+
+# How often to run the signal scan. "weekly" caches results for 7 days (recommended).
+# "daily" runs it every time. Force regenerate always triggers a fresh scan.
+signal_scan_frequency: "weekly"
+
+
+# ── Schedule ──────────────────────────────────────────────────────────────────
+# For reference and GitHub Actions — see .github/workflows/briefing.yml.
+# GitHub Actions uses UTC. Adjust the cron there for your timezone.
+#
+# 5:30 AM Pacific Standard Time  = 13:30 UTC  (Nov-Mar)
+# 5:30 AM Pacific Daylight Time  = 12:30 UTC  (Mar-Nov)
 
 schedule:
-  cron: "30 5 * * 1-5"
+  # Two entries to cover GMT (winter) and BST (summer) — both target 5:30 AM UK time.
+  # GitHub Actions uses UTC. The script skips if today's briefing already exists,
+  # so only the first run each day does any work.
+  cron_gmt: "30 5 * * 1-5"   # 5:30 AM GMT  (Oct–Mar, UTC+0)
+  cron_bst: "30 4 * * 1-5"   # 5:30 AM BST  (Mar–Oct, UTC+1)
   timezone: "Europe/London"
+
+
+# ── Output ────────────────────────────────────────────────────────────────────
+# For local use. Can also be set via BRIEFING_OUTPUT_DIR environment variable
+# (env var takes precedence). GitHub Actions overrides this automatically.
 
 output:
   dir: "~/briefings"
+
 
 # ── Voices ────────────────────────────────────────────────────────────────────
 # Tracked thinkers for the Signal Scan section.
