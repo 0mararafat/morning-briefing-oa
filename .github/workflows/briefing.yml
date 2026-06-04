@@ -1,0 +1,83 @@
+# .github/workflows/briefing.yml
+#
+# Runs the morning briefing on a schedule, commits the HTML output to docs/,
+# and deploys to GitHub Pages.
+#
+# Setup (one-time):
+#   1. Fork this repo
+#   2. Go to Settings → Secrets → Actions → New repository secret
+#      Name:  ANTHROPIC_API_KEY
+#      Value: sk-ant-...
+#   3. Go to Settings → Pages → Source: GitHub Actions
+#   4. Edit config.yaml with your topics and sources
+#   5. Push — your next scheduled run will generate a live briefing
+#
+# Manual trigger: Actions tab → Morning Briefing → Run workflow
+
+name: Morning Briefing
+
+on:
+  schedule:
+    # 5:30 AM Pacific Standard Time (UTC-8) = 13:30 UTC
+    # During daylight saving (PDT, UTC-7) this runs at 6:30 AM PDT.
+    # To target 5:30 AM year-round, use two cron entries or a timezone-aware action.
+    - cron: '30 13 * * 1-5'
+
+  # Allow manual trigger from the GitHub Actions UI
+  workflow_dispatch:
+
+permissions:
+  contents: write   # to commit the generated HTML back to the repo
+  pages: write      # to deploy to GitHub Pages
+  id-token: write   # required by actions/deploy-pages
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history so we can push back to the same branch
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install anthropic pyyaml
+
+      - name: Create output directory
+        run: mkdir -p docs/briefings
+
+      - name: Generate briefing
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIEFING_OUTPUT_DIR: docs/briefings
+        run: python morning_dashboard_v4.py
+
+      - name: Commit generated files
+        run: |
+          git config user.name  "Morning Briefing Bot"
+          git config user.email "briefing-bot@users.noreply.github.com"
+          git add docs/
+          # Only commit if there are actual changes (idempotent on re-runs)
+          git diff --staged --quiet || git commit -m "Briefing: $(date -u +%Y-%m-%d)"
+          git push
+
+      # ── GitHub Pages deployment ────────────────────────────────────────────
+      # Pages serves from docs/ — the index.html redirect always points to
+      # today's file, so https://<user>.github.io/<repo>/ loads today's briefing.
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
