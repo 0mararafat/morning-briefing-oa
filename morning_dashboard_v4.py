@@ -208,7 +208,10 @@ no code fences. Just the raw JSON object.
       "headline": "Short punchy headline",
       "one_liner": "One sentence on why this matters right now",
       "detail": "3-5 paragraphs. What happened, why it matters, where perspectives diverge (name specific outlets), what to watch next. Plain text, no markdown.",
-      "sector": "Which of my {n} sectors this belongs to"
+      "sector": "Which of my {n} sectors this belongs to",
+      "sources": [
+        {{"name": "Publication Name", "url": "https://exact-article-url.com"}}
+      ]
     }}
   ],
   "sectors": [
@@ -232,6 +235,8 @@ REQUIREMENTS:
 - sectors: All {n} topic areas. Exact names: {topic_names_quoted}.
   Set has_news to false and summary to "" if nothing meaningful happened.
 - week_ahead: 6-12 scheduled events for the rest of this week.
+- sources per story: 2-4 items. Use the actual URLs you retrieved during your web searches.
+  Only include URLs you actually visited — do not fabricate them.
 
 ONLY output the JSON. Nothing else.
 """
@@ -270,7 +275,10 @@ Return ONLY valid JSON — no markdown, no preamble, no code fences:
   "headline": "Sharp, specific headline",
   "standfirst": "One punchy sentence — the core argument or key fact",
   "body": "Full text, 500-700 words. Separate paragraphs with double newlines (\\n\\n). Plain text only — no markdown.",
-  "why_today": "One sentence: why this subject is specifically relevant today"
+  "why_today": "One sentence: why this subject is specifically relevant today",
+  "sources": [
+    {{"name": "Publication Name", "url": "https://exact-article-url.com"}}
+  ]
 }}
 """
 
@@ -358,6 +366,14 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   }
   .tab:hover { color: #374151; }
   .tab.active { font-weight: 700; color: #111827; border-bottom-color: #111827; }
+  .arc-nav-link {
+    margin-left: auto; padding: 9px 0 9px 12px;
+    font-size: 12px; color: #6B7280; text-decoration: none;
+    white-space: nowrap; display: flex; align-items: center; gap: 5px;
+    flex-shrink: 0; transition: color 0.15s ease;
+  }
+  .arc-nav-link:hover { color: #374151; }
+  .arc-nav-link svg { width: 13px; height: 13px; }
   .section { display: none; }
   .section.active { display: block; }
   .hint { font-size: 13px; color: #6B7280; margin-bottom: 20px; }
@@ -536,6 +552,26 @@ HTML_TEMPLATE = """<!DOCTYPE html>
     font-family: 'Source Serif 4', Georgia, serif;
   }
   .deep-dive .body p:last-child { margin-bottom: 0; }
+
+  /* ── Sources ─────────────────────────────────────────────── */
+  .story-sources, .deep-dive-sources {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .deep-dive-sources { margin-top: 28px; padding-top: 22px; border-top: 1px solid #E5E7EB; }
+  .sources-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    color: #9CA3AF; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; flex-shrink: 0;
+  }
+  .sources-list { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .source-link {
+    font-size: 12px; color: #3B82F6; text-decoration: none;
+    border-bottom: 1px solid #BFDBFE; line-height: 1.3; transition: color 0.15s;
+  }
+  .source-link:hover { color: #1D4ED8; border-bottom-color: #93C5FD; }
+  .source-sep { font-size: 11px; color: #D1D5DB; }
 </style>
 </head>
 <body>
@@ -555,6 +591,10 @@ HTML_TEMPLATE = """<!DOCTYPE html>
   <button class="tab" onclick="showSection('week', this)">Week Ahead</button>
   <button class="tab" onclick="showSection('patterns', this)">Pattern Watch</button>
   <button class="tab" onclick="showSection('deepdive', this)">Deep Dive</button>
+  <a class="arc-nav-link" href="./archive.html">
+    Archive
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+  </a>
 </div>
 
 <div id="stories" class="section active">
@@ -616,6 +656,24 @@ TAG_COLORS = {
 }
 
 
+def build_sources_html(sources, css_class="story-sources"):
+    if not sources:
+        return ""
+    links = []
+    for i, src in enumerate(sources):
+        sep = '<span class="source-sep">·</span>' if i > 0 else ""
+        links.append(
+            f'{sep}<a class="source-link" href="{src["url"]}" target="_blank" rel="noopener">'
+            f'{src["name"]}</a>'
+        )
+    return (
+        f'<div class="{css_class}">'
+        f'<span class="sources-label">SOURCES</span>'
+        f'<div class="sources-list">{"".join(links)}</div>'
+        f'</div>'
+    )
+
+
 def build_stories_html(stories):
     html = ""
     for s in stories:
@@ -625,6 +683,7 @@ def build_stories_html(stories):
             for para in s["detail"].split("\n\n")
             if para.strip()
         )
+        sources_html = build_sources_html(s.get("sources", []))
         html += f"""
     <div class="story" data-priority="{p}" onclick="toggleStory(this)">
       <div class="story-top">
@@ -640,7 +699,7 @@ def build_stories_html(stories):
         <div class="chevron">▾</div>
       </div>
       <div class="story-detail">
-        <div class="story-detail-inner">{paragraphs}</div>
+        <div class="story-detail-inner">{paragraphs}{sources_html}</div>
       </div>
     </div>"""
     return html
@@ -722,6 +781,7 @@ def build_deep_dive_html(deep_dive):
     why_html = (
         f'<div class="deep-dive-why">{why_today}</div>' if why_today else ""
     )
+    sources_html = build_sources_html(deep_dive.get("sources", []), "deep-dive-sources")
 
     return f"""
   <div class="deep-dive">
@@ -732,6 +792,7 @@ def build_deep_dive_html(deep_dive):
     <div class="standfirst">{deep_dive['standfirst']}</div>
     {why_html}
     <div class="body">{paragraphs}</div>
+    {sources_html}
   </div>"""
 
 
@@ -970,6 +1031,159 @@ def generate_patterns(briefing_data):
         }]
 
 
+# ── Archive ───────────────────────────────────────────────────────────────────
+
+def update_archive(output_dir):
+    """Scan output_dir for all briefing-*.json files and regenerate archive.html."""
+    import glob as _glob
+
+    json_files = sorted(
+        _glob.glob(os.path.join(output_dir, "briefing-*.json")),
+        reverse=True,  # newest first
+    )
+
+    entries = []
+    for jf in json_files:
+        date_str = os.path.basename(jf).replace("briefing-", "").replace(".json", "")
+        html_file = f"briefing-{date_str}.html"
+        if not os.path.exists(os.path.join(output_dir, html_file)):
+            continue
+        try:
+            date_obj = datetime.date.fromisoformat(date_str)
+        except ValueError:
+            continue
+        try:
+            with open(jf) as f:
+                data = json.load(f)
+            urgent  = sum(1 for s in data.get("top_stories", []) if s.get("priority") == "urgent")
+            active  = sum(1 for s in data.get("sectors", []) if s.get("has_news"))
+            n_stories = len(data.get("top_stories", []))
+            deep_dive_topic = data.get("deep_dive", {}) or {}
+            deep_dive_topic = deep_dive_topic.get("topic", "")
+        except Exception:
+            urgent = active = n_stories = 0
+            deep_dive_topic = ""
+
+        entries.append({
+            "date_str":    date_str,
+            "date_fmt":    date_obj.strftime("%A, %B %d, %Y"),
+            "html_file":   html_file,
+            "urgent":      urgent,
+            "active":      active,
+            "n_stories":   n_stories,
+            "deep_dive":   deep_dive_topic,
+        })
+
+    today_str = datetime.date.today().isoformat()
+    rows = ""
+    for e in entries:
+        is_today = e["date_str"] == today_str
+        today_class = " today" if is_today else ""
+        today_badge = '<span class="arc-today-badge">TODAY</span>' if is_today else ""
+        urgent_badge = (
+            f'<span class="arc-urgent">{e["urgent"]} URGENT</span>'
+            if e["urgent"] else ""
+        )
+        dive_snippet = (
+            f'<div class="arc-dive">↳ {e["deep_dive"]}</div>'
+            if e["deep_dive"] else ""
+        )
+        rows += f"""
+    <a class="arc-entry{today_class}" href="./{e['html_file']}">
+      <div class="arc-date">{e['date_fmt']}</div>
+      <div class="arc-meta">
+        {today_badge}
+        {urgent_badge}
+        <span class="arc-stat">{e['active']} sectors active</span>
+        <span class="arc-stat">{e['n_stories']} stories</span>
+      </div>
+      {dive_snippet}
+    </a>"""
+
+    today_file = f"briefing-{datetime.date.today().strftime('%Y-%m-%d')}.html"
+    archive_html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefing Archive</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Source+Serif+4:wght@700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * {{ box-sizing: border-box; margin: 0; padding: 0; }}
+  body {{
+    font-family: 'DM Sans', system-ui, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 0 24px 80px;
+    color: #111827; background: #fff; -webkit-font-smoothing: antialiased;
+  }}
+  .top-bar {{
+    padding-top: 28px; margin-bottom: 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }}
+  .back-link {{
+    font-size: 13px; color: #6B7280; text-decoration: none;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: color 0.15s ease;
+  }}
+  .back-link:hover {{ color: #111827; }}
+  .header-label {{
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    color: #9CA3AF; text-transform: uppercase; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }}
+  h1 {{
+    font-size: 28px; font-weight: 700; color: #111827; margin-bottom: 6px;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }}
+  .header-count {{ font-size: 13px; color: #6B7280; margin-bottom: 28px; }}
+  .arc-entry {{
+    display: block; text-decoration: none; color: inherit;
+    padding: 16px 20px; border-radius: 8px; margin-bottom: 8px;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }}
+  .arc-entry:hover {{ border-color: #9CA3AF; background: #F3F4F6; }}
+  .arc-entry.today {{ border-color: #111827; background: #F9FAFB; }}
+  .arc-today-badge {{
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    color: #111827; background: #F3F4F6; border: 1px solid #D1D5DB;
+    padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  }}
+  .arc-date {{
+    font-size: 15px; font-weight: 600; color: #111827; margin-bottom: 6px;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }}
+  .arc-meta {{
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; margin-bottom: 4px;
+  }}
+  .arc-urgent {{
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    color: #991B1B; background: #FEE2E2; border: 1px solid #FECACA;
+    padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  }}
+  .arc-stat {{ font-size: 12px; color: #6B7280; }}
+  .arc-dive {{ font-size: 12px; color: #6366F1; font-style: italic; margin-top: 2px; }}
+</style>
+</head>
+<body>
+<div class="top-bar">
+  <a class="back-link" href="./{today_file}">
+    ← Today's briefing
+  </a>
+</div>
+<div class="header-label">MORNING BRIEFING</div>
+<h1>Archive</h1>
+<div class="header-count">{len(entries)} briefing{"s" if len(entries) != 1 else ""}</div>
+{rows}
+</body>
+</html>"""
+
+    archive_path = os.path.join(output_dir, "archive.html")
+    with open(archive_path, "w") as f:
+        f.write(archive_html)
+    print(f"  archive.html updated ({len(entries)} entries)")
+
+
 # ── Index redirect ────────────────────────────────────────────────────────────
 
 def update_index(html_path, output_dir):
@@ -1051,18 +1265,20 @@ def main():
     with open(json_path, "w") as f:
         json.dump(data, f, indent=2)
 
-    # 5 — Build HTML
+    # 5 — Build HTML + archive
     print("[5/5] Building dashboard...")
     html = build_dashboard(data, date_str, cfg)
     with open(html_path, "w") as f:
         f.write(html)
     update_index(html_path, output_dir)
+    update_archive(output_dir)
 
     elapsed = time.time() - start
     print(f"\n✓ Done in {elapsed:.0f}s")
-    print(f"  File:  {html_path}")
-    print(f"  Data:  {json_path}")
-    print(f"  Local: open {html_path}")
+    print(f"  File:    {html_path}")
+    print(f"  Data:    {json_path}")
+    print(f"  Archive: {os.path.join(output_dir, 'archive.html')}")
+    print(f"  Local:   open {html_path}")
 
 
 if __name__ == "__main__":
