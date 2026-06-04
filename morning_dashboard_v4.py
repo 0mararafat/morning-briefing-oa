@@ -137,6 +137,7 @@ DEFAULT_CONFIG = {
         "deep_dive": True,
         "signal_scan": True,
     },
+    "signal_scan_frequency": "weekly",  # "daily" or "weekly"
     "voices": [
         {"name": "Leopold Aschenbrenner", "rss": "https://situational.substack.com/feed",          "x_handle": "leopoldasch"},
         {"name": "Dan Wang",              "rss": "https://danwwang.substack.com/feed",              "x_handle": "dkwang"},
@@ -1172,6 +1173,29 @@ def generate_patterns(briefing_data):
 
 # ── Signal Scan ───────────────────────────────────────────────────────────────
 
+def load_signal_scan_cache(output_dir):
+    path = os.path.join(output_dir, "signal_scan_cache.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path) as f:
+            cache = json.load(f)
+        cached_date = datetime.date.fromisoformat(cache.get("date", "2000-01-01"))
+        age_days = (datetime.date.today() - cached_date).days
+        if age_days < 7:
+            print(f"  Using cached signal scan from {cached_date} ({age_days}d ago)")
+            return cache.get("signals", [])
+    except Exception:
+        pass
+    return None
+
+
+def save_signal_scan_cache(output_dir, signals):
+    path = os.path.join(output_dir, "signal_scan_cache.json")
+    with open(path, "w") as f:
+        json.dump({"date": datetime.date.today().isoformat(), "signals": signals}, f, indent=2)
+
+
 def fetch_rss_feeds(voices):
     """Fetch recent items from RSS feeds. Returns {name: [items]}."""
     if not FEEDPARSER_AVAILABLE:
@@ -1543,8 +1567,15 @@ def main():
 
     voices     = cfg.get("voices", DEFAULT_CONFIG["voices"])
     do_dive    = sections.get("deep_dive",    True)
-    do_signal  = sections.get("signal_scan",  True) and bool(voices)
     do_pattern = sections.get("pattern_watch",True)
+    frequency  = cfg.get("signal_scan_frequency", "weekly")
+
+    # Check signal scan cache for weekly mode
+    cached_signals = None
+    if sections.get("signal_scan", True) and voices and frequency == "weekly" and not args.force:
+        cached_signals = load_signal_scan_cache(output_dir)
+
+    do_signal = sections.get("signal_scan", True) and bool(voices) and (cached_signals is None)
 
     # ── Stage 1: independent calls — run in parallel ──────────────────────────
     print("[1/3] Stage 1 (parallel): main briefing + deep dive + RSS fetch...")
@@ -1567,8 +1598,18 @@ def main():
         f_sig = ex.submit(generate_signal_scan, voices, rss_content, data, cfg) if do_signal  else None
         f_pat = ex.submit(generate_patterns, data)                               if do_pattern else None
 
-        data["signal_scan"]   = f_sig.result() if f_sig else []
+        fresh_signals         = f_sig.result() if f_sig else None
         data["pattern_watch"] = f_pat.result() if f_pat else []
+
+    if fresh_signals is not None:
+        data["signal_scan"] = fresh_signals
+        if frequency == "weekly":
+            save_signal_scan_cache(output_dir, fresh_signals)
+            print(f"  Signal scan cached — next fresh run in 7 days")
+    elif cached_signals is not None:
+        data["signal_scan"] = cached_signals
+    else:
+        data["signal_scan"] = []
 
     # ── Stage 3: save and build ───────────────────────────────────────────────
     print("[3/3] Saving and building dashboard...")
