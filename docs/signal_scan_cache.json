@@ -1,0 +1,165 @@
+{
+  "date": "2026-06-05",
+  "signals": [
+    {
+      "name": "Leopold Aschenbrenner",
+      "handle": "@leopoldasch",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No new posts or essays found in the last 7 days. Most recent verifiable public activity relates to Situational Awareness LP fund performance coverage from earlier in 2026.",
+      "connection": "His infrastructure-first AGI thesis (power, chips, data centers) is directly relevant to the AI data center buildout stall and grid crisis story, and to the Anthropic IPO given his fund's AI-infrastructure bets."
+    },
+    {
+      "name": "Dan Wang",
+      "handle": "@danwwang",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No posts found in the last 7 days. Most recent notable public output was his January 2026 annual letter discussing compute, the Cold War framing of US-China tech competition, and geopolitics.",
+      "connection": "His China tech and US-China geopolitics lens is directly relevant to today's Iran/Hormuz crisis (Gulf energy flows), the AI security EO, and frontier AI governance topics."
+    },
+    {
+      "name": "Nathan Benaich",
+      "handle": "@nathanbenaich",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No substantive posts found in the last 7 days. Earlier in 2026 he announced Air Street Capital's Fund III close at $232M, becoming the largest solo-GP venture firm in Europe.",
+      "connection": "As co-author of the State of AI Report and an AI-focused VC, his perspective would be directly relevant to the Anthropic IPO valuation and frontier AI governance EO."
+    },
+    {
+      "name": "Stanley Druckenmiller",
+      "handle": "",
+      "source": "newsletter",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No new interview or public remarks found on CNBC, Bloomberg, or FT in the last 7 days. Most recent coverage relates to his Duquesne portfolio positioning and connections to Bessent and Warsh at Treasury and the Fed.",
+      "connection": "His macro views on fiscal deficits, rate trajectory, and AI infrastructure capex cycles are highly relevant to today's market context around the Anthropic/SpaceX IPOs and AI buildout stall."
+    },
+    {
+      "name": "Byrne Hobart",
+      "handle": "@ByrneHobart",
+      "source": "mixed",
+      "signal": "light",
+      "latest_title": "Ring, Cloudflare, and the Supply Chain of State Capacity",
+      "url": "https://thediff.co",
+      "summary": "Pinned recent post on X references a piece about Ring, Cloudflare, and state capacity supply chains (April). X profile is active with 33K+ posts but no verified substantive new piece confirmed in the 7-day window.",
+      "connection": "His framing of state capacity and infrastructure dependencies connects to the AI security EO, data center buildout stall, and the government's role in frontier AI oversight."
+    },
+    {
+      "name": "Michael Burry",
+      "handle": "@michaeljburry",
+      "source": "substack",
+      "signal": "strong",
+      "latest_title": "MEGA Trading Post/Short Thoughts Mash-Up June 2, 2026",
+      "url": "https://michaeljburry.substack.com/p/mega-trading-postshort-thoughts-mash",
+      "summary": "Posted June 3 on his Cassandra Unchained Substack; notes subscriber chat threads are active around the SpaceX S-1 filing and a preview of 'Part IV of the Heretic's Guide.' Observes that many subscribers appear positioned for a market crash.",
+      "connection": "Directly engages with the SpaceX S-1 story; his ongoing AI bubble skepticism (short Nvidia/Palantir thesis) is relevant to Anthropic's $965B IPO valuation and AI market exuberance."
+    },
+    {
+      "name": "Ben Thompson",
+      "handle": "@stratechery",
+      "source": "newsletter",
+      "signal": "strong",
+      "latest_title": "An Interview with Ben Thompson at the MoffettNathanson Media, Internet & Communications Conference",
+      "url": "https://stratechery.com/2026/an-interview-with-ben-thompson-at-the-moffettnathanson-media-internet-communications-conference/",
+      "summary": "Published June 1 and active through June 4; covered the implications of the compute shortage on Aggregation Theory and consumer AI, SpaceX hype and the 'Elon Bargain,' Nvidia and the Neoclouds, and data center discontent. Also published 'The Google Capital Company' analyzing Google's AI capex strategy and equity issuance.",
+      "connection": "Directly covers the SpaceX S-1, AI data center buildout dynamics, and the capital structures of hyperscalers \u2014 all core to today's top stories on IPOs, grid crisis, and AI infrastructure."
+    },
+    {
+      "name": "Paul Graham",
+      "handle": "@paulg",
+      "source": "x",
+      "signal": "light",
+      "latest_title": "",
+      "url": "https://x.com/paulg/status/2061843410835931406",
+      "summary": "Posted June 2 on X about the value of clarity standards when advising YC startups \u2014 brief aphoristic take on founder communication and decision-making, not directly related to today's major stories.",
+      "connection": "Marginal relevance; his ongoing commentary on founders and AI-era startups has background relevance to the labor/AI displacement story and the startup ecosystem around frontier AI."
+    },
+    {
+      "name": "Benedict Evans",
+      "handle": "@benedictevans",
+      "source": "mixed",
+      "signal": "strong",
+      "latest_title": "AI eats the world (Spring 2026 presentation)",
+      "url": "https://www.ben-evans.com/",
+      "summary": "Updated his semi-annual macro tech presentation 'AI eats the world' in May 2026; also recently gave a podcast interview with Lenny Rachitsky (June 1) where he framed AI as a 1997-internet-scale shift \u2014 significant but with most applications still unbuilt. Posted on Threads that the lack of a good theory for why LLMs work is not proof they have no limits.",
+      "connection": "His 'AI eats the world' presentation and '1997 moment' framing directly contextualize the Anthropic IPO, frontier AI governance debates, and the data center buildout cycle."
+    },
+    {
+      "name": "Packy McCormick",
+      "handle": "@packym",
+      "source": "newsletter",
+      "signal": "light",
+      "latest_title": "Weekly Dose of Optimism #191 / #192",
+      "url": "https://www.notboring.co/",
+      "summary": "Published recurring 'Weekly Dose of Optimism' editions in late May/early June 2026 covering frontier science stories and company visits in California; no single deep-dive essay confirmed in the strict 7-day window.",
+      "connection": "His ongoing coverage of ambitious tech companies and frontier innovation broadly relevant to the Anthropic IPO, SpaceX S-1, and the optimism/bubble tension in AI markets."
+    },
+    {
+      "name": "CJ Gustafson",
+      "handle": "@cjgus",
+      "source": "newsletter",
+      "signal": "none",
+      "latest_title": "",
+      "url": "https://cjgustafson.substack.com/",
+      "summary": "No new Mostly Metrics posts confirmed in the last 7 days. Most recent Substack activity indexed from February 2026 on AI's effect on distribution costs vs. product-building costs.",
+      "connection": "His SaaS/CFO lens would be directly relevant to the Anthropic IPO financials, AI-driven layoffs hitting labor metrics, and how AI is reshaping tech company unit economics."
+    },
+    {
+      "name": "Lenny Rachitsky",
+      "handle": "@lennysan",
+      "source": "mixed",
+      "signal": "strong",
+      "latest_title": "A rational conversation on where AI is actually going with Benedict Evans",
+      "url": "https://x.com/lennysan/status/2061452384153505897",
+      "summary": "Promoted and shared key takeaways from his June 1 podcast with Benedict Evans, summarizing Evans' view that 'we're in 1997 for AI' \u2014 a big-deal shift where most of what will be built hasn't been built yet. Active on X promoting the episode.",
+      "connection": "Directly connects to Anthropic IPO, frontier AI governance, and the broader question of where AI is in its adoption curve \u2014 relevant to labor, applied tech, and AI regulation topics."
+    },
+    {
+      "name": "Andrej Karpathy",
+      "handle": "@karpathy",
+      "source": "x",
+      "signal": "strong",
+      "latest_title": "Personal update: I've joined Anthropic",
+      "url": "https://fortune.com/2026/05/19/who-is-andrej-karpathy-vibe-coding-anthropic-openai-rubiks-cube/",
+      "summary": "Announced on May 19 that he joined Anthropic's pretraining team to lead a group using Claude to accelerate pretraining research \u2014 the post drew ~3 million views in an hour. He joins as Anthropic files a confidential IPO at a ~$1T valuation.",
+      "connection": "His Anthropic hire is directly tied to today's top story on the Anthropic IPO; his 'autoresearch' and 'Karpathy Loop' work on AI-accelerated pretraining connects to frontier tech and AI capability advancement."
+    },
+    {
+      "name": "Ilya Sutskever",
+      "handle": "@ilyasut",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No posts found in the last 7 days. Most recent verifiable public post was from February 2026 praising Anthropic and OpenAI for not backing down on a safety-related stance. SSI continues to operate independently after rejecting a Meta acquisition offer.",
+      "connection": "SSI's work on safe superintelligence is directly relevant to the Anthropic IPO, Trump's Frontier AI Security EO, and governance debates around who controls frontier model development."
+    },
+    {
+      "name": "Noam Brown",
+      "handle": "@polynoamial",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No posts found in the last 7 days. Earlier in 2026 he posted about AI researcher visa denials threatening US AI leadership, and in April shared a talk on rapid AI progress benchmarks like Codeforces.",
+      "connection": "His work on reasoning models at OpenAI and prior comments on AI talent/immigration policy connect to the labor and AI governance topics, and to the frontier AI security EO."
+    },
+    {
+      "name": "Fran\u00e7ois Chollet",
+      "handle": "@fchollet",
+      "source": "x",
+      "signal": "none",
+      "latest_title": "",
+      "url": "",
+      "summary": "No posts found in the last 7 days. Most recent public output from late 2025/early 2026 included the ARC-AGI-3 developer preview announcement and an appearance on YC's Lightcone Podcast (March 2026) on building intelligence from first principles rather than scaling.",
+      "connection": "His ARC-AGI benchmark work and skepticism of pure scaling connects to debates about frontier AI capability claims underlying the Anthropic IPO valuation and AI governance EO."
+    }
+  ]
+}
