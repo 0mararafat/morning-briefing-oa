@@ -75,6 +75,16 @@ Everything lives in `config.yaml`. Use the [setup page](./setup.html) to edit it
 
 ---
 
+## Scheduling reliability
+
+The template includes a `keepalive.yml` workflow that runs on the 1st of every month and makes an empty commit. This prevents GitHub from silently disabling the scheduled workflow, which it does when all recent commits come from the briefing bot rather than a human.
+
+This runs automatically — no configuration needed.
+
+**For extra reliability:** you can also set up [cron-job.org](https://cron-job.org) (free) to trigger your workflow via the GitHub API instead of relying on GitHub's scheduler. Set it to `POST https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/actions/workflows/briefing.yml/dispatches` with a `Authorization: Bearer YOUR_TOKEN` header and body `{"ref":"main"}`. cron-job.org supports the Europe/London timezone and handles BST/GMT switching automatically.
+
+---
+
 ## Signal Scan
 
 The Signal Scan section tracks a configurable list of thinkers — checking their RSS feeds and X posts for recent output, then summarising what each person is writing or saying and flagging anything that connects to today's top stories.
