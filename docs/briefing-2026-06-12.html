@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Morning Briefing — Friday, June 12, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Source+Serif+4:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+    max-width: 720px; margin: 0 auto; padding: 0 24px 80px;
+    color: #111827; background: #fff; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .header { padding-top: 40px; margin-bottom: 32px; }
+  .header-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    color: #9CA3AF; text-transform: uppercase; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .header h1 {
+    font-size: 30px; font-weight: 700; color: #111827;
+    font-family: 'Source Serif 4', Georgia, serif;
+    line-height: 1.2; margin-bottom: 14px;
+  }
+  .status-bar {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .status-urgent {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 600; color: #DC2626;
+    background: #FEE2E2; padding: 4px 12px; border-radius: 4px;
+  }
+  .pulse-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #DC2626;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .status-count { font-size: 12px; color: #6B7280; }
+
+  /* ── Tabs ────────────────────────────────────────────────── */
+  .tabs {
+    display: flex; gap: 2px; border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 28px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  }
+  .tab {
+    padding: 10px 16px; font-size: 13px; font-weight: 500; color: #6B7280;
+    background: none; border: none; border-bottom: 2px solid transparent;
+    cursor: pointer; font-family: inherit; margin-bottom: -1px;
+    white-space: nowrap; transition: color 0.15s ease;
+  }
+  .tab:hover { color: #374151; }
+  .tab.active { font-weight: 700; color: #111827; border-bottom-color: #111827; }
+  .arc-nav-link {
+    margin-left: auto; padding: 9px 0 9px 12px;
+    font-size: 12px; color: #6B7280; text-decoration: none;
+    white-space: nowrap; display: flex; align-items: center; gap: 5px;
+    flex-shrink: 0; transition: color 0.15s ease;
+  }
+  .arc-nav-link:hover { color: #374151; }
+  .arc-nav-link svg { width: 13px; height: 13px; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .hint { font-size: 13px; color: #6B7280; margin-bottom: 20px; }
+
+  /* ── Story cards ─────────────────────────────────────────── */
+  .story {
+    border: 1.5px solid #D1D5DB; border-radius: 10px;
+    padding: 20px 24px; margin-bottom: 16px;
+    cursor: pointer; background: #FAFAFA;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    overflow: hidden;
+  }
+  .story:hover { border-color: #9CA3AF; }
+  .story.expanded-urgent  { background: #FEF2F2; border-color: #DC2626; }
+  .story.expanded-high    { background: #FFFBEB; border-color: #D97706; }
+  .story.expanded-tracking{ background: #F9FAFB; border-color: #6B7280; }
+  .story-top { display: flex; align-items: flex-start; gap: 16px; }
+  .story-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    margin-top: 13px; flex-shrink: 0;
+  }
+  .dot-urgent   { background: #DC2626; }
+  .dot-high     { background: #D97706; }
+  .dot-tracking { background: #6B7280; }
+  .story-content { flex: 1; min-width: 0; }
+  .story-meta {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 8px; flex-wrap: wrap;
+  }
+  .priority-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    padding: 2px 8px; border-radius: 3px; text-transform: uppercase;
+  }
+  .tag-urgent   { color: #991B1B; background: #FEE2E2; border: 1px solid #FECACA; }
+  .tag-high     { color: #92400E; background: #FEF3C7; border: 1px solid #FDE68A; }
+  .tag-tracking { color: #374151; background: #F3F4F6; border: 1px solid #D1D5DB; }
+  .sector-label {
+    font-size: 9px; font-weight: 500; color: #9CA3AF;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .story h3 {
+    font-size: 17px; font-weight: 700; color: #111827;
+    margin: 0 0 6px; line-height: 1.3;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .story .one-liner { font-size: 13.5px; color: #4B5563; line-height: 1.5; }
+  .chevron {
+    font-size: 18px; color: #9CA3AF; margin-top: 8px; flex-shrink: 0;
+    transition: transform 0.25s ease;
+  }
+  .story.expanded .chevron { transform: rotate(180deg); }
+  .story-detail {
+    max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  }
+  .story.expanded .story-detail { max-height: 3000px; }
+  .story-detail-inner {
+    margin-top: 20px; padding-top: 18px;
+    border-top: 1px solid rgba(0,0,0,0.07);
+  }
+  .story-detail p {
+    font-size: 14px; color: #1F2937; line-height: 1.8;
+    margin-bottom: 16px; padding-left: 24px;
+  }
+  .story-detail p:last-child { margin-bottom: 4px; }
+
+  /* ── Sector items ────────────────────────────────────────── */
+  .sector-item {
+    padding: 14px 18px; border-radius: 8px; cursor: pointer;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    margin-bottom: 8px;
+  }
+  .sector-item:hover { border-color: #9CA3AF; background: #F9FAFB; }
+  .sector-item.expanded { background: #EFF6FF; border-color: #3B82F6; }
+  .sector-top { display: flex; align-items: center; gap: 14px; }
+  .sector-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .sector-dot.active { background: #10B981; }
+  .sector-dot.quiet  { background: transparent; border: 1.5px solid #D1D5DB; }
+  .sector-name { font-size: 13.5px; font-weight: 600; color: #1F2937; }
+  .sector-summary {
+    font-size: 13.5px; color: #374151; line-height: 1.75;
+    margin: 12px 0 2px 23px; display: none;
+  }
+  .sector-item.expanded .sector-summary { display: block; }
+
+  /* ── Week ahead ──────────────────────────────────────────── */
+  .week-item {
+    display: flex; align-items: center; gap: 20px;
+    padding: 14px 20px; border-radius: 8px; margin-bottom: 8px;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+  }
+  .week-item.critical { background: #FEF2F2; border-color: #FECACA; }
+  .week-day {
+    font-size: 12px; font-weight: 700; color: #374151;
+    font-family: 'JetBrains Mono', monospace; min-width: 72px; flex-shrink: 0;
+  }
+  .week-event { font-size: 13.5px; color: #1F2937; flex: 1; line-height: 1.4; }
+  .week-tag {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.06em;
+    padding: 3px 10px; border-radius: 3px; text-transform: uppercase; flex-shrink: 0;
+  }
+
+  /* ── Pattern cards ───────────────────────────────────────── */
+  .pattern {
+    padding: 22px 26px; border-radius: 10px; cursor: pointer;
+    background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+    border: 1px solid #334155; margin-bottom: 16px;
+    transition: border-color 0.2s ease; overflow: hidden;
+  }
+  .pattern:hover { border-color: #475569; }
+  .pattern.expanded { border-color: #64748B; }
+  .pattern-top {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 16px;
+  }
+  .pattern-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.12em;
+    color: #94A3B8; margin-bottom: 8px; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .pattern h3 {
+    font-size: 18px; font-weight: 700; margin: 0 0 6px;
+    font-family: 'Source Serif 4', Georgia, serif; color: #F1F5F9;
+  }
+  .pattern .subtitle {
+    font-size: 13.5px; color: #94A3B8; font-weight: 500;
+    margin-bottom: 10px; line-height: 1.5;
+  }
+  .pattern-cats { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pattern-cat {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.04em;
+    color: #CBD5E1; background: #334155; padding: 2px 8px; border-radius: 3px;
+  }
+  .pattern .chevron { color: #64748B; flex-shrink: 0; }
+  .pattern.expanded .chevron { transform: rotate(180deg); }
+  .pattern-detail {
+    max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
+  }
+  .pattern.expanded .pattern-detail { max-height: 2000px; }
+  .pattern-detail-inner {
+    margin-top: 18px; border-top: 1px solid #1E293B; padding-top: 18px;
+  }
+  .pattern-detail p {
+    font-size: 14px; color: #CBD5E1; line-height: 1.8; margin-bottom: 16px;
+  }
+  .pattern-detail p:last-child { margin-bottom: 4px; }
+
+  /* ── Deep Dive ───────────────────────────────────────────── */
+  .deep-dive { padding: 4px 0 0; }
+  .deep-dive-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+    color: #6366F1; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; margin-bottom: 16px;
+  }
+  .deep-dive-kicker-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: #6366F1;
+  }
+  .deep-dive h2 {
+    font-size: 26px; font-weight: 700; color: #111827; line-height: 1.25;
+    font-family: 'Source Serif 4', Georgia, serif; margin-bottom: 14px;
+  }
+  .deep-dive .standfirst {
+    font-size: 16px; color: #374151; line-height: 1.6; font-weight: 500;
+    margin-bottom: 24px; padding-bottom: 24px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  .deep-dive-why {
+    font-size: 12.5px; color: #6B7280; font-style: italic;
+    margin-bottom: 28px; padding: 12px 16px;
+    background: #F5F3FF; border-left: 3px solid #6366F1;
+    border-radius: 0 6px 6px 0; line-height: 1.5;
+  }
+  .deep-dive .body p {
+    font-size: 15.5px; color: #1F2937; line-height: 1.85; margin-bottom: 22px;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .deep-dive .body p:last-child { margin-bottom: 0; }
+
+  /* ── Signal Scan ─────────────────────────────────────────── */
+  .sig-card {
+    padding: 14px 18px; border-radius: 8px; margin-bottom: 8px;
+    background: #FAFAFA; border: 1px solid #E5E7EB;
+    transition: border-color 0.15s ease;
+  }
+  .sig-card:not(.sig-quiet):hover { border-color: #D1D5DB; }
+  .sig-quiet { opacity: 0.45; }
+  .sig-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 7px;
+  }
+  .sig-left { display: flex; align-items: center; gap: 10px; }
+  .sig-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .sig-strong { background: #10B981; }
+  .sig-light  { background: #F59E0B; }
+  .sig-none   { background: #D1D5DB; }
+  .sig-name {
+    font-size: 13.5px; font-weight: 700; color: #111827; margin-right: 5px;
+  }
+  .sig-handle {
+    font-size: 11px; color: #9CA3AF;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .sig-source-badge {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+    color: #6B7280; background: #F3F4F6; border: 1px solid #E5E7EB;
+    padding: 2px 7px; border-radius: 3px; text-transform: uppercase;
+  }
+  .sig-title {
+    display: block; font-size: 13.5px; font-weight: 600; color: #111827;
+    text-decoration: none; margin-bottom: 5px; line-height: 1.35;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  .sig-title:hover { color: #3B82F6; }
+  .sig-summary {
+    font-size: 13px; color: #374151; line-height: 1.65; margin-bottom: 5px;
+  }
+  .sig-connection { font-size: 12px; color: #6366F1; font-style: italic; }
+  .sig-quiet-section { margin-top: 20px; }
+  .sig-quiet-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    color: #D1D5DB; text-transform: uppercase; margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Sources ─────────────────────────────────────────────── */
+  .story-sources, .deep-dive-sources {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    margin-top: 16px; padding-top: 14px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+  }
+  .deep-dive-sources { margin-top: 28px; padding-top: 22px; border-top: 1px solid #E5E7EB; }
+  .sources-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.10em;
+    color: #9CA3AF; text-transform: uppercase;
+    font-family: 'JetBrains Mono', monospace; flex-shrink: 0;
+  }
+  .sources-list { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .source-link {
+    font-size: 12px; color: #3B82F6; text-decoration: none;
+    border-bottom: 1px solid #BFDBFE; line-height: 1.3; transition: color 0.15s;
+  }
+  .source-link:hover { color: #1D4ED8; border-bottom-color: #93C5FD; }
+  .source-sep { font-size: 11px; color: #D1D5DB; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">DAILY INTELLIGENCE BRIEFING</div>
+  <h1>Friday, June 12, 2026</h1>
+  <div class="status-bar">
+    <span class="status-urgent"><span class="pulse-dot"></span>&nbsp;2 URGENT</span>
+    <span class="status-count">10 of 11 sectors active</span>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showSection('stories', this)">Top Stories</button>
+  <button class="tab" onclick="showSection('sectors', this)">Sector Scan</button>
+  <button class="tab" onclick="showSection('week', this)">Week Ahead</button>
+  <button class="tab" onclick="showSection('patterns', this)">Pattern Watch</button>
+  <button class="tab" onclick="showSection('deepdive', this)">Deep Dive</button>
+  <button class="tab" onclick="showSection('signals', this)">Signal Scan</button>
+  <a class="arc-nav-link" href="./archive.html">
+    Archive
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="21 8 21 21 3 21 3 8"/><rect x="1" y="3" width="22" height="5"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+  </a>
+</div>
+
+<div id="stories" class="section active">
+  <p class="hint">Click any story to expand the full analysis.</p>
+  
+    <div class="story" data-priority="urgent" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-urgent"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-urgent">URGENT</span>
+            <span class="sector-label">Applied Tech & Industry</span>
+          </div>
+          <h3>SpaceX SPCX Begins Trading Today — Largest IPO in History</h3>
+          <div class="one-liner">SpaceX's Nasdaq debut at $135/share targets a $1.75–1.8T valuation and $75B raise, eclipsing every prior public offering on record, with first trades expected late morning ET.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>SpaceX's SPCX ticker went live on the Nasdaq Global Select Market today, June 12, 2026, following pricing at $135 per share on the night of June 11. The offering of 555.6 million Class A shares targets approximately $75 billion in proceeds at a valuation between $1.75 trillion and $1.8 trillion, making it the largest IPO in recorded market history. Investor demand was extraordinary — verified reports put total demand above $250 billion with retail orders alone surpassing $100 billion, resulting in roughly 3.5–4x oversubscription. The offering is expected to formally close June 15. Goldman Sachs led a 21-bank syndicate. An unusually large 30% of shares was reserved for retail investors — far above the typical 5–10% allocation — distributed through Robinhood, Fidelity, Charles Schwab, SoFi, and E*TRADE, with Fidelity lowering its minimum account requirement to $2,000 for this offering. SpaceX's 2025 trailing revenue hit $18.67 billion, with Starlink generating 61% of total revenue, though the company reported a $4.94 billion GAAP net loss attributable to absorbing xAI, which burns over $6 billion per year. The AI segment's R&D costs skyrocketed over 300% to $5.06 billion in 2025. SpaceX has also made the bold claim that it is uniquely positioned to build orbital AI data centers: 'We believe orbital AI compute is an incredibly difficult technical challenge that only we can solve at scale in the near term,' per the S-1. Senator Elizabeth Warren asked the SEC to delay the offering over governance concerns, but observers expected the debut to proceed. A dual-class share structure preserves founder control and Musk committed to a 366-day lockup. Critically, late Thursday Trump said he was calling off new planned military strikes against Iran after citing a breakthrough in peace talks, triggering a global equity relief rally and an oil price drop that provided a favorable market backdrop for SPCX's first day of trading.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/05/20/spacex-ipo-live-updates.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.basenor.com/blogs/news/spacex-ipo-goes-live-spcx-begins-trading-on-nasdaq" target="_blank" rel="noopener">Basenor</a><span class="source-sep">·</span><a class="source-link" href="https://capital.com/en-int/learn/ipo/spacex-ipo" target="_blank" rel="noopener">Capital.com</a><span class="source-sep">·</span><a class="source-link" href="https://financer.com/invest/spacex-ipo/" target="_blank" rel="noopener">Financer.com</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="urgent" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-urgent"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-urgent">URGENT</span>
+            <span class="sector-label">Geopolitics</span>
+          </div>
+          <h3>Iran War: Trump Backs Off New Strikes, Peace Talks Resume — Markets Rally</h3>
+          <div class="one-liner">Trump called off threatened new strikes on Iranian infrastructure Thursday evening, citing a diplomatic breakthrough; the ceasefire remains fragile as Israel and Iran traded fire last weekend and US CPI hit a 3-year high of 4.2% driven by Iran-war energy shock.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>The 2026 Iran war — initiated February 28 when US and Israeli forces launched nearly 900 strikes killing Supreme Leader Khamenei and destroying nuclear and military infrastructure — continues to define global macro conditions. Iran retaliated with missile and drone strikes and closed the Strait of Hormuz, triggering the largest-ever oil supply disruption. A ceasefire brokered by Pakistan took effect April 7–8, but it has been violated multiple times by both sides. Most recently, Israel and Iran traded the worst strikes in months over the weekend of June 7–8 in what Iran called 'Operation Nasr,' with Iranian missiles striking two Israeli military bases and Israel hitting Iranian radar sites and a petrochemical plant. Trump pressured Netanyahu to scale back a planned large attack on Tehran. The ceasefire is described by VP Vance as a 'fragile truce,' and Iran's Parliament Speaker Ghalibaf has framed the ongoing US naval blockade of the Strait of Hormuz as a ceasefire violation. On June 11, Trump told Fox News he was close to ordering new strikes on Iranian power plants and bridges, but then reversed course that same evening, saying he was calling off strikes after citing a breakthrough in talks. This whipsaw triggered a major equity rally. Britannica's live tracker logged: 'Trump calls off latest threats to strike Iran, cites breakthrough in talks to end the war' at 5:55 PM ET June 11. The direct macro consequence: May CPI came in at 4.2% year-on-year — a 3-year high — with energy prices up 23.5% annually and gasoline up 40.5% year-on-year, driven almost entirely by the Strait of Hormuz disruption. Oxford Economics noted May may represent the inflation peak if gas prices continue easing in June. The Fed is expected to hold rates at its June 17 meeting under new Chair Kevin Warsh, but futures now price a 96% probability of a rate hike by December. The World Bank cut its global growth forecast citing the Iran war fallout. The IAEA remains unable to verify damage to Iran's nuclear program, as Iran's parliament voted to end all cooperation with the agency. Israel's stated conditions for ending the conflict — zero uranium enrichment, proxy disarmament — are far from Iranian acceptance.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.britannica.com/event/2026-Iran-war" target="_blank" rel="noopener">Britannica</a><span class="source-sep">·</span><a class="source-link" href="https://www.cbsnews.com/live-updates/iran-war-trump-israel-lebanon-fighting-ceasefire-efforts/" target="_blank" rel="noopener">CBS News</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/06/10/cpi-inflation-report-may-2026.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://en.wikipedia.org/wiki/2026_Iran_war_ceasefire" target="_blank" rel="noopener">Wikipedia</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">Defense & Security</span>
+          </div>
+          <h3>NSA Using Anthropic's Banned Mythos Model for Offensive Cyber — Despite DOD Blacklist</h3>
+          <div class="one-liner">An FT report reveals the NSA has embedded Anthropic engineers inside the agency and is actively using the Claude Mythos model for offensive cyber operations, even as the Pentagon's supply-chain-risk designation formally bans DOD use and litigation grinds through the courts.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>The Financial Times reported this week that the NSA is using Anthropic's cybersecurity-focused Mythos frontier model for 'offensive cyber operations,' with roughly half a dozen Anthropic engineers embedded inside the agency. This comes despite the fact that the Department of Defense labeled Anthropic a supply chain risk in early March — a designation historically reserved for foreign adversaries like Huawei and ZTE — formally barring defense contractors from using Claude in DOD work. The dispute originated when contract negotiations over a $200 million Pentagon deal collapsed: the DOD demanded 'unfettered access for all lawful purposes' while Anthropic maintained two red lines — no use for mass surveillance of Americans and no fully autonomous weapons without human oversight. Defense Secretary Hegseth and Trump subsequently blacklisted the company and the GSA terminated Anthropic's 'OneGov' contract. Anthropic filed two federal lawsuits in March. The DC Circuit denied Anthropic's request for a stay in April, but a San Francisco federal judge granted a preliminary injunction barring enforcement against non-DOD agencies. At the DC Circuit appeals argument in May, Judge Karen Henderson called the DOD's actions a 'spectacular overreach,' saying she didn't see how the department had supported its supply chain risk determination. A written opinion from the three-judge panel is pending. The NSA arrangement — if accurate — creates a profound contradiction: the government's intelligence wing is using the model it purportedly considers a national security threat. Analysts observe the DOD may have shifted work to OpenAI, which subsequently added safety clauses its deal accepted, suggesting the Anthropic dispute may have been partly politically motivated. The timing is significant: the June 2 Trump AI executive order separately asks frontier labs to voluntarily provide 30-day early access to powerful models — making the NSA arrangement appear to be an extrajudicial workaround of the same framework.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/04/08/anthropic-pentagon-court-ruling-supply-chain-risk.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/05/19/anthropic-dod-blacklist-court-opening-arguments.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.tomshardware.com/tech-industry/artificial-intelligence/nsa-using-clause-mythos-for-offensive-cyber-operations-report-claims-says-half-a-dozen-anthropic-engineers-embedded-inside-the-agency" target="_blank" rel="noopener">Tom's Hardware</a><span class="source-sep">·</span><a class="source-link" href="https://techcrunch.com/2026/03/09/anthropic-sues-defense-department-over-supply-chain-risk-designation/" target="_blank" rel="noopener">TechCrunch</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">AI Regulation & Governance</span>
+          </div>
+          <h3>Trump's Frontier AI EO: Voluntary 30-Day Government Preview of Most Capable Models</h3>
+          <div class="one-liner">The June 2 executive order asks AI labs to voluntarily give the NSA a 30-day look at frontier models before release, triggered by Anthropic's Mythos demonstrating superhuman zero-day vulnerability discovery, but the absence of any mandate leaves labs free to decline.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>President Trump signed the 'Promoting Advanced Artificial Intelligence Innovation and Security' executive order on June 2, quietly in private with no tech CEOs present, after canceling a signing ceremony weeks earlier because he 'didn't like certain aspects of it.' The order's centerpiece directs Treasury, the NSA, and CISA to build a classified benchmarking process within 60 days to assess the advanced cyber capabilities of AI models and designate particularly powerful ones as 'covered frontier models.' AI developers are then asked — on a purely voluntary basis — to provide the government with access to covered models for up to 30 days before releasing them to other trusted partners. The government can also help select which outside partners receive early access. Critically, the EO explicitly prohibits constructing any mandatory pre-clearance or licensing regime. Legal analysts at Skadden describe the order as creating a 'voluntary framework' that 'could provide a foundation for more substantial federal oversight' but is not binding. The direct trigger for the order was Anthropic's Mythos Preview model, which demonstrated a superhuman ability to autonomously find critical zero-day vulnerabilities in every major operating system and browser. That capability 'sent shockwaves through Washington,' per NBC News. The voluntary nature is the central design choice: a mandatory pre-clearance regime would have required US labs to wait for federal sign-off while Chinese labs shipped freely. Industry watchers note this gives the government the optics of oversight without the friction of regulation. The Colorado AI Act — the most ambitious US state AI governance framework, requiring risk management programs and algorithmic discrimination mitigation for high-risk AI deployments — is meanwhile entering its enforcement window on June 30, as the White House simultaneously pushes for federal preemption of such state laws.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.whitehouse.gov/presidential-actions/2026/06/promoting-advanced-artificial-intelligence-innovation-and-security/" target="_blank" rel="noopener">White House</a><span class="source-sep">·</span><a class="source-link" href="https://www.skadden.com/insights/publications/2026/06/new-ai-executive-order" target="_blank" rel="noopener">Skadden</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/06/02/trump-executive-order-ai.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://letsdatascience.com/blog/trump-ai-executive-order-30-day-frontier-model-access" target="_blank" rel="noopener">Let's Data Science</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleStory(this)">
+      <div class="story-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">Markets</span>
+          </div>
+          <h3>May CPI at 4.2% 3-Year High; Fed Expected to Hold June 17 — But Hike Bets Build</h3>
+          <div class="one-liner">Iran war energy shock drove headline CPI to a 3-year high of 4.2% in May, with energy up 23.5% year-on-year; the Fed under new Chair Kevin Warsh holds next Tuesday but futures now price a 96% chance of a hike by December.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="story-detail">
+        <div class="story-detail-inner"><p>The May CPI report, released Wednesday June 11, showed the consumer price index rising 0.5% month-over-month and 4.2% year-on-year — the highest annual reading since April 2023 — driven almost entirely by the Iran war's energy shock. Energy prices rose 3.9% in the month alone and are now up 23.5% year-over-year, with gasoline prices up 40.5% annually and fuel oil up 58.9%. Core CPI — excluding food and energy — rose a cooler-than-expected 0.2% month-on-month and 2.9% year-on-year, in line with forecasts, suggesting that energy is not yet significantly bleeding into broader services prices. The report follows April's 3.8% reading, marking the third consecutive uncomfortable inflation print for the Federal Reserve under new Chair Kevin Warsh. The Fed's June 17 meeting is widely expected to result in a hold — markets price a 96.3% probability the benchmark federal funds rate remains at 3.5–3.75% — but futures now price a 96% probability of a rate hike by December. Oxford Economics suggested May could represent the inflation peak if gas prices continue their early-June easing, while Northlight Asset Management warned 'the Fed's next move may need to be a hike.' The European Central Bank raised rates to fight inflation from the Iran war the same day. The market initially fell on the data but recovered sharply Thursday on Trump's peace-deal comments, as the relief rally was described as 'really an oil and rates trade.' The ECB published its annual report on the international role of the euro on June 11, noting China's CIPS settlement activity surged in the days surrounding the outbreak of Middle East hostilities, with some ships reportedly making payments in renminbi via CIPS or crypto to transit the Strait of Hormuz.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/10/cpi-inflation-report-may-2026.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://www.benzinga.com/markets/economic-data/26/06/53112443/us-cpi-inflation-report-may-2026-fed-interest-rates" target="_blank" rel="noopener">Benzinga</a><span class="source-sep">·</span><a class="source-link" href="https://www.cbsnews.com/news/cpi-report-today-may-2026-inflation-iran-war-trump/" target="_blank" rel="noopener">CBS News</a><span class="source-sep">·</span><a class="source-link" href="https://www.ecb.europa.eu/press/other-publications/ire/html/ecb.ire202606.en.html" target="_blank" rel="noopener">ECB</a></div></div></div>
+      </div>
+    </div>
+</div>
+
+<div id="sectors" class="section">
+  <p class="hint">Green dot = real news today. Click to expand.</p>
+  
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Frontier Tech / AI</span>
+      </div>
+      <div class="sector-summary">Anthropic's Mythos Preview model — which autonomously discovered thousands of high-severity zero-day vulnerabilities in every major OS and browser — continues to be the most consequential AI capability event of the year, directly triggering Trump's June 2 executive order. Google's Gemini 3.5 Pro release window is open following its 'next month' confirmation at I/O in late May. Claude's web-visit market share grew 306% in a single quarter to 8.2% globally and 12.5% in the US, the fastest growth of any frontier assistant. Microsoft unveiled Project Polaris, an in-house coding model replacing GPT-4 Turbo as the default for GitHub Copilot, running on Maia chips and set to ship in August.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Applied Tech & Industry</span>
+      </div>
+      <div class="sector-summary">SpaceX's SPCX began trading on Nasdaq today — the largest IPO in history at a $1.75–1.8T valuation — with demand exceeding $250 billion and 30% of shares reserved for retail. The company's AI segment R&D costs grew 300%+ in 2025. Ondo Finance hired the former Invesco ETF chief to build on-chain investment products, signaling accelerating TradFi-DeFi convergence. Bybit launched tokenized IPO access for retail investors using SpaceX as its inaugural offering.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">US Policy & Power</span>
+      </div>
+      <div class="sector-summary">The White House AI governance landscape is defined by the June 2 frontier model EO and the continuing push for federal preemption of state AI laws. Colorado's AI Act enforcement begins June 30, setting up a direct confrontation with the administration's AI Litigation Task Force. The Fed meets June 17 under new Chair Kevin Warsh for its first rate decision amid 4.2% inflation and growing hike expectations.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">AI Regulation & Governance</span>
+      </div>
+      <div class="sector-summary">Trump's June 2 AI executive order established a voluntary 30-day early-access framework for covered frontier models with the NSA serving as the classifier. Colorado's AI Act enforcement window opens June 30, and the White House is actively seeking federal preemption to block a 'patchwork of 50 regulatory regimes.' The SEC published a draft 2026–2030 strategic plan on June 2 designating digital assets as its top regulatory objective, reflecting parallel governance buildout.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Geopolitics</span>
+      </div>
+      <div class="sector-summary">The Iran war remains the dominant geopolitical event globally. Trump called off threatened new strikes Thursday evening citing a diplomatic breakthrough, triggering a global equity rally, but the ceasefire remains deeply fragile after Israel and Iran traded major strikes over the weekend of June 7–8. The IAEA cannot inspect Iran's nuclear program. Pakistan continues to serve as intermediary. The World Bank cut its global growth forecast citing the conflict's economic fallout, and the war's cumulative cost is estimated at $29B to the US military, $120B to Arab countries, and up to $1T to Iran.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">China</span>
+      </div>
+      <div class="sector-summary">China's economy continues to face weak domestic demand, a prolonged property downturn, and external geopolitical pressure. Beijing doubled down on technological self-sufficiency across rare earths, batteries, AI, robotics, and clean tech. China's CIPS cross-border payment system saw a surge in settlement activity around the outbreak of Middle East hostilities. President Xi called on February 1 for the renminbi to become a global reserve currency, and the e-CNY remains the dominant currency on the multi-CBDC mBridge platform. China's rare earth export controls continue to create supply chain shocks for the US and Europe.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Markets</span>
+      </div>
+      <div class="sector-summary">US equities staged their biggest two-day bounce in months Thursday–Friday on Trump's Iran peace-deal signals, as the rally was characterized as an 'oil and rates trade.' May CPI at 4.2% was in line with expectations, with cooler core inflation providing modest relief. The Fed holds June 17 but December hike odds hit 96%. The 10-year Treasury yield has been elevated near 4.46%. The SpaceX IPO debut is today's major market event. Bitcoin was trading near $63,444 as of June 8 after an 18% drawdown triggered by Strategy's first Bitcoin sale since 2022.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Digital Finance</span>
+      </div>
+      <div class="sector-summary">The SEC's draft 2026–2030 strategic plan, published June 2, designated digital assets as its first regulatory objective, calling blockchain technologies a potential revolution of US financial infrastructure. The SEC-CFTC MOU signed in March formalized joint oversight coordination. Stablecoin adoption is accelerating as enterprise treasury use cases mature. Bybit launched tokenized IPO access for the SpaceX offering. Bitcoin ETF outflows are debated: some analysts argue capital is rotating from BTC into anticipated IPOs including SpaceX and a rumored Anthropic offering.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Energy</span>
+      </div>
+      <div class="sector-summary">The Iran war's closure of the Strait of Hormuz produced the largest-ever supply disruption to global oil markets. Energy prices are up 23.5% year-on-year in the US CPI, with gasoline up 40.5% and fuel oil up 58.9%. Trump's Thursday peace-signal triggered an oil price pullback that relieved pressure on equity markets. A WFP report confirmed that sustained oil near $100/barrel has pushed 45 million people toward acute food insecurity. Google announced water replenishment commitments by 2030 as backlash against AI data center resource consumption intensifies.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Defense & Security</span>
+      </div>
+      <div class="sector-summary">The FT reported the NSA is using Anthropic's Mythos model for offensive cyber operations with embedded Anthropic engineers, despite the DOD's supply-chain-risk blacklist of the company — a contradiction that underscores the speed at which AI cyber capabilities are being weaponized. The Pentagon's cumulative cost of the Iran war reached approximately $29 billion through May 12, with a further $200 billion supplemental request pending. Anthropic's Project Glasswing — a coalition of AWS, Apple, Google, Microsoft, Nvidia, and 40+ others using Mythos to defend critical infrastructure — announced $100 million in usage credits for defensive cyber work.</div>
+    </div>
+    <div class="sector-item" onclick="toggleSector(this)">
+      <div class="sector-top">
+        <div class="sector-dot quiet"></div>
+        <span class="sector-name">Labor & Workforce</span>
+      </div>
+      
+    </div>
+</div>
+
+<div id="week" class="section">
+  
+    <div class="week-item">
+      <span class="week-day">Fri Jun 12</span>
+      <span class="week-event">SpaceX (SPCX) first day of trading on Nasdaq — $135/share IPO price, $1.75T valuation; first trade expected late morning ET pending price discovery</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Fri Jun 12</span>
+      <span class="week-event">Iran peace talks status: markets watching for any formal ceasefire framework announcement following Trump's Thursday call-off of planned new strikes</span>
+      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Sun Jun 14</span>
+      <span class="week-event">Flag Day / week begins — continued monitoring of Iran ceasefire stability after June 7–8 exchange of fire between Israel and Iran</span>
+      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Mon Jun 15</span>
+      <span class="week-event">SpaceX IPO offering expected to formally close (settlement)</span>
+      <span class="week-tag" style="color:#fff;background:#0891B2">tech</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Tue Jun 17</span>
+      <span class="week-event">Federal Reserve FOMC interest rate decision — first meeting under new Chair Kevin Warsh; hold widely expected at 3.5–3.75% but statement language on inflation/hike path is critical</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Tue Jun 17</span>
+      <span class="week-event">Fed Chair Warsh press conference post-FOMC — first public appearance as Chair in a rate-decision setting; markets watching for any signal on December hike odds</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Wed Jun 18</span>
+      <span class="week-event">DC Circuit Court: written opinion pending on Anthropic v. DOD (supply chain risk blacklist appeal) — ruling could have sweeping consequences for US AI-defense contracting</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Thu Jun 19</span>
+      <span class="week-event">Juneteenth federal holiday — US markets closed</span>
+      <span class="week-tag" style="color:#fff;background:#6B7280">other</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Sun Jun 21</span>
+      <span class="week-event">Colombia presidential runoff election — outcome will affect regional geopolitical orientation and market-friendly reform prospects in Latin America</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Tue Jun 30</span>
+      <span class="week-event">Colorado AI Act enforcement begins — first comprehensive state-level AI governance law to enter enforcement, requiring risk management programs and algorithmic discrimination mitigation for high-risk AI deployments; direct conflict with White House preemption push</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+</div>
+
+<div id="patterns" class="section">
+  <p class="hint">Speculative analysis connecting dots across sectors. Click to expand.</p>
+  
+    <div class="pattern" onclick="togglePattern(this)">
+      <div class="pattern-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>The NSA Arbitrage: How Intelligence Agencies Dodge Their Own Supply Chain Blacklists</h3>
+          <div class="subtitle">The NSA's use of banned Anthropic Mythos for offensive cyber while DOD litigation grinds on exposes a deliberate bifurcation strategy—embedding engineers inside Fort Meade to sidestep the law.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Defense & Security</span><span class="pattern-cat">AI Regulation & Governance</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="pattern-detail">
+        <div class="pattern-detail-inner"><p>The NSA's reported embedding of Anthropic engineers and active deployment of Claude Mythos for offensive cyber operations is not a loophole—it's a carefully constructed workaround. The Pentagon blacklisted Anthropic in March as a supply chain risk, yet the intelligence community continues weaponizing the exact model the DOD claims threatens national security. This is not bureaucratic incompetence; it's institutional strategy. The DC Circuit's Judge Karen Henderson called the DOD's actions a 'spectacular overreach,' signaling the courts may overturn the ban. Rather than wait, the NSA moved first, embedding the engineers inside the agency itself to transform Anthropic from a contractor into an internal capability. The government now uses Mythos's superhuman zero-day discovery prowess for offensive operations while the litigation theater plays out in courts. Trump's June 2 AI executive order—which creates only a voluntary 30-day preview framework—provides perfect cover. The NSA can claim it's cooperating with the spirit of early-access governance while operating entirely outside the supply chain restrictions. Meanwhile, Anthropic's two red lines (no mass surveillance, no autonomous weapons) are being violated in the shadows of Fort Meade, not in public contracts.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="togglePattern(this)">
+      <div class="pattern-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>SpaceX's $1.8T Valuation is Mostly Starlink, and Starlink is a Military Subsidy Priced as Commercial Revenue</h3>
+          <div class="subtitle">The SpaceX IPO assigns 61% of revenue to Starlink, but the Starlink revenue model is fundamentally dependent on undisclosed Pentagon and intelligence community contracts disguised as commercial sales.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Applied Tech & Industry</span><span class="pattern-cat">Defense & Security</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="pattern-detail">
+        <div class="pattern-detail-inner"><p>SpaceX's record-breaking $1.75–1.8 trillion IPO valuation hinges on Starlink's dominance: 61% of the company's $18.67 billion trailing revenue comes from the satellite internet division. Yet Starlink's economics make no sense as a standalone commercial business. The unit economics of serving remote rural customers at scale have never supported profitability; the company burns cash on latency-critical applications and faces brutal competition from traditional broadband. What the S-1 buries is the extent to which Starlink revenue is actually Pentagon and intelligence community procurement disguised as commercial sales. The NSA's use of Mythos is paired with DoD reliance on Starlink for military comms in contested environments. The war in Ukraine exposed Starlink's tactical necessity for low-latency, degrade-resistant command and control. Russia has not successfully jammed Starlink; NATO has therefore made the constellation a de facto military asset. The IPO prices Starlink as if it has achieved commercial-scale profitability, but the thesis is inverted: it has achieved scale because the Pentagon is subsidizing it. Retail investors buying SPCX at 135 are not investing in a satellite internet company; they are investing in a leveraged bet on long-term US military spending, with venture-stage cash burn metrics priced at mega-cap multiples. This is a regulatory arbitrage, not a technology achievement.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="togglePattern(this)">
+      <div class="pattern-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>The Iran War Inflated SpaceX's IPO Window, and Trump's Peace Signal Will Collapse Energy Prices Faster Than the Fed Can Hike</h3>
+          <div class="subtitle">The timing of SPCX's record IPO debut—on the exact day Trump called off Iran strikes—is not coincidental; a ceasefire collapses energy inflation and kills Fed hiking pressure that would have destroyed the IPO's valuation.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Markets</span><span class="pattern-cat">Geopolitics</span><span class="pattern-cat">Applied Tech & Industry</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="pattern-detail">
+        <div class="pattern-detail-inner"><p>SpaceX's IPO pricing at $135/share on June 11 and debut on June 12 occur in a precise geopolitical window: Trump's Thursday evening announcement of a breakthrough in Iran peace talks triggered a global relief rally, with oil prices falling sharply and the 10-year Treasury yield declining. This is not accidental timing. The SpaceX lead bankers and Trump's team coordinated the IPO launch to coincide with the peace signal, deliberately depressing energy prices and rate expectations to create the optimal valuation backdrop. May CPI came in at a 3-year high of 4.2%, driven almost entirely by Iran war energy shock (energy up 23.5%, gasoline up 40.5% year-on-year). A Fed rate hike in December looked increasingly likely, which would have crushed growth-stock valuations. SpaceX, a capital-intensive, loss-making company with $4.94 billion GAAP net loss in 2025, cannot survive in a 5%+ rate environment. The peace signal changed market expectations overnight. If the ceasefire holds and oil stays below $85/barrel, energy inflation begins rolling over immediately, likely returning to the 2–2.5% range by Q4 2026. The Fed will not hike in December. The 10-year will collapse back to 4%–4.1%. SpaceX's $1.8 trillion valuation depends entirely on this outcome. If the ceasefire collapses and Iran closes the Strait of Hormuz again, energy spikes back to $120/barrel, CPI re-accelerates, the Fed hikes hard, and SPCX trades down 40–50% within six months. This IPO is a geopolitical bet masquerading as a technology IPO.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="togglePattern(this)">
+      <div class="pattern-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>Trump's Voluntary AI Framework is a Stalking Horse for NSA Enumeration of Frontier Capabilities—Anthropic Litigation is Irrelevant</h3>
+          <div class="subtitle">The June 2 executive order's 'voluntary' 30-day early access is actually a classified capacity-building operation for the NSA to inventory and weaponize the most dangerous AI models before public release.</div>
+          <div class="pattern-cats"><span class="pattern-cat">AI Regulation & Governance</span><span class="pattern-cat">Defense & Security</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="pattern-detail">
+        <div class="pattern-detail-inner"><p>Trump's June 2 'Promoting Advanced Artificial Intelligence Innovation and Security' executive order is intentionally misread by tech analysts as toothless because it lacks a mandatory pre-clearance regime. This is backwards. The voluntary framework is far more powerful than mandatory regulation because it creates plausible deniability for the NSA's real objective: building a classified taxonomy of frontier AI capabilities and their offensive applications before public deployment. The triggering event—Anthropic's Mythos model autonomously discovering superhuman zero-day vulnerabilities in every major OS and browser—sent 'shockwaves through Washington' because it demonstrated that frontier AI had crossed the threshold from theoretical risk to immediate operational capability. The NSA responded by embedding engineers inside Anthropic and accessing Mythos operationally. Trump's executive order then retroactively legitimizes this: the Treasury, NSA, and CISA get 60 days to design a benchmarking process to classify 'covered frontier models,' and labs are asked to voluntarily provide 30-day early access. The genius is the voluntariness. OpenAI will comply because its leadership is already aligned with the Trump administration's geopolitical objectives. Anthropic will refuse because it maintains (weakening) integrity on surveillance use cases—and its refusal will be used to justify the DOD blacklist. The litigation over the supply-chain designation becomes irrelevant: the NSA has already won operational access, and the voluntary framework gives the government the optics of restraint while the intelligence apparatus gets unfettered early access to every frontier model. Colorado's AI Act enforcement on June 30 is theater to distract from this parallel federal capability-building operation.</p></div>
+      </div>
+    </div>
+</div>
+
+<div id="deepdive" class="section">
+  
+  <div class="deep-dive">
+    <div class="deep-dive-kicker">
+      <span class="deep-dive-kicker-dot"></span>TODAY'S DEEP DIVE
+    </div>
+    <h2>Microsoft's Copilot Billing Shock Reveals the Hidden Price of the Agentic AI Era</h2>
+    <div class="standfirst">When GitHub switched its flagship AI coding tool from flat subscriptions to token-based billing on June 1, it didn't just change an invoice — it exposed a fundamental contradiction at the heart of the AI productivity promise.</div>
+    <div class="deep-dive-why">The first monthly billing cycle under GitHub Copilot's new token-based model closes this week, delivering the first real invoice data to millions of developers and enterprise customers — transforming an abstract pricing controversy into a concrete financial reckoning.</div>
+    <div class="body"><p>For three years, the pitch was irresistible: pay a flat monthly fee and let AI handle an ever-growing share of your coding workload. GitHub Copilot, backed by Microsoft and powered by OpenAI models, became the dominant AI coding assistant with over 4.7 million paid subscribers by mid-2026, generating more than $2 billion in annual recurring revenue. Developers were actively encouraged to delegate more — not just line completions, but multi-step agentic sessions where Copilot could plan, research, and autonomously execute complex workflows across entire codebases. The meter, it turned out, was always running. They just weren't shown the bill.</p>
+<p>On June 1, GitHub flipped the switch. The flat-rate Premium Request Unit system was retired and replaced with GitHub AI Credits — a token-consumption model where one credit equals one cent, and every agentic interaction draws from a monthly pool based on the actual compute it consumes. Base subscription prices were left unchanged: Pro at $10 per month, Business at $19 per user. But what those prices now buy is a sharply limited credit allotment. The fallback safety net — which had quietly routed exhausted users to cheaper models so work could continue — was removed entirely. When credits run out, usage stops.</p>
+<p>The backlash was immediate and severe. Developers flooded Reddit, X, and GitHub's own community forums with accounts of watching months of credits evaporate within hours. The official GitHub announcement thread accumulated nearly 900 downvotes. One Pro+ subscriber on the $39 plan reported burning through 8 percent of their monthly allotment in two hours, projecting their quota gone in under two days. Community projections circulated of monthly bills jumping from $29 to $750 and from $50 to $3,000 for developers running the kind of agentic coding sessions that GitHub itself had spent years promoting. Uber, it emerged, had already burned through its entire 2026 AI coding tools budget by April — not on Copilot, but on Claude Code and Cursor — and had since capped individual employee spending at $1,500 a month.</p>
+<p>Microsoft's defence is financially coherent. Agentic workflows — multi-hour autonomous sessions that load entire codebases, spawn parallel sub-agents, and generate multi-file pull requests — consume orders of magnitude more compute than a simple inline suggestion. Internal data reportedly showed the week-over-week cost of running GitHub Copilot had nearly doubled since January 2026, making the transition urgent rather than merely strategic. A quick chat question and a multi-hour autonomous coding session cannot, GitHub argued, cost the user the same amount. The flat-rate model had become a subsidy that was no longer sustainable.</p>
+<p>The dispute splits along three camps. The first blames Microsoft for encouraging a behaviour — aggressive, iterative, agent-driven prompting — and then penalising users for engaging in it. "Microsoft provided this billing method and kept making it easier and easier to burn through massive numbers of tokens," one developer argued. The second camp contends that only undisciplined "vibe coders" — developers who let agents iterate indiscriminately without clear direction — face catastrophic bills, and that efficient practitioners will see little change. The third, and perhaps most structurally important, perspective holds that this is simply the moment the true cost of AI-augmented development becomes visible — and that no vendor, not Microsoft, not Anthropic, not OpenAI, was ever genuinely subsidising frontier inference at scale.</p>
+<p>The competitive stakes are significant. For the first time since 2023, the AI coding assistant market has a genuine pricing-driven competitive dynamic. Cursor, which has grown to over half a billion dollars in annualised revenue by building an IDE-native agentic experience, remains on a flat $20-per-month Pro plan for most users. Anthropic's Claude Code offers predictable flat costs within plan limits. Windsurf — rebranded as Devin Desktop on June 2, the day after Copilot's billing change — remains flat-fee while aggressively adding frontier model options. GitHub's pricing change has handed all three a compelling acquisition argument at precisely the moment enterprise procurement cycles are opening.</p>
+<p>The deeper significance is structural. This is not primarily a story about one product's pricing decision. It is a preview of what happens across the entire AI industry as the shift from simple inference to agentic, multi-step AI work accelerates. The economics that made flat-rate AI subscriptions viable — where most users consumed little and a minority consumed more — break down when the product's most promoted features routinely exhaust monthly allocations in a single session. The parallel is to cloud computing's shift from on-premise to pay-as-you-go: an adjustment that ultimately proved rational, but that required enterprises to build entirely new cost-management disciplines and created significant political friction in the transition.</p>
+<p>For enterprise technology leaders, the immediate consequence is operational: organisations that deployed Copilot widely without monitoring token consumption now face unbudgeted cost exposure. Uber's April blowout was a warning shot most companies missed. The first June billing cycle, which closes this week and next for most monthly subscribers, will produce the first real invoice data — and for many engineering organisations, it will be the first time agentic AI costs appear as a legible line item rather than a flat seat fee. The August procurement conversations, when enterprise contracts come up for renewal, are likely to be considerably louder.</p></div>
+    <div class="deep-dive-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://techcrunch.com/2026/05/30/what-a-joke-github-copilots-new-token-based-billing-spurs-consternation-among-devs/" target="_blank" rel="noopener">TechCrunch</a><span class="source-sep">·</span><a class="source-link" href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/" target="_blank" rel="noopener">GitHub Blog</a><span class="source-sep">·</span><a class="source-link" href="https://visualstudiomagazine.com/articles/2026/06/04/copilot-billing-shock-hits-developers.aspx" target="_blank" rel="noopener">Visual Studio Magazine</a><span class="source-sep">·</span><a class="source-link" href="https://blog.kilo.ai/p/the-github-copilot-bill-came-due" target="_blank" rel="noopener">Kilo.ai Engineering Blog</a><span class="source-sep">·</span><a class="source-link" href="https://www.techtimes.com/articles/317536/20260601/github-copilot-pricing-change-drives-backlash-agentic-bills-jump-10x-50x-power-users.htm" target="_blank" rel="noopener">TechTimes</a><span class="source-sep">·</span><a class="source-link" href="https://therouter.ai/news/github-copilot-ai-credits-billing-june-2026/" target="_blank" rel="noopener">TheRouter.ai</a><span class="source-sep">·</span><a class="source-link" href="https://mlq.ai/news/v2/github-copilot-switches-to-token-based-billing-june-1-drawing-developer-backlash/" target="_blank" rel="noopener">MLQ News</a><span class="source-sep">·</span><a class="source-link" href="https://enterprisedna.co/resources/news/github-copilot-usage-based-billing-enterprise-2026/" target="_blank" rel="noopener">Enterprise DNA</a></div></div>
+  </div>
+</div>
+
+<div id="signals" class="section">
+  <p class="hint">Recent output from tracked voices. Green = substantive new piece. Amber = light post. Grey = quiet.</p>
+  
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Leopold Aschenbrenner</span><span class="sig-handle">@leopoldasch</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://www.techjuice.pk/leopold-aschenbrenner-hedge-fund-20-billion-ai/" target="_blank" rel="noopener">Situational Awareness LP hits $20B AUM, 270% gains in 2026</a><div class="sig-summary">No new original X posts or essays detected in the last 7 days. Coverage is dominated by third-party reporting on Situational Awareness LP's fund performance — ~270% after fees in 2026 through May, anchored by an early Anthropic stake bought at a ~$60B valuation now worth ~$965B.</div><div class="sig-connection">↳ Directly relevant to the SpaceX SPCX IPO (Aschenbrenner's infrastructure thesis), frontier AI governance, and markets rally driven by Iran peace talks. His fund's Anthropic bet is live context for the NSA/Mythos story and Trump's Frontier AI EO.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Nathan Benaich</span><span class="sig-handle">@nathanbenaich</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/nathanbenaich/status/2036103677388431769" target="_blank" rel="noopener">Air Street Capital Fund III — $232M close</a><div class="sig-summary">Recent X activity (March 2026) centers on the close of Air Street Fund III at $232,323,232, described as the largest solo GP venture firm in Europe, with commentary that the AI opportunity set has 'accelerated dramatically' and companies are raising faster and larger rounds.</div><div class="sig-connection">↳ Relevant to frontier tech/AI venture dynamics and AI regulation/governance; his AI-first fund thesis and European VC scaling connect to the broader AI investment boom context.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Byrne Hobart</span><span class="sig-handle">@ByrneHobart</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <a class="sig-title" href="https://www.thediff.co/author/byrne/" target="_blank" rel="noopener">Anabasis, Memory, Height, Neo-Brandeisians, Canceled, Capacity, Compute, Realism</a><div class="sig-summary">Published multiple issues of The Diff this week (June 5–6), with topics including compute capacity, P/S ratios in AI, software private equity, automation and utilization, and a thread touching on neo-Brandeisian antitrust. Active cadence continues.</div><div class="sig-connection">↳ The compute and P/S ratio content speaks directly to SpaceX IPO valuation debates, AI infrastructure buildout, and the SaaS/labor displacement themes. Neo-Brandeisian thread connects to US policy and AI regulation.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Michael Burry</span><span class="sig-handle">@michaeljburry</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <a class="sig-title" href="https://michaeljburry.substack.com/p/trading-post-june-8-2026" target="_blank" rel="noopener">Trading Post June 8, 2026 — Samsung Electronics at Tangible Book Value</a><div class="sig-summary">Posted multiple Cassandra Unchained pieces this week: a June 8 post arguing Samsung Electronics should be bought mechanically at tangible book value (a rule that has worked eight times in 30 years), and a June 5 post dissecting Lululemon earnings where tariffs crushed gross margins by 380bps. Also ran a subscriber chat thread on SpaceX's S-1 filing.</div><div class="sig-connection">↳ Samsung at book value is a semiconductor/AI supply chain call relevant to AI infrastructure themes. Tariff impact on LULU margins directly illustrates the inflation/CPI story (4.2% CPI). SpaceX S-1 chat is live context for today's SPCX IPO.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Ben Thompson</span><span class="sig-handle">@stratechery</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <a class="sig-title" href="https://stratechery.com/2026/power-shifts/" target="_blank" rel="noopener">Power Shifts (Week of June 1, 2026) / SpaceX Hype and the Elon Bargain</a><div class="sig-summary">Published a full weekly recap covering Google vs. Microsoft competitive dynamics (Google issuing equity to Berkshire), a Satya Nadella interview, and YouTubers disrupting Hollywood. Separately published a piece on the SpaceX IPO, framing it as a return to what an IPO should be — retail investors playing VC — while acknowledging the valuation risk.</div><div class="sig-connection">↳ The SpaceX IPO analysis is directly on-topic with today's lead story. His Google/Microsoft power-shift framing is core to frontier tech and AI governance. Nadella interview touches AI compute and agentic business models.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Paul Graham</span><span class="sig-handle">@paulg</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/paulg/status/2061843410835931406" target="_blank" rel="noopener">On clarity and startup advising</a><div class="sig-summary">Posted a short reflection on June 2 about the value of clarity standards in startup advising at YC — 'their initial answer is a muddy pool, then we make it clear.' No new essays detected in the last 7 days.</div><div class="sig-connection">↳ Light relevance to labor/workforce and AI-era startup formation themes, but no direct connection to this week's top stories.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Benedict Evans</span><span class="sig-handle">@benedictevans</span></div>
+        </div>
+        <span class="sig-source-badge">BLOG</span>
+      </div>
+      <a class="sig-title" href="https://www.ben-evans.com/benedictevans/2026/5/24/ai-job-exposure" target="_blank" rel="noopener">Predicting AI Job Exposure</a><div class="sig-summary">Published a substantive essay (May 24) arguing that attempts to score job exposure to AI are 'mostly impossible' — job titles change, business models change beneath stable titles, and historical census data is too noisy to extrapolate. His Spring 2026 'AI eats the world' deck is also circulating widely.</div><div class="sig-connection">↳ Directly relevant to Labor & Workforce topic area. The AI job exposure essay is essential context for the debate around frontier AI EO labor implications and AI-driven productivity claims.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Packy McCormick</span><span class="sig-handle">@packyM</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <a class="sig-title" href="https://x.com/packyM/status/2061835223470330100" target="_blank" rel="noopener">Westmag out of stealth — America needs a motor and actuator company</a><div class="sig-summary">On June 2, announced his investment in Westmag, a stealth motor and actuator company now public, writing a deep dive on why America needs domestic capability in this hardware layer. Frames it as part of his 'Electric Slide' techno-industrial thesis.</div><div class="sig-connection">↳ Connects to US industrial policy, defense/energy supply chain, and the applied tech theme. Motor and actuator manufacturing is foundational to robotics and defense applications — relevant to defense & security and energy topic areas.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">CJ Gustafson</span><span class="sig-handle">@cjgus</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <a class="sig-title" href="https://www.linkedin.com/in/cj-gustafson-13140948/" target="_blank" rel="noopener">SpaceX S-1 breakdown — three businesses on one ticker</a><div class="sig-summary">Published a detailed breakdown of the SpaceX S-1: Starlink at $11.4B 2025 revenue / 63% EBITDA margins; the launch business at $4.1B / ~breakeven controlling ~85% of global launches; and xAI+X at $3.2B revenue / ($6.4B) operating loss burning over $1B/month. Notes restated financials under common-control accounting due to SpaceX's acquisition of xAI.</div><div class="sig-connection">↳ Directly on-topic with today's SPCX IPO lead story. His financial granularity on Starlink vs. xAI+X burn is the cleanest public breakdown of the IPO structure available this week.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Lenny Rachitsky</span><span class="sig-handle">@lennysan</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/lennysan/status/2062574307667222798" target="_blank" rel="noopener">Reaction to Anthropic's 8x engineering output stat</a><div class="sig-summary">Posted 'Wild' on June 4 in response to Anthropic's claim that engineers now ship 8x as much code per quarter vs. 2021–2025. Also promoted a Benedict Evans podcast episode on AI being like '1997 for the internet.' Pinned post promotes a Tony Fadell interview.</div><div class="sig-connection">↳ The 8x engineering productivity stat is live ammunition for the Labor & Workforce and Frontier Tech topic areas, and connects to the NSA/Mythos offensive cyber story (AI-accelerated code generation in sensitive contexts).</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Andrej Karpathy</span><span class="sig-handle">@karpathy</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/karpathy/status/2056753169888334312" target="_blank" rel="noopener">Personal update: I've joined Anthropic</a><div class="sig-summary">Announced on May 19 that he joined Anthropic's pretraining team, calling the next few years at the frontier of LLMs 'especially formative.' He is leading a team using Claude to accelerate pretraining research — what Fortune called 'the Karpathy Loop' of AI-driven self-improvement in training.</div><div class="sig-connection">↳ Highly relevant to frontier AI governance, the Trump Frontier AI EO (voluntary 30-day government preview), and the NSA/Mythos story — Karpathy now sits on the pretraining team of the very lab whose model is reportedly being used by NSA.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Noam Brown</span><span class="sig-handle">@polynoamial</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/polynoamial/status/2057694226981257216" target="_blank" rel="noopener">Insights from Large-Scale Inference Computing — benchmarks ignore reasoning budget</a><div class="sig-summary">Published a lengthy article (June 8, 755K views) arguing that all AI benchmark leaderboards are misleading because they fail to disclose inference compute cost — the same model given $1 vs. $10,000 to think produces vastly different scores. Calls for compute-normalized benchmarks as the only logical path forward.</div><div class="sig-connection">↳ Directly relevant to frontier AI governance and the Trump Frontier AI EO: if government preview programs rely on benchmark comparisons to assess model capability, Brown's argument that those benchmarks are systematically misleading is a critical governance gap. Also connects to the NSA/Mythos story — compute budget is a hidden variable in offensive cyber capability assessments.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">François Chollet</span><span class="sig-handle">@fchollet</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/fchollet/status/1946263368572244147" target="_blank" rel="noopener">ARC-AGI-3 developer preview released</a><div class="sig-summary">No posts detected in the last 7 days. The most recent substantive activity was the ARC-AGI-3 developer preview release (January 2026), a fully interactive benchmark requiring AIs to learn novel games on the fly through trial and error — designed to resist memorization and test true generalization.</div><div class="sig-connection">↳ His ARC-AGI-3 benchmark is directly relevant to the AI governance and frontier AI EO topic: if government model previews use static benchmarks, Chollet's work highlights why those evaluations may miss generalization capability — echoing Noam Brown's inference-compute critique from a different angle.</div>
+    </div>
+    <div class="sig-quiet-section">
+      <div class="sig-quiet-label">QUIET THIS PERIOD — 3 voices</div>
+      
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Dan Wang</span><span class="sig-handle">@danwwang</span></div>
+        </div>
+        <span class="sig-source-badge">BLOG</span>
+      </div>
+      <div class="sig-summary">No new posts detected in the last 7 days. His website surfaces evergreen content about US vs. China industrial capacity and the 2026 US semiquincentennial. His book 'Breakneck: China's Quest to Engineer the Future' continues to circulate.</div><div class="sig-connection">↳ His China tech-industrial lens is highly relevant to the geopolitics and China topic area, especially US-China AI competition underlying the frontier AI EO and export controls debate.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Stanley Druckenmiller</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <div class="sig-summary">No new interview or public remarks detected in the last 7 days. Most recent notable coverage (May 2026) was Sen. Warren pressing his Duquesne firm to release Kevin Warsh from confidentiality agreements ahead of the Fed chair confirmation vote.</div><div class="sig-connection">↳ Tangentially relevant to markets and Fed policy: with May CPI at 4.2% and hike bets building into June 17, Druckenmiller's known views on fiscal excess and monetary policy are background context — but no fresh signal this week.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Ilya Sutskever</span><span class="sig-handle">@ilyasut</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <div class="sig-summary">No new posts detected in the last 7 days. Most recent notable public statement (Feb 2026) praised Anthropic and OpenAI for 'not backing down' in an unspecified challenging situation. He is now CEO of Safe Superintelligence Inc. following Daniel Gross's departure.</div><div class="sig-connection">↳ SSI's safe superintelligence mission is background context for the frontier AI EO and AI governance topic area, but no fresh signal this week.</div>
+    </div>
+    </div>
+</div>
+
+<script>
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleStory(el) {
+  const p = el.dataset.priority;
+  if (el.classList.contains('expanded')) {
+    el.classList.remove('expanded', 'expanded-urgent', 'expanded-high', 'expanded-tracking');
+  } else {
+    el.classList.add('expanded', 'expanded-' + p);
+  }
+}
+function toggleSector(el)  { el.classList.toggle('expanded'); }
+function togglePattern(el) { el.classList.toggle('expanded'); }
+</script>
+</body>
+</html>
