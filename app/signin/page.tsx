@@ -9,7 +9,10 @@ const mono: React.CSSProperties = {
 
 export default async function SignInPage() {
   const session = await auth();
-  if (session) redirect("/dashboard");
+  // Match the (app) layout's guard exactly (`session?.user`). Checking only
+  // `session` can loop with the layout when auth() returns a truthy session
+  // that has no user (observed on Vercel): signin→dashboard→signin forever.
+  if (session?.user) redirect("/dashboard");
 
   return (
     <div
