@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/lib/auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { GitHubMark, GoogleMark } from "@/components/ProviderMarks";
 
 const mono: React.CSSProperties = {
   fontFamily: "'IBM Plex Mono', monospace",
@@ -202,6 +203,7 @@ export default async function LandingPage() {
                     cursor: "pointer",
                   }}
                 >
+                  <GitHubMark />
                   Sign in with GitHub
                 </button>
               </form>
@@ -230,6 +232,7 @@ export default async function LandingPage() {
                     cursor: "pointer",
                   }}
                 >
+                  <GoogleMark />
                   Sign in with Google
                 </button>
               </form>
