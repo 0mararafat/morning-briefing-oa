@@ -119,11 +119,9 @@ export function RunProgress() {
           width: "100%",
           maxWidth: 480,
           borderRadius: 20,
-          background: "var(--surface)",
-          backdropFilter: "blur(22px) saturate(1.3)",
-          WebkitBackdropFilter: "blur(22px) saturate(1.3)",
+          background: "var(--surface-solid)",
           border: "1px solid var(--border)",
-          boxShadow: "var(--shadow), inset 0 1px 0 var(--glass-hi)",
+          boxShadow: "var(--shadow)",
         }}
       >
         <div
