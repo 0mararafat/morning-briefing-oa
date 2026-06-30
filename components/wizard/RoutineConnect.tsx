@@ -62,6 +62,18 @@ export function RoutineConnect({ lastReceived }: { lastReceived: string | null }
     setTimeout(() => setCopied(""), 1600);
   }
 
+  // The host the routine must reach to deliver editions. Claude's scheduled
+  // routines run in a sandbox with a restricted egress allowlist, so this
+  // domain has to be allowed explicitly or the delivery POST is blocked (403).
+  const ingestHost = (() => {
+    if (!data) return "";
+    try {
+      return new URL(data.ingestUrl).host;
+    } catch {
+      return data.ingestUrl;
+    }
+  })();
+
   if (!data) {
     return (
       <div style={{ maxWidth: 580 }}>
@@ -127,6 +139,13 @@ export function RoutineConnect({ lastReceived }: { lastReceived: string | null }
             <>In Claude, create a new <strong style={{ color: "var(--text)", fontWeight: 600 }}>scheduled routine</strong>.</>,
             <>Paste the <strong style={{ color: "var(--text)", fontWeight: 600 }}>Routine prompt</strong> above as its instructions.</>,
             <>The prompt already carries your <strong style={{ color: "var(--text)", fontWeight: 600 }}>Ingest URL</strong> and <strong style={{ color: "var(--text)", fontWeight: 600 }}>Secret token</strong> so it can post each edition.</>,
+            <>
+              Allow this app in your environment&rsquo;s network settings. Claude
+              routines run in a sandbox that blocks outbound traffic by default,
+              so add{" "}
+              <code style={mono({ textTransform: "none", fontSize: 11.5, padding: "1px 6px", borderRadius: 5, background: "var(--surface-2)", border: "1px solid var(--border)", color: "var(--text)" })}>{ingestHost}</code>{" "}
+              to the <strong style={{ color: "var(--text)", fontWeight: 600 }}>allowed domains</strong> (egress allowlist) for the environment the routine runs in. Without this, delivery is blocked with a <strong style={{ color: "var(--text)", fontWeight: 600 }}>403</strong>.
+            </>,
             <>Schedule it just before your delivery time and save.</>,
           ].map((li, i) => (
             <li key={i} style={{ fontSize: 13.5, lineHeight: 1.5, color: "var(--text-2)" }}>{li}</li>
