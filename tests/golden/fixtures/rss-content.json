@@ -1,0 +1,24 @@
+{
+  "Ben Thompson": [
+    {
+      "title": "The Today Piece",
+      "url": "https://stratechery.com/a",
+      "published": "2026-06-29",
+      "summary": "A long summary xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    },
+    {
+      "title": "An Older Piece",
+      "url": "https://stratechery.com/b",
+      "published": "2026-06-20",
+      "summary": "Short older summary"
+    }
+  ],
+  "Dan Wang": [
+    {
+      "title": "China industrial note",
+      "url": "https://danwwang.substack.com/c",
+      "published": "2026-06-25",
+      "summary": "Notes on Chinese industrial policy"
+    }
+  ]
+}

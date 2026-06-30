@@ -1,0 +1,55 @@
+Today is Monday, June 29, 2026.
+
+Review recent output from a curated list of thinkers and analysts, then return a signal scan.
+
+TODAY'S TOP STORIES: US-Iran MOU Holds — But Switzerland Talks Already Hitting Turbulence | Fed Chair Warsh's Hawkish Debut Rocks Markets and Crypto | Anthropic Hits $965B Valuation, Files Confidentially for IPO | Colorado AI Act Gutted and Reset to Jan 2027 — State AI Regulation in Full Retreat | EU Picks EUROPA Consortium for Sovereign Open-Source Frontier AI Model
+TODAY'S TOPIC AREAS: Frontier Tech / AI, Applied Tech & Industry, US Policy & Power, AI Regulation & Governance, Geopolitics, China, Markets, Digital Finance, Energy, Defense & Security, Labor & Workforce
+
+RSS CONTENT RETRIEVED (last 7 days):
+### Dan Wang (@dkwang)
+- [China industrial note](https://danwwang.substack.com/c) — 2026-06-25
+  Notes on Chinese industrial policy…
+
+### Ben Thompson (@stratechery)
+- [The Today Piece](https://stratechery.com/a) — 2026-06-29
+  A long summary xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx…
+- [An Older Piece](https://stratechery.com/b) — 2026-06-20
+  Short older summary…
+
+
+VOICES TO SEARCH ON X / WEB (search ALL of these — combine with any RSS content above):
+Leopold Aschenbrenner (@leopoldasch): search recent X/Twitter posts
+Dan Wang (@dkwang): search recent X/Twitter posts
+Nathan Benaich (@nathanbenaich): search recent X/Twitter posts
+Stanley Druckenmiller: search [Stanley Druckenmiller interview remarks site:cnbc.com OR site:bloomberg.com OR site:ft.com]
+Byrne Hobart (@byrnehobart): search recent X/Twitter posts
+Michael Burry (@michaeljburry): search recent X/Twitter posts
+Paul Graham (@paulg): search recent X/Twitter posts
+Benedict Evans (@benedictevans): search recent X/Twitter posts
+Packy McCormick (@packym): search recent X/Twitter posts
+CJ Gustafson (@cjgus): search recent X/Twitter posts
+Lenny Rachitsky (@lennysan): search recent X/Twitter posts
+Andrej Karpathy (@karpathy): search recent X/Twitter posts
+Ilya Sutskever (@ilyasut): search recent X/Twitter posts
+Noam Brown (@noambrown): search recent X/Twitter posts
+François Chollet (@fchollet): search recent X/Twitter posts
+
+For each voice, combine their RSS content (if available above) with their most recent X posts, then return a JSON array covering ALL 16 voices in this exact order: Leopold Aschenbrenner, Dan Wang, Nathan Benaich, Stanley Druckenmiller, Byrne Hobart, Michael Burry, Ben Thompson, Paul Graham, Benedict Evans, Packy McCormick, CJ Gustafson, Lenny Rachitsky, Andrej Karpathy, Ilya Sutskever, Noam Brown, François Chollet
+
+[
+  {
+    "name": "Exact name as listed above",
+    "handle": "@handle or empty string",
+    "source": "substack" | "newsletter" | "x" | "essay" | "blog" | "mixed",
+    "signal": "strong" | "light" | "none",
+    "latest_title": "Title of most recent piece or post, or empty string",
+    "url": "Direct URL, or empty string",
+    "summary": "1-2 sentences on what they wrote or said. Empty string if nothing in 7 days.",
+    "connection": "How this connects to today's stories/topics. Empty string if none."
+  }
+]
+
+Signal levels: "strong" = substantive piece or thread (>200 words). "light" = brief post or short take. "none" = nothing in the last 7 days.
+Skip purely promotional, congratulatory, or off-topic content.
+IMPORTANT: Make at most 1 web search per voice. Do not search exhaustively.
+Return ONLY the JSON array. No markdown, no preamble.

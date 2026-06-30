@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#f3f5f7;
+    --surface:rgba(255,255,255,0.72); --surface-2:rgba(255,255,255,0.92); --surface-solid:#ffffff;
+    --text:#15171b; --text-2:#565b64; --text-3:#8b909a;
+    --border:rgba(18,22,28,0.12); --border-strong:rgba(18,22,28,0.20); --rule:rgba(18,22,28,0.85);
+    --accent:#005a9c; --accent-ink:#00497f; --accent-soft:rgba(0,90,156,0.10); --accent-soft-2:rgba(0,90,156,0.05);
+    --green:#0e8a4f; --green-soft:rgba(14,138,79,0.13);
+    --amber:#bd7f0e; --amber-soft:rgba(189,127,14,0.15);
+    --grey-dot:#bcc1c9;
+    --glass-hi:rgba(255,255,255,0.9);
+    --shadow:0 12px 40px rgba(18,22,28,0.10);
+    --shadow-sm:0 1px 3px rgba(18,22,28,0.08);
+    --ink-panel:#15171b;
+  }
+  html[data-theme="dark"]{
+    --bg:#0c0e11; --bg-2:#13161b;
+    --surface:rgba(30,35,42,0.55); --surface-2:rgba(34,40,48,0.74); --surface-solid:#15181d;
+    --text:#edeff3; --text-2:#9ba1ac; --text-3:#6a7079;
+    --border:rgba(255,255,255,0.13); --border-strong:rgba(255,255,255,0.22); --rule:rgba(237,239,243,0.82);
+    --accent:#3d8fdb; --accent-ink:#74b2ea; --accent-soft:rgba(61,143,219,0.18); --accent-soft-2:rgba(61,143,219,0.09);
+    --green:#2ec27e; --green-soft:rgba(46,194,126,0.18);
+    --amber:#e0a52f; --amber-soft:rgba(224,165,47,0.18);
+    --grey-dot:#5b626c;
+    --glass-hi:rgba(255,255,255,0.08);
+    --shadow:0 16px 46px rgba(0,0,0,0.5);
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.4);
+    --ink-panel:#1b1f26;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--text);font-family:'Spectral',Georgia,serif;-webkit-font-smoothing:antialiased;background:var(--bg);}
+  @keyframes mb-pulse{0%{box-shadow:0 0 0 0 var(--green-soft)}70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .mb-link{text-decoration:none;color:var(--text-3);transition:color .15s ease}
+  .mb-link:hover{color:var(--accent-ink)}
+  @media(max-width:760px){ .mb-2col{grid-template-columns:1fr!important} .mb-deck{grid-template-columns:1fr!important} .mb-mast{font-size:48px!important} .mb-nav{gap:14px!important} }
+</style>
+</helmet>
+<div style="min-height:100vh;">
+
+  <!-- Utility bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 28px;border-bottom:1px solid var(--border);max-width:1080px;margin:0 auto;">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--text-3);text-transform:uppercase;">Personal Edition · No. 142</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="Setup Wizard.dc.html" class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Change setup</a>
+      <span style="color:var(--border-strong);">·</span>
+      <a href="Archive.dc.html" class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Archive</a>
+      <span style="color:var(--border-strong);">·</span>
+      <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:transparent;color:var(--text-3);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>{{ themeLabel }}</button>
+    </div>
+  </div>
+
+  <div style="max-width:1080px;margin:0 auto;padding:0 28px;">
+
+    <!-- Masthead -->
+    <header style="text-align:center;padding:30px 0 18px;border-bottom:3px double var(--rule);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;color:var(--text-2);text-transform:uppercase;padding-bottom:18px;">
+        <span style="flex:1;text-align:left;">Tuesday</span>
+        <span style="flex:none;display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:mb-pulse 2.4s infinite;"></span>3 new · 1 light</span>
+        <span style="flex:1;text-align:right;">June 30, 2026</span>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.34em;color:var(--accent-ink);text-transform:uppercase;margin-bottom:6px;">The</div>
+      <h1 class="mb-mast" style="font-size:64px;line-height:0.94;font-weight:700;letter-spacing:-0.025em;margin:0;">Morning Briefing</h1><p style="font-size:15px;font-style:italic;color:var(--text-2);margin:14px 0 0;">The headlines you care about. No endless scrolling.</p>
+      
+    </header>
+
+    <!-- Section nav -->
+    <nav class="mb-nav" style="position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;justify-content:center;gap:22px;padding:12px 0;background:var(--bg);border-bottom:1px solid var(--rule);margin-bottom:30px;">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+        <a href="{{ n.href }}" onClick="{{ n.onClick }}" style="{{ n.style }}">{{ n.label }}</a>
+      </sc-for>
+    </nav>
+
+    <!-- ===== 01 TOP STORIES (front page) ===== -->
+    <section id="sec-top" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">01 — Top Stories</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+      </div>
+
+      <div class="mb-deck" style="display:grid;grid-template-columns:1.7fr 1fr;gap:30px;">
+        <!-- Lead -->
+        <article style="border-right:1px solid var(--border);padding-right:30px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;padding:3px 8px;border-radius:5px;background:var(--accent-soft);color:var(--accent-ink);text-transform:uppercase;">AI &amp; Compute</span>
+            <span style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:mb-pulse 2.4s infinite;"></span>Lead</span>
+          </div>
+          <h2 style="font-size:36px;line-height:1.08;font-weight:700;letter-spacing:-0.02em;margin:0 0 14px;text-wrap:balance;">Frontier labs converge on smaller, cheaper inference stacks</h2>
+          <div style="height:200px;background:repeating-linear-gradient(45deg,var(--bg-2),var(--bg-2) 9px,transparent 9px,transparent 18px),var(--surface-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--text-3);text-transform:uppercase;">lead image · 16:9</span>
+          </div>
+          <p style="font-size:16.5px;line-height:1.65;color:var(--text);margin:0 0 14px;"><span style="float:left;font-size:58px;line-height:0.78;font-weight:700;padding:5px 11px 0 0;color:var(--accent-ink);">T</span>hree independent reports point to the same shift in serving economics: distillation and speculative decoding are collapsing inference costs faster than last year’s roadmaps assumed.</p>
+          <p style="font-size:16px;line-height:1.65;color:var(--text-2);margin:0 0 16px;">The second-order effect is the story — differentiation migrates from raw capability toward data, workflow and trust, the parts that don’t cheapen on a GPU curve.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:16px;border-top:1px solid var(--border);padding-top:13px;">
+            <a class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--text-2);">The Information ↗</a>
+            <a class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--text-2);">Stratechery ↗</a>
+            <a class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em;color:var(--text-2);">arXiv ↗</a>
+          </div>
+        </article>
+
+        <!-- Secondary column -->
+        <div style="display:flex;flex-direction:column;">
+          <sc-for list="{{ secondaries }}" as="st" hint-placeholder-count="3">
+            <article style="{{ st.wrapStyle }}">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--text-3);">{{ st.n }}</span>
+                <span style="{{ st.dotStyle }}"></span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;">{{ st.kicker }}</span>
+              </div>
+              <h3 style="font-size:19px;line-height:1.24;font-weight:600;letter-spacing:-0.01em;margin:0 0 7px;text-wrap:balance;">{{ st.headline }}</h3>
+              <p style="font-size:14px;line-height:1.55;color:var(--text-2);margin:0 0 9px;">{{ st.standfirst }}</p>
+              <a class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;">{{ st.source }} ↗</a>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:46px;"></div>
+
+    <!-- ===== 02 SECTOR SCAN ===== -->
+    <section id="sec-sector" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">02 — Sector Scan</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;">At a glance</span>
+      </div>
+      <div style="border-top:1px solid var(--border);">
+        <div class="mb-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:0 36px;">
+          <sc-for list="{{ sectors }}" as="sec" hint-placeholder-count="8">
+            <div style="display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:1px solid var(--border);">
+              <span style="{{ sec.dotStyle }}"></span>
+              <span style="flex:1;font-size:15.5px;font-weight:600;letter-spacing:-0.01em;">{{ sec.name }}</span>
+              <span style="font-size:13.5px;color:var(--text-2);">{{ sec.note }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;width:46px;text-align:right;">{{ sec.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <div style="height:46px;"></div>
+
+    <!-- ===== 03 WEEK AHEAD ===== -->
+    <section id="sec-week" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">03 — The Week Ahead</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+      </div>
+      <div style="border-top:1px solid var(--border);">
+        <sc-for list="{{ week }}" as="d" hint-placeholder-count="5">
+          <div style="display:flex;gap:20px;padding:13px 2px;border-bottom:1px solid var(--border);">
+            <div style="flex:none;width:60px;text-align:center;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;">{{ d.dow }}</div>
+              <div style="font-size:24px;font-weight:700;line-height:1;letter-spacing:-0.01em;margin-top:2px;">{{ d.date }}</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:9px;min-width:0;border-left:1px solid var(--border);padding-left:20px;">
+              <sc-for list="{{ d.events }}" as="ev" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:11px;">
+                  <span style="{{ ev.tagStyle }}">{{ ev.tag }}</span>
+                  <span style="font-size:15px;color:var(--text);flex:1;min-width:0;">{{ ev.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="height:46px;"></div>
+
+    <!-- ===== 04 PATTERN WATCH ===== -->
+    <section id="sec-pattern" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">04 — Pattern Watch</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;">Speculative</span>
+      </div>
+      <div class="mb-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <sc-for list="{{ patterns }}" as="p" hint-placeholder-count="2">
+          <article style="border-radius:4px;padding:22px 24px;background:var(--ink-panel);position:relative;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:radial-gradient(380px 180px at 92% -30%,rgba(61,143,219,0.16),transparent 70%);pointer-events:none;"></div>
+            <div style="position:relative;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#74b2ea;text-transform:uppercase;margin-bottom:10px;border-bottom:1px solid rgba(255,255,255,0.14);padding-bottom:10px;">Analysis — hold loosely</div>
+              <h3 style="font-size:20px;line-height:1.26;font-weight:600;letter-spacing:-0.01em;margin:0 0 9px;color:#eef0f3;text-wrap:balance;">{{ p.headline }}</h3>
+              <p style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.62);margin:0;">{{ p.body }}</p>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <div style="height:46px;"></div>
+
+    <!-- ===== 05 DEEP DIVE ===== -->
+    <section id="sec-deep" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">05 — Deep Dive</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;">~6 min</span>
+      </div>
+      <article style="max-width:680px;margin:0 auto;">
+        <h2 style="font-size:33px;line-height:1.12;font-weight:700;letter-spacing:-0.02em;margin:0 0 12px;text-align:center;text-wrap:balance;">The quiet collapse of inference cost, and who it rewards</h2>
+        <div style="text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--rule);">Synthesised from 6 sources</div>
+        <p style="font-size:17px;line-height:1.75;color:var(--text);margin:0 0 18px;"><span style="float:left;font-size:62px;line-height:0.76;font-weight:700;padding:6px 12px 0 0;color:var(--accent-ink);">F</span>or two years the story of frontier models was scale: more parameters, more data, more dollars. This week three independent threads suggest the more consequential story is the opposite — how cheap it is becoming to <em>run</em> a capable model once you have one.</p>
+        <p style="font-size:17px;line-height:1.75;color:var(--text-2);margin:0 0 24px;">Distillation, speculative decoding and aggressive quantization are compounding. Each alone shaves a fraction; together they bend the serving-cost curve faster than last year’s roadmaps assumed.</p>
+        <blockquote style="margin:0 0 24px;padding:18px 0;border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);text-align:center;">
+          <p style="font-size:21px;line-height:1.4;font-weight:500;font-style:italic;color:var(--text);margin:0;">“When inference is nearly free, the scarce resource stops being the model and becomes the distribution around it.”</p>
+        </blockquote>
+        <p style="font-size:17px;line-height:1.75;color:var(--text-2);margin:0 0 18px;">If capability per dollar keeps improving, differentiation migrates toward proprietary data, workflow lock-in and trust — which is why the most interesting moves this quarter were about products, not parameters.</p>
+        <p style="font-size:17px;line-height:1.75;color:var(--text-2);margin:0;">Worth watching: whether incumbents with distribution move faster than challengers with models. History rarely rewards the cleverest architecture over the widest reach.</p>
+      </article>
+    </section>
+
+    <div style="height:46px;"></div>
+
+    <!-- ===== 06 SIGNAL SCAN ===== -->
+    <section id="sec-signal" style="scroll-margin-top:54px;margin-bottom:14px;">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-ink);">06 — Signal Scan</span>
+        <span style="flex:1;height:2px;background:var(--rule);"></span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;">4 voices</span>
+      </div>
+      <div class="mb-2col" style="display:grid;grid-template-columns:1fr 1fr;gap:0 36px;border-top:1px solid var(--border);">
+        <sc-for list="{{ signals }}" as="v" hint-placeholder-count="4">
+          <article style="display:flex;gap:13px;padding:16px 2px;border-bottom:1px solid var(--border);">
+            <div style="position:relative;flex:none;">
+              <div style="width:40px;height:40px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--text-2);">{{ v.initials }}</div>
+              <span style="{{ v.dotStyle }}"></span>
+            </div>
+            <div style="flex:1;min-width:0;">
+              <div style="display:flex;align-items:baseline;gap:8px;">
+                <span style="font-size:15px;font-weight:600;letter-spacing:-0.01em;">{{ v.name }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;">{{ v.role }}</span>
+              </div>
+              <p style="font-size:13.5px;line-height:1.5;color:var(--text-2);margin:5px 0 7px;">{{ v.summary }}</p>
+              <a class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.04em;">{{ v.link }} ↗</a>
+            </div>
+          </article>
+        </sc-for>
+      </div>
+    </section>
+
+    <footer style="text-align:center;padding:40px 0 60px;margin-top:30px;border-top:3px double var(--rule);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:var(--text-3);text-transform:uppercase;">End of edition · Next at 7:00 a.m. tomorrow</div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:920}}">
+class Component extends DCLogic {
+  state = { theme:'light', active:'sec-top' };
+  componentDidMount(){
+    this._t();
+    try{
+      this._io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting){ const id=e.target.id; if(id && id!==this.state.active) this.setState({active:id}); } });
+      }, { rootMargin:'-12% 0px -78% 0px', threshold:0 });
+      setTimeout(()=>{ document.querySelectorAll('section[id^="sec-"]').forEach(el=>this._io.observe(el)); }, 120);
+    }catch(e){}
+  }
+  componentDidUpdate(){ this._t(); }
+  componentWillUnmount(){ try{ this._io && this._io.disconnect(); }catch(e){} }
+  _t(){ try{ document.documentElement.setAttribute('data-theme', this.state.theme); }catch(e){} }
+
+  renderVals(){
+    const dark = this.state.theme==='dark';
+    const dot = (c,pulse) => ({ width:'9px',height:'9px',borderRadius:'50%',flex:'none',background:c, ...(pulse?{animation:'mb-pulse 2.4s infinite'}:{}) });
+
+    const secondaries = [
+      { n:'02', kicker:'Markets', dot:dot('var(--amber)',false),
+        headline:'Yields drift as the rate-cut debate splits the committee',
+        standfirst:'Minutes reveal a sharper divide than the statement let on.', source:'Bloomberg' },
+      { n:'03', kicker:'Biotech', dot:dot('var(--grey-dot)',false),
+        headline:'A quiet week for trials — one readout slips to Q3',
+        standfirst:'No safety signal; the company cited enrolment pacing.', source:'Endpoints' },
+      { n:'04', kicker:'Semis', dot:dot('var(--green)',true),
+        headline:'Foundry capex ticks up on packaging demand',
+        standfirst:'Advanced packaging, not leading-edge nodes, is the constraint.', source:'Reuters' },
+    ].map((x,i,arr)=>({
+      ...x, dotStyle:x.dot,
+      wrapStyle:{ paddingBottom:'15px', marginBottom:'15px', borderBottom: i<arr.length-1 ? '1px solid var(--border)' : 'none' },
+    }));
+
+    const sectorData = [
+      ['AI & Compute','var(--green)','3 new','Inference costs in focus'],
+      ['Markets','var(--green)','2 new','Rate-cut split widens'],
+      ['Semiconductors','var(--green)','2 new','Foundry capex ticks up'],
+      ['Crypto','var(--amber)','1 light','ETF flows cool'],
+      ['Biotech','var(--amber)','1 light','Readout slips to Q3'],
+      ['Energy','var(--grey-dot)','quiet','No fresh signal'],
+      ['Climate','var(--grey-dot)','quiet','No fresh signal'],
+      ['Defense','var(--grey-dot)','quiet','No fresh signal'],
+    ];
+    const sectors = sectorData.map(([name,c,status,note])=>({ name,status,note, dotStyle:dot(c, c==='var(--green)') }));
+
+    const tag = (label,color,bg)=>({ fontFamily:"'IBM Plex Mono',monospace",fontSize:'9px',letterSpacing:'0.08em',textTransform:'uppercase',padding:'3px 8px',borderRadius:'4px',flex:'none',color,background:bg,whiteSpace:'nowrap' });
+    const T = {
+      earn: tag('Earnings','var(--accent-ink)','var(--accent-soft)'),
+      macro: tag('Macro','var(--amber)','var(--amber-soft)'),
+      release: tag('Release','var(--green)','var(--green-soft)'),
+      policy: tag('Policy','var(--text-2)','var(--surface-2)'),
+    };
+    const week = [
+      { dow:'Mon', date:'30', events:[ {tag:'Macro', tagStyle:T.macro, text:'Eurozone CPI flash · 10:00'}, {tag:'Earnings', tagStyle:T.earn, text:'Two megacaps report after close'} ] },
+      { dow:'Tue', date:'01', events:[ {tag:'Release', tagStyle:T.release, text:'Major model API opens to all tiers'} ] },
+      { dow:'Wed', date:'02', events:[ {tag:'Policy', tagStyle:T.policy, text:'Antitrust hearing · cloud bundling'}, {tag:'Macro', tagStyle:T.macro, text:'ADP payrolls'} ] },
+      { dow:'Thu', date:'03', events:[ {tag:'Earnings', tagStyle:T.earn, text:'Semiconductor bellwether · pre-market'} ] },
+      { dow:'Fri', date:'04', events:[ {tag:'Macro', tagStyle:T.macro, text:'Nonfarm payrolls · 08:30'} ] },
+    ];
+
+    const patterns = [
+      { headline:'If inference keeps cheapening, the moat moves to distribution', body:'Connecting the lead with the semiconductor capex note — the value migrates to whoever owns the user relationship.' },
+      { headline:'A thinner Q3 catalyst calendar could amplify single-name moves', body:'One biotech readout slips and macro goes quiet; liquidity may concentrate around fewer events than usual.' },
+    ];
+
+    const signalData = [
+      ['Dario A.','Lab leadership','var(--green)',true,'Long thread on inference economics that lines up with today’s lead.','Thread'],
+      ['Janet Y.','Policy','var(--amber)',false,'A measured speech; markets read it as marginally dovish.','Transcript'],
+      ['Lina K.','Antitrust','var(--grey-dot)',false,'Quiet ahead of Wednesday’s hearing. No new statements.','Docket'],
+      ['Bill A.','Investor','var(--green)',true,'New memo argues distribution beats architecture from here.','Memo'],
+    ];
+    const signals = signalData.map(([name,role,c,pulse,summary,link])=>({
+      name, role, summary, link,
+      initials: name.split(' ').map(w=>w[0]).join('').slice(0,2),
+      dotStyle:{ position:'absolute',right:'-1px',bottom:'-1px',width:'12px',height:'12px',borderRadius:'50%',background:c,border:'2px solid var(--bg)', ...(pulse?{animation:'mb-pulse 2.4s infinite'}:{}) },
+    }));
+
+    return {
+      themeLabel: dark?'Dark':'Light',
+      toggleTheme: ()=>this.setState({ theme: dark?'light':'dark' }),
+      sourceCount: '14',
+      nav: [
+        {label:'Top Stories', id:'sec-top'},
+        {label:'Sector Scan', id:'sec-sector'},
+        {label:'Week Ahead', id:'sec-week'},
+        {label:'Pattern Watch', id:'sec-pattern'},
+        {label:'Deep Dive', id:'sec-deep'},
+        {label:'Signal Scan', id:'sec-signal'},
+      ].map(n=>{ const on=this.state.active===n.id; return {
+        label:n.label, href:'#'+n.id,
+        onClick:()=>this.setState({active:n.id}),
+        style:{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.12em', textTransform:'uppercase', textDecoration:'none', paddingBottom:'3px', transition:'color .15s ease,border-color .15s ease', color: on?'var(--accent-ink)':'var(--text)', fontWeight: on?600:400, borderBottom: on?'2px solid var(--accent)':'2px solid transparent' },
+      }; }),
+      secondaries, sectors, week, patterns, signals,
+    };
+  }
+}
+</script>
+</body>
+</html>

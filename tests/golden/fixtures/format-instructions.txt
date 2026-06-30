@@ -1,0 +1,41 @@
+CRITICAL: Respond with ONLY valid JSON. No markdown, no explanation, no preamble,
+no code fences. Just the raw JSON object.
+
+{
+  "top_stories": [
+    {
+      "priority": "urgent" | "high" | "tracking",
+      "headline": "Short punchy headline",
+      "one_liner": "One sentence on why this matters right now",
+      "detail": "3-5 paragraphs. What happened, why it matters, where perspectives diverge (name specific outlets), what to watch next. Plain text, no markdown.",
+      "sector": "Which of my 11 sectors this belongs to",
+      "sources": [
+        {"name": "Publication Name", "url": "https://exact-article-url.com"}
+      ]
+    }
+  ],
+  "sectors": [
+    {
+      "name": "Frontier Tech / AI",
+      "has_news": true | false,
+      "summary": "2-4 sentences if there is news. Empty string if quiet."
+    }
+  ],
+  "week_ahead": [
+    {
+      "day": "Mon 6",
+      "event": "Description of scheduled event",
+      "tag": "critical" | "defense" | "space" | "data" | "earnings" | "policy" | "tech" | "other"
+    }
+  ]
+}
+
+REQUIREMENTS:
+- top_stories: 3-5 items. At least 1 "urgent" if genuinely urgent news exists.
+- sectors: All 11 topic areas. Exact names: "Frontier Tech / AI", "Applied Tech & Industry", "US Policy & Power", "AI Regulation & Governance", "Geopolitics", "China", "Markets", "Digital Finance", "Energy", "Defense & Security", "Labor & Workforce".
+  Set has_news to false and summary to "" if nothing meaningful happened.
+- week_ahead: 6-12 scheduled events for the rest of this week.
+- sources per story: 2-4 items. Use the actual URLs you retrieved during your web searches.
+  Only include URLs you actually visited — do not fabricate them.
+
+ONLY output the JSON. Nothing else.

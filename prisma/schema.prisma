@@ -1,0 +1,143 @@
+// Morning Briefing — multi-user data model.
+// DB: Supabase Postgres. DATABASE_URL = pooled (PgBouncer, :6543, ?pgbouncer=true&connection_limit=1).
+// DIRECT_URL = direct connection (:5432) used for migrations.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum GenerationMode {
+  API_KEY
+  CLAUDE_ROUTINE
+}
+
+// ── Auth.js (NextAuth v5) standard models ───────────────────────────────────
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String?      @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime     @default(now())
+  accounts      Account[]
+  sessions      Session[]
+  config        UserConfig?
+  state         UserState?
+  secret        UserSecret?
+  ingestToken   IngestToken?
+  briefings     Briefing[]
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ── App models ──────────────────────────────────────────────────────────────
+model UserConfig {
+  id                  String         @id @default(cuid())
+  userId              String         @unique
+  user                User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  topics              Json           @default("[]") // [{name, description}]
+  sources             Json           @default("{}") // {preferred:[], supplementary:[]}
+  sections            Json           @default("{}") // {top_stories, sector_scan, ...}
+  voices              Json           @default("[]") // [{name, rss, x_handle, search_query?}]
+  signalScanFrequency String         @default("weekly") // "weekly" | "daily"
+  cron                String         @default("30 5 * * 1-5") // computed UTC 5-field
+  timezone            String         @default("Europe/London")
+  enabled             Boolean        @default(true)
+  mode                GenerationMode @default(API_KEY)
+  // Last API-mode generation run — surfaced on the dashboard so a broken key or
+  // a stalled job is visible. Untouched by the wizard's config upsert.
+  lastRunAt           DateTime?
+  lastRunStatus       String?        // "ok" | "error"
+  lastRunError        String?        @db.Text
+  updatedAt           DateTime       @updatedAt
+}
+
+model Briefing {
+  id        String         @id @default(cuid())
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date      String // "YYYY-MM-DD" in the user's timezone
+  data      Json // full briefing JSON (= old briefing-*.json)
+  html      String         @db.Text // rendered HTML
+  source    GenerationMode
+  shareToken String?       @unique // optional public share (off by default)
+  createdAt DateTime       @default(now())
+
+  @@unique([userId, date])
+  @@index([userId, createdAt])
+}
+
+model UserState {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wildcardHistory Json    @default("[]") // [{date, topic}] last 30
+  signalCache     Json? // {date, signals} or null
+}
+
+model UserSecret {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  anthropicKeyCt  String? // AES-256-GCM ciphertext (base64)
+  anthropicKeyIv  String? // IV (base64)
+  anthropicKeyTag String? // GCM auth tag (base64)
+  keyVersion      Int     @default(1)
+  keyLast4        String?
+}
+
+// Fixed-window rate-limit counters. Keyed by an opaque string ("ingest:<userId>",
+// "run:<userId>", …). Bounds a leaked ingest token or a runaway "Run now"/routine
+// rather than gating a high-QPS endpoint.
+model RateLimit {
+  key         String   @id
+  windowStart DateTime
+  count       Int      @default(0)
+}
+
+model IngestToken {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique // sha256(token); raw token shown once
+  createdAt DateTime  @default(now())
+  lastUsed  DateTime?
+}

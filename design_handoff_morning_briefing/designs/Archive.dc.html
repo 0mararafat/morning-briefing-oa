@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#f3f5f7;
+    --surface:rgba(255,255,255,0.72); --surface-2:rgba(255,255,255,0.92); --surface-solid:#ffffff;
+    --text:#15171b; --text-2:#565b64; --text-3:#8b909a;
+    --border:rgba(18,22,28,0.12); --border-strong:rgba(18,22,28,0.20); --rule:rgba(18,22,28,0.85);
+    --accent:#005a9c; --accent-ink:#00497f; --accent-soft:rgba(0,90,156,0.10); --accent-soft-2:rgba(0,90,156,0.05);
+    --green:#0e8a4f; --green-soft:rgba(14,138,79,0.13);
+    --amber:#bd7f0e; --amber-soft:rgba(189,127,14,0.15);
+    --grey-dot:#bcc1c9;
+    --glass-hi:rgba(255,255,255,0.9);
+    --shadow:0 12px 40px rgba(18,22,28,0.10);
+    --shadow-sm:0 1px 3px rgba(18,22,28,0.08);
+    --ink-panel:#15171b;
+  }
+  html[data-theme="dark"]{
+    --bg:#0c0e11; --bg-2:#13161b;
+    --surface:rgba(30,35,42,0.55); --surface-2:rgba(34,40,48,0.74); --surface-solid:#15181d;
+    --text:#edeff3; --text-2:#9ba1ac; --text-3:#6a7079;
+    --border:rgba(255,255,255,0.13); --border-strong:rgba(255,255,255,0.22); --rule:rgba(237,239,243,0.82);
+    --accent:#3d8fdb; --accent-ink:#74b2ea; --accent-soft:rgba(61,143,219,0.18); --accent-soft-2:rgba(61,143,219,0.09);
+    --green:#2ec27e; --green-soft:rgba(46,194,126,0.18);
+    --amber:#e0a52f; --amber-soft:rgba(224,165,47,0.18);
+    --grey-dot:#5b626c;
+    --glass-hi:rgba(255,255,255,0.08);
+    --shadow:0 16px 46px rgba(0,0,0,0.5);
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.4);
+    --ink-panel:#1b1f26;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--text);font-family:'Spectral',Georgia,serif;-webkit-font-smoothing:antialiased;background:var(--bg);}
+  @keyframes mb-pulse{0%{box-shadow:0 0 0 0 var(--green-soft)}70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  .mb-link{text-decoration:none;color:var(--text-3);transition:color .15s ease}
+  .mb-link:hover{color:var(--accent-ink)}
+  .mb-row{text-decoration:none;color:inherit;display:flex;gap:22px;padding:20px 12px;border-bottom:1px solid var(--border);transition:background .15s ease}
+  .mb-row:hover{background:var(--bg-2)}
+  @media(max-width:680px){ .mb-row{gap:14px!important;padding:16px 6px!important} .mb-stats{display:none!important} .mb-datecol{width:54px!important} }
+</style>
+</helmet>
+<div style="min-height:100vh;">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 28px;border-bottom:1px solid var(--border);max-width:980px;margin:0 auto;">
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.12em;color:var(--text-3);text-transform:uppercase;">Archive</span>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <a href="Briefing Viewer Masthead.dc.html" class="mb-link" style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;">Today’s edition</a>
+      <span style="color:var(--border-strong);">·</span>
+      <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;gap:7px;border:none;background:transparent;color:var(--text-3);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>{{ themeLabel }}</button>
+    </div>
+  </div>
+
+  <div style="max-width:980px;margin:0 auto;padding:0 28px;">
+
+    <!-- Header -->
+    <header style="padding:42px 0 26px;border-bottom:3px double var(--rule);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;color:var(--accent-ink);text-transform:uppercase;margin-bottom:14px;">Your back issues</div>
+      <h1 style="font-size:46px;line-height:1.02;font-weight:700;letter-spacing:-0.025em;margin:0 0 18px;">The Archive</h1>
+      <div style="display:flex;flex-wrap:wrap;gap:28px;">
+        <div><div style="font-size:24px;font-weight:700;letter-spacing:-0.01em;">142</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;margin-top:2px;">editions</div></div>
+        <div><div style="font-size:24px;font-weight:700;letter-spacing:-0.01em;">1,980</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;margin-top:2px;">stories read</div></div>
+        <div><div style="font-size:24px;font-weight:700;letter-spacing:-0.01em;">21.4h</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;margin-top:2px;">reading time</div></div>
+        <div><div style="font-size:24px;font-weight:700;letter-spacing:-0.01em;">Jan 9</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;margin-top:2px;">first edition</div></div>
+      </div>
+    </header>
+
+    <!-- Search / filter row (static) -->
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:18px 0;">
+      <input placeholder="Search past editions…" style="flex:1;min-width:220px;padding:11px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-family:'Spectral',serif;font-size:14.5px;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)">
+      <div style="display:flex;gap:7px;">
+        <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+          <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- Editions list, grouped by month -->
+    <sc-for list="{{ groups }}" as="g" hint-placeholder-count="2">
+      <div style="margin-top:14px;">
+        <div style="display:flex;align-items:center;gap:14px;margin:0 0 4px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-3);">{{ g.month }}</span>
+          <span style="flex:1;height:1px;background:var(--border);"></span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.08em;">{{ g.count }}</span>
+        </div>
+        <sc-for list="{{ g.items }}" as="e" hint-placeholder-count="5">
+          <a href="Briefing Viewer Masthead.dc.html" class="mb-row">
+            <div class="mb-datecol" style="flex:none;width:62px;text-align:center;padding-top:3px;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;">{{ e.dow }}</div>
+              <div style="font-size:27px;font-weight:700;line-height:1;letter-spacing:-0.01em;margin-top:1px;">{{ e.day }}</div>
+            </div>
+            <div style="flex:1;min-width:0;border-left:1px solid var(--border);padding-left:20px;">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;">
+                <span style="{{ e.dotStyle }}"></span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;">{{ e.tagline }}</span>
+              </div>
+              <div style="font-size:18px;line-height:1.25;font-weight:600;letter-spacing:-0.01em;margin-bottom:8px;text-wrap:balance;">{{ e.lead }}</div>
+              <div style="display:flex;flex-wrap:wrap;gap:7px;">
+                <sc-for list="{{ e.topics }}" as="t" hint-placeholder-count="3">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.06em;padding:2px 8px;border-radius:5px;background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);text-transform:uppercase;">{{ t }}</span>
+                </sc-for>
+              </div>
+            </div>
+            <div class="mb-stats" style="flex:none;width:150px;display:flex;flex-direction:column;gap:6px;align-items:flex-end;padding-top:4px;">
+              <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-2);"><span style="color:var(--text);font-weight:600;">{{ e.stories }}</span> stories</div>
+              <div style="display:flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-2);"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);"></span><span style="color:var(--text);font-weight:600;">{{ e.newCount }}</span> new</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3);">{{ e.read }} min read</div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </sc-for>
+
+    <div style="text-align:center;padding:30px 0;">
+      <button style="padding:11px 22px;border-radius:11px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-family:'Spectral',serif;font-size:14.5px;font-weight:600;cursor:pointer;" style-hover="border-color:var(--accent)">Load earlier editions</button>
+    </div>
+
+    <footer style="text-align:center;padding:24px 0 60px;border-top:3px double var(--rule);">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:var(--text-3);text-transform:uppercase;">Every edition you’ve ever received, kept for you</div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:980,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { theme:'light', filter:'all' };
+  componentDidMount(){ this._t(); }
+  componentDidUpdate(){ this._t(); }
+  _t(){ try{ document.documentElement.setAttribute('data-theme', this.state.theme); }catch(e){} }
+
+  renderVals(){
+    const dark = this.state.theme==='dark';
+    const dot = (c,pulse) => ({ width:'9px',height:'9px',borderRadius:'50%',flex:'none',background:c, ...(pulse?{animation:'mb-pulse 2.4s infinite'}:{}) });
+
+    const mk = (dow,day,status,tagline,lead,topics,stories,newCount,read) => {
+      const c = status==='new'?'var(--green)':status==='light'?'var(--amber)':'var(--grey-dot)';
+      return { dow,day, dotStyle:dot(c, status==='new'), tagline, lead, topics, stories, newCount, read };
+    };
+
+    const groups = [
+      { month:'June 2026', items:[
+        mk('Tue','30','new','Lead · AI & Compute','Frontier labs converge on cheaper inference stacks',['AI','Markets','Biotech'],14,3,9),
+        mk('Mon','29','new','Lead · Markets','Yields jump as payrolls surprise to the upside',['Markets','Energy','Macro'],12,4,8),
+        mk('Fri','26','light','Lead · Policy','Antitrust scrutiny widens to cloud bundling deals',['Policy','AI','Markets'],10,1,7),
+        mk('Thu','25','new','Lead · Semiconductors','Foundry capex guidance lifts the whole supply chain',['Semis','AI','Markets'],13,3,9),
+        mk('Wed','24','quiet','Lead · Markets','A quiet session as desks wait on Thursday’s data',['Markets','Energy'],8,0,5),
+        mk('Tue','23','light','Lead · Biotech','Two readouts clear the bar; one disappoints',['Biotech','Markets'],11,2,8),
+      ]},
+      { month:'May 2026', items:[
+        mk('Fri','30','new','Lead · AI & Compute','Open-weights release reshapes the cost conversation',['AI','Semis','Policy'],15,5,10),
+        mk('Thu','29','quiet','Lead · Energy','Grid strain returns as a summer-demand story',['Energy','Climate'],9,0,6),
+        mk('Wed','28','new','Lead · Markets','The cut finally lands, but the guidance splits desks',['Markets','Macro','Crypto'],13,4,9),
+      ]},
+    ].map(g => ({ ...g, count: g.items.length + ' editions' }));
+
+    const FILTERS = [['all','All'],['new','New only'],['saved','Saved']];
+    const fBtn = (on) => ({ padding:'8px 13px', borderRadius:'9px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10.5px', letterSpacing:'0.06em', textTransform:'uppercase', border:'1px solid '+(on?'var(--accent)':'var(--border-strong)'), background:on?'var(--accent-soft)':'transparent', color:on?'var(--accent-ink)':'var(--text-2)', transition:'all .12s ease' });
+
+    return {
+      themeLabel: dark?'Dark':'Light',
+      toggleTheme: ()=>this.setState({ theme: dark?'light':'dark' }),
+      groups,
+      filters: FILTERS.map(([k,label])=>({ label, style:fBtn(this.state.filter===k), onClick:()=>this.setState({filter:k}) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

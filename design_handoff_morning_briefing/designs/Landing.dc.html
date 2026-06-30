@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#f3f5f7;
+    --surface:rgba(255,255,255,0.72); --surface-2:rgba(255,255,255,0.92); --surface-solid:#ffffff;
+    --text:#15171b; --text-2:#565b64; --text-3:#8b909a;
+    --border:rgba(18,22,28,0.12); --border-strong:rgba(18,22,28,0.20); --rule:rgba(18,22,28,0.85);
+    --accent:#005a9c; --accent-ink:#00497f; --accent-soft:rgba(0,90,156,0.10); --accent-soft-2:rgba(0,90,156,0.05);
+    --green:#0e8a4f; --green-soft:rgba(14,138,79,0.13);
+    --amber:#bd7f0e; --amber-soft:rgba(189,127,14,0.15);
+    --grey-dot:#bcc1c9;
+    --glass-hi:rgba(255,255,255,0.9);
+    --shadow:0 12px 40px rgba(18,22,28,0.10);
+    --shadow-sm:0 1px 3px rgba(18,22,28,0.08);
+    --blob-a:rgba(0,90,156,0.06); --blob-b:rgba(0,90,156,0.03);
+    --ink-panel:#15171b;
+  }
+  html[data-theme="dark"]{
+    --bg:#0c0e11; --bg-2:#13161b;
+    --surface:rgba(30,35,42,0.55); --surface-2:rgba(34,40,48,0.74); --surface-solid:#15181d;
+    --text:#edeff3; --text-2:#9ba1ac; --text-3:#6a7079;
+    --border:rgba(255,255,255,0.13); --border-strong:rgba(255,255,255,0.22); --rule:rgba(237,239,243,0.82);
+    --accent:#3d8fdb; --accent-ink:#74b2ea; --accent-soft:rgba(61,143,219,0.18); --accent-soft-2:rgba(61,143,219,0.09);
+    --green:#2ec27e; --green-soft:rgba(46,194,126,0.18);
+    --amber:#e0a52f; --amber-soft:rgba(224,165,47,0.18);
+    --grey-dot:#5b626c;
+    --glass-hi:rgba(255,255,255,0.08);
+    --shadow:0 16px 46px rgba(0,0,0,0.5);
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.4);
+    --blob-a:rgba(61,143,219,0.10); --blob-b:rgba(61,143,219,0.05);
+    --ink-panel:#1b1f26;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--text);font-family:'Spectral',Georgia,serif;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(900px 520px at 82% -10%, var(--blob-a), transparent 60%),
+      radial-gradient(680px 480px at -8% 12%, var(--blob-b), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;}
+  @keyframes mb-pulse{0%{box-shadow:0 0 0 0 var(--green-soft)}70%{box-shadow:0 0 0 6px transparent}100%{box-shadow:0 0 0 0 transparent}}
+  @media(max-width:760px){
+    .lp-grid{grid-template-columns:1fr!important;gap:0!important}
+    .lp-col{border-right:none!important;border-bottom:1px solid var(--border);padding:22px 0!important}
+    .lp-col:last-child{border-bottom:none}
+    .lp-mast{font-size:46px!important}
+  }
+</style>
+</helmet>
+<div style="min-height:100vh;">
+
+  <header style="position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:13px 26px;background:var(--surface-2);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);">
+    <div style="display:flex;align-items:center;gap:11px;">
+      <div style="width:30px;height:30px;border-radius:9px;background:var(--surface-solid);border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;"><div style="width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);"></div></div>
+      <div style="font-size:14px;font-weight:600;">Morning Briefing</div>
+    </div>
+    <button onClick="{{ toggleTheme }}" style="display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:10px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;cursor:pointer;text-transform:uppercase;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span>{{ themeLabel }}</button>
+  </header>
+
+  <main style="max-width:1040px;margin:0 auto;padding:40px 28px 70px;">
+
+    <!-- Masthead -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:2px solid var(--rule);padding-bottom:12px;margin-bottom:6px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;color:var(--text-2);text-transform:uppercase;">Vol. 1 · Personal Edition</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.1em;color:var(--text-2);text-transform:uppercase;">Tue · Jun 30 2026</span>
+    </div>
+    <div style="text-align:center;border-bottom:3px double var(--rule);padding-bottom:30px;margin-bottom:32px;">
+      <div style="font-size:13px;letter-spacing:0.3em;color:var(--accent-ink);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;margin:22px 0 10px;">The</div>
+      <h1 class="lp-mast" style="font-size:72px;line-height:0.94;font-weight:700;letter-spacing:-0.025em;margin:0;">Morning Briefing</h1>
+      <p style="font-size:17px;font-style:italic;color:var(--text-2);margin:18px 0 0;max-width:48ch;margin-left:auto;margin-right:auto;">The stories you care about delivered daily. The end of endless scrolling.</p>
+    </div>
+
+    <!-- Front-page columns -->
+    <div class="lp-grid" style="display:grid;grid-template-columns:1.2fr 1fr 1.05fr;gap:0;">
+      <div class="lp-col" style="padding-right:30px;border-right:1px solid var(--border);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:var(--accent-ink);text-transform:uppercase;margin-bottom:9px;">What you get</div>
+        <h3 style="font-size:22px;line-height:1.22;font-weight:600;margin:0 0 10px;letter-spacing:-0.012em;text-wrap:balance;">A front page built only from what matters to you.</h3>
+        <p style="font-size:14px;line-height:1.6;color:var(--text-2);margin:0;">Your topics, ranked. Your sources, summarized. The voices you follow, tracked — composed into one calm edition before 7 a.m.</p>
+      </div>
+      <div class="lp-col" style="padding:0 30px;border-right:1px solid var(--border);">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:var(--text-3);text-transform:uppercase;margin-bottom:13px;">Inside each edition</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:mb-pulse 2.4s infinite;"></span><span style="font-size:14px;">Top Stories</span></div>
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);"></span><span style="font-size:14px;">Sector Scan</span></div>
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--amber);"></span><span style="font-size:14px;">Week Ahead</span></div>
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);"></span><span style="font-size:14px;">Pattern Watch</span></div>
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--grey-dot);"></span><span style="font-size:14px;">Deep Dive</span></div>
+          <div style="display:flex;align-items:center;gap:9px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);"></span><span style="font-size:14px;">Signal Scan</span></div>
+        </div>
+      </div>
+      <div class="lp-col" style="padding-left:30px;">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:var(--text-3);text-transform:uppercase;margin-bottom:13px;">Start reading</div>
+        <div style="display:flex;flex-direction:column;gap:11px;">
+          <button style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border:none;border-radius:11px;background:var(--text);color:var(--bg);font-family:'Spectral',serif;font-size:15px;font-weight:600;cursor:pointer;" style-hover="filter:brightness(1.1)"><span style="width:18px;height:18px;border-radius:50%;background:var(--bg);color:var(--text);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;">⌘</span>Sign in with GitHub</button>
+          <button style="display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:11px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-family:'Spectral',serif;font-size:15px;font-weight:600;cursor:pointer;" style-hover="border-color:var(--accent)"><span style="width:18px;height:18px;border-radius:50%;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;">G</span>Sign in with Google</button>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.05em;color:var(--text-3);margin-top:14px;line-height:1.6;">No credit card · 90-second setup · cancel anytime</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;border-top:3px double var(--rule);margin-top:40px;padding-top:18px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.16em;color:var(--text-3);text-transform:uppercase;">One edition every morning · nothing in between</span>
+    </div>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1080,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  state = { theme: 'light' };
+  componentDidMount(){ this._t(); }
+  componentDidUpdate(){ this._t(); }
+  _t(){ try { document.documentElement.setAttribute('data-theme', this.state.theme); } catch(e){} }
+  renderVals(){
+    const dark = this.state.theme === 'dark';
+    return {
+      themeLabel: dark ? 'Dark' : 'Light',
+      toggleTheme: () => this.setState({ theme: dark ? 'light' : 'dark' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

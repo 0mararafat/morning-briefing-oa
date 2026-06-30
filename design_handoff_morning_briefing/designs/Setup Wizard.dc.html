@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --bg-2:#f3f5f7;
+    --surface:rgba(255,255,255,0.72); --surface-2:rgba(255,255,255,0.92); --surface-solid:#ffffff;
+    --text:#15171b; --text-2:#565b64; --text-3:#8b909a;
+    --border:rgba(18,22,28,0.10); --border-strong:rgba(18,22,28,0.17);
+    --accent:#005a9c; --accent-ink:#00497f; --accent-soft:rgba(0,90,156,0.10); --accent-soft-2:rgba(0,90,156,0.05);
+    --green:#0e8a4f; --green-soft:rgba(14,138,79,0.13);
+    --amber:#bd7f0e; --amber-soft:rgba(189,127,14,0.15);
+    --grey-dot:#bcc1c9;
+    --glass-hi:rgba(255,255,255,0.9);
+    --shadow:0 12px 40px rgba(18,22,28,0.10);
+    --shadow-sm:0 1px 3px rgba(18,22,28,0.08);
+    --blob-a:rgba(0,90,156,0.06); --blob-b:rgba(0,90,156,0.03);
+    --ink-panel:#15171b;
+  }
+  html[data-theme="dark"]{
+    --bg:#0c0e11; --bg-2:#13161b;
+    --surface:rgba(30,35,42,0.55); --surface-2:rgba(34,40,48,0.74); --surface-solid:#15181d;
+    --text:#edeff3; --text-2:#9ba1ac; --text-3:#6a7079;
+    --border:rgba(255,255,255,0.10); --border-strong:rgba(255,255,255,0.17);
+    --accent:#3d8fdb; --accent-ink:#74b2ea; --accent-soft:rgba(61,143,219,0.18); --accent-soft-2:rgba(61,143,219,0.09);
+    --green:#2ec27e; --green-soft:rgba(46,194,126,0.18);
+    --amber:#e0a52f; --amber-soft:rgba(224,165,47,0.18);
+    --grey-dot:#5b626c;
+    --glass-hi:rgba(255,255,255,0.08);
+    --shadow:0 16px 46px rgba(0,0,0,0.5);
+    --shadow-sm:0 1px 3px rgba(0,0,0,0.4);
+    --blob-a:rgba(61,143,219,0.10); --blob-b:rgba(61,143,219,0.05);
+    --ink-panel:#1b1f26;
+  }
+  *{box-sizing:border-box}
+  input,select,button,textarea{font-family:inherit}
+  body{margin:0;color:var(--text);font-family:'Spectral',Georgia,serif;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(1000px 560px at 84% -6%, var(--blob-a), transparent 60%),
+      radial-gradient(720px 520px at -8% 10%, var(--blob-b), transparent 55%),
+      var(--bg);
+    background-attachment:fixed;}
+  .mb-step{}
+  @media(max-width:660px){ .mb-modecards{grid-template-columns:1fr!important} .mb-steplabels span{display:none!important} }
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;">
+
+  <header style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 26px;">
+    <div style="display:flex;align-items:center;gap:11px;">
+      <div style="width:30px;height:30px;border-radius:9px;background:var(--surface-solid);border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;align-items:center;justify-content:center;"><div style="width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);"></div></div>
+      <div style="font-size:14px;font-weight:600;">Morning Briefing</div>
+    </div>
+    <button onClick="{{ toggleTheme }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:10px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text);cursor:pointer;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent);"></span></button>
+  </header>
+
+  <div style="flex:1;display:flex;align-items:flex-start;justify-content:center;padding:14px 22px 80px;">
+    <div style="width:100%;max-width:760px;">
+
+      <!-- SUCCESS -->
+      <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+        <div class="mb-step" style="text-align:center;padding:60px 30px;border-radius:20px;background:var(--surface);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);border:1px solid var(--border);box-shadow:var(--shadow),inset 0 1px 0 var(--glass-hi);">
+          <div style="width:58px;height:58px;border-radius:50%;background:var(--green-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;"><span style="width:14px;height:14px;border-radius:50%;background:var(--green);animation:mb-pulse 2.4s infinite;"></span></div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.16em;color:var(--accent-ink);text-transform:uppercase;margin-bottom:14px;">You're all set</div>
+          <h1 style="font-size:38px;line-height:1.1;font-weight:600;letter-spacing:-0.02em;margin:0 0 14px;">Your first edition lands tomorrow at 7:00.</h1>
+          <p style="font-size:17px;line-height:1.6;color:var(--text-2);max-width:44ch;margin:0 auto 30px;">{{ summaryLine }}</p>
+          <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button style="padding:13px 22px;border:none;border-radius:11px;background:var(--text);color:var(--bg);font-size:15px;font-weight:600;cursor:pointer;">Preview a sample briefing</button>
+            <button onClick="{{ restart }}" style="padding:13px 22px;border-radius:11px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);font-size:15px;font-weight:600;cursor:pointer;">Edit setup</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- WIZARD -->
+      <sc-if value="{{ active }}" hint-placeholder-val="{{ true }}">
+      <div style="border-radius:20px;background:var(--surface);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);border:1px solid var(--border);box-shadow:var(--shadow),inset 0 1px 0 var(--glass-hi);overflow:hidden;">
+
+        <!-- progress -->
+        <div style="height:4px;background:var(--bg-2);"><div style="height:100%;background:var(--accent);border-radius:0 3px 3px 0;width:{{ progress }};transition:width .35s ease;"></div></div>
+
+        <!-- stepper -->
+        <div class="mb-steplabels" style="display:flex;gap:4px;padding:16px 22px 4px;overflow-x:auto;">
+          <sc-for list="{{ steps }}" as="st" hint-placeholder-count="7">
+            <button onClick="{{ st.onClick }}" style="{{ st.btnStyle }}"><span style="{{ st.numStyle }}">{{ st.num }}</span><span style="{{ st.labelStyle }}">{{ st.label }}</span></button>
+          </sc-for>
+        </div>
+
+        <div style="padding:18px 30px 8px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.14em;color:var(--accent-ink);text-transform:uppercase;margin-bottom:9px;">Step {{ stepNo }} of {{ stepCount }} · {{ stepLabel }}</div>
+          <h2 style="font-size:27px;line-height:1.15;font-weight:600;letter-spacing:-0.015em;margin:0 0 6px;">{{ stepTitle }}</h2>
+          <p style="font-size:15.5px;line-height:1.55;color:var(--text-2);margin:0;">{{ stepSub }}</p>
+        </div>
+
+        <div style="padding:22px 30px 26px;min-height:280px;">
+
+          <!-- (a) TOPICS -->
+          <sc-if value="{{ isTopics }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step" style="display:flex;flex-direction:column;gap:10px;">
+              <sc-for list="{{ topics }}" as="t" hint-placeholder-count="4">
+                <div onDragOver="{{ t.onDragOver }}" onDrop="{{ t.onDrop }}" style="{{ t.rowStyle }}">
+                  <span draggable="true" onDragStart="{{ t.onDragStart }}" onDragEnd="{{ t.onDragEnd }}" title="Drag to reorder" style="cursor:grab;color:var(--text-3);font-size:18px;line-height:1;user-select:none;flex:none;padding:6px 2px;">⠿</span>
+                  <span style="flex:none;width:24px;height:24px;border-radius:7px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;">{{ t.rank }}</span>
+                  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">
+                    <input value="{{ t.name }}" onInput="{{ t.onName }}" placeholder="Topic name" style="border:none;background:transparent;color:var(--text);font-family:'Spectral',serif;font-size:15.5px;font-weight:600;letter-spacing:-0.01em;outline:none;width:100%;padding:3px 5px;border-radius:6px;" style-focus="background:var(--bg-2)">
+                    <input value="{{ t.desc }}" onInput="{{ t.onDesc }}" placeholder="Short description" style="border:none;background:transparent;color:var(--text-3);font-family:'Spectral',serif;font-size:13px;outline:none;width:100%;padding:3px 5px;border-radius:6px;" style-focus="background:var(--bg-2)">
+                  </div>
+                  <div style="display:flex;gap:3px;flex:none;align-items:center;">
+                    <button onClick="{{ t.onUp }}" title="Move up" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text-2);cursor:pointer;font-size:11px;">▲</button>
+                    <button onClick="{{ t.onDown }}" title="Move down" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text-2);cursor:pointer;font-size:11px;">▼</button>
+                    <button onClick="{{ t.onRemove }}" title="Remove" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text-3);cursor:pointer;font-size:15px;">×</button>
+                  </div>
+                </div>
+              </sc-for>
+              <button onClick="{{ addTopic }}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;border-radius:13px;border:1px dashed var(--border-strong);background:transparent;color:var(--accent-ink);font-family:'Spectral',serif;font-size:14.5px;font-weight:600;cursor:pointer;" style-hover="background:var(--accent-soft-2)">+ Add a topic</button>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3);margin-top:2px;display:flex;align-items:center;gap:7px;"><span style="color:var(--accent-ink);">↕</span> Type to edit — drag the handle or use ▲▼ to set priority.</div>
+            </div>
+          </sc-if>
+
+          <!-- (b) SOURCES -->
+          <sc-if value="{{ isSources }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step">
+              <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px;">
+                <sc-for list="{{ sourceChips }}" as="c" hint-placeholder-count="10">
+                  <button onClick="{{ c.onClick }}" style="{{ c.style }}"><span style="{{ c.dotStyle }}"></span>{{ c.label }}</button>
+                </sc-for>
+                <sc-for list="{{ customChips }}" as="c" hint-placeholder-count="0">
+                  <span style="display:inline-flex;align-items:center;gap:7px;padding:8px 10px 8px 14px;border-radius:999px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-size:14px;"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></span>{{ c.label }}<button onClick="{{ c.onRemove }}" style="border:none;background:transparent;color:var(--accent-ink);cursor:pointer;font-size:15px;line-height:1;padding:0 2px;">×</button></span>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:9px;max-width:420px;">
+                <input value="{{ sourceDraft }}" onInput="{{ onSourceDraft }}" onKeyDown="{{ onSourceKey }}" placeholder="Add your own — name or URL" style="flex:1;padding:11px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-size:14.5px;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)">
+                <button onClick="{{ addSource }}" style="padding:11px 18px;border:none;border-radius:10px;background:var(--text);color:var(--bg);font-size:14.5px;font-weight:600;cursor:pointer;">Add</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- (c) SECTIONS -->
+          <sc-if value="{{ isSections }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step" style="display:flex;flex-direction:column;gap:2px;">
+              <sc-for list="{{ sectionRows }}" as="r" hint-placeholder-count="6">
+                <div style="display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--border);">
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:15.5px;font-weight:600;letter-spacing:-0.01em;">{{ r.label }}</div>
+                    <div style="font-size:13px;color:var(--text-3);line-height:1.4;">{{ r.desc }}</div>
+                  </div>
+                  <div onClick="{{ r.onClick }}" style="{{ r.trackStyle }}"><div style="{{ r.knobStyle }}"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- (d) VOICES -->
+          <sc-if value="{{ isVoices }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step">
+              <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+                <sc-for list="{{ voices }}" as="v" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:13px;padding:13px 15px;border-radius:13px;background:var(--surface-solid);border:1px solid var(--border);">
+                    <div style="width:38px;height:38px;border-radius:50%;background:var(--bg-2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;color:var(--text-2);flex:none;">{{ v.initials }}</div>
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-size:15px;font-weight:600;">{{ v.name }}</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+                        <sc-for list="{{ v.links }}" as="lk" hint-placeholder-count="2">
+                          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);background:var(--bg-2);border:1px solid var(--border);border-radius:5px;padding:2px 7px;">{{ lk }}</span>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <button onClick="{{ v.onRemove }}" style="width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--surface-solid);color:var(--text-3);cursor:pointer;font-size:15px;flex:none;">×</button>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="padding:15px;border-radius:13px;border:1px dashed var(--border-strong);background:var(--surface);">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:10px;">Track a new voice</div>
+                <div style="display:flex;gap:9px;flex-wrap:wrap;">
+                  <input value="{{ voiceName }}" onInput="{{ onVoiceName }}" placeholder="Name" style="flex:1;min-width:130px;padding:10px 13px;border-radius:9px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-size:14px;outline:none;" style-focus="border-color:var(--accent)">
+                  <input value="{{ voiceLink }}" onInput="{{ onVoiceLink }}" onKeyDown="{{ onVoiceKey }}" placeholder="Link (x.com/…, blog, RSS)" style="flex:1.4;min-width:150px;padding:10px 13px;border-radius:9px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-size:14px;outline:none;" style-focus="border-color:var(--accent)">
+                  <button onClick="{{ addVoice }}" style="padding:10px 16px;border:none;border-radius:9px;background:var(--text);color:var(--bg);font-size:14px;font-weight:600;cursor:pointer;">Add</button>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- (e) SCHEDULE -->
+          <sc-if value="{{ isSchedule }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step" style="display:flex;flex-direction:column;gap:22px;">
+              <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                <div style="flex:1;min-width:160px;">
+                  <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px;">Delivery time</label>
+                  <input type="time" value="{{ schedTime }}" onInput="{{ onTime }}" style="width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-size:15px;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)">
+                </div>
+                <div style="flex:1.4;min-width:200px;">
+                  <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px;">Timezone</label>
+                  <select value="{{ schedTz }}" onChange="{{ onTz }}" style="width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-size:15px;outline:none;cursor:pointer;" style-focus="border-color:var(--accent)">
+                    <option>America/New_York</option><option>America/Chicago</option><option>America/Los_Angeles</option><option>Europe/London</option><option>Europe/Berlin</option><option>Asia/Singapore</option><option>Asia/Tokyo</option><option>Australia/Sydney</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:10px;">Days</label>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <sc-for list="{{ dayChips }}" as="d" hint-placeholder-count="7">
+                    <button onClick="{{ d.onClick }}" style="{{ d.style }}">{{ d.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- (f) MODE -->
+          <sc-if value="{{ isMode }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step" style="display:flex;flex-direction:column;gap:16px;">
+              <div class="mb-modecards" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <button onClick="{{ pickApiKey }}" style="{{ apiKeyStyle }}">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600;">{ }</div><span style="{{ apiKeyCheck }}">✓</span></div>
+                <div style="font-size:17px;font-weight:600;letter-spacing:-0.01em;margin-bottom:7px;">Use my own API key</div>
+                <p style="font-size:13.5px;line-height:1.55;color:var(--text-2);margin:0;">Bring your Anthropic key. Full control over models and limits — you pay the provider directly. Best for power users.</p>
+              </button>
+              <button onClick="{{ pickSub }}" style="{{ subStyle }}">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><div style="width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:17px;">✦</div><span style="{{ subCheck }}">✓</span></div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="font-size:17px;font-weight:600;letter-spacing:-0.01em;">Use my Claude subscription</span><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.08em;padding:2px 7px;border-radius:5px;background:var(--green-soft);color:var(--green);text-transform:uppercase;">Routine</span></div>
+                <p style="font-size:13.5px;line-height:1.55;color:var(--text-2);margin:0;">No key, no setup. Your briefing is generated on a routine using your existing Claude subscription. Easiest way to start.</p>
+              </button>
+              </div>
+              <div style="display:flex;gap:13px;align-items:flex-start;padding:15px 17px;border-radius:14px;background:var(--accent-soft-2);border:1px solid var(--accent-soft);">
+                <span style="width:30px;height:30px;border-radius:9px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-size:14px;flex:none;font-family:'IBM Plex Mono',monospace;">{{ modeRevealIcon }}</span>
+                <div><div style="font-size:14.5px;font-weight:600;margin-bottom:3px;">{{ modeRevealTitle }}</div><div style="font-size:13.5px;line-height:1.5;color:var(--text-2);">{{ modeRevealBody }}</div></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <!-- (g) CONNECT -->
+          <sc-if value="{{ isConnect }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step">
+              <sc-if value="{{ isApiKeyMode }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:14px;max-width:560px;">
+                  <sc-if value="{{ keyEditing }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;flex-direction:column;">
+                      <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px;">Anthropic API key</label>
+                      <div style="display:flex;gap:9px;align-items:stretch;flex-wrap:wrap;">
+                        <div style="position:relative;display:flex;align-items:center;flex:1;min-width:240px;">
+                          <input type="{{ keyType }}" value="{{ apiKey }}" onInput="{{ onApiKey }}" placeholder="sk-ant-…" style="width:100%;padding:12px 60px 12px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:14px;outline:none;" style-focus="border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)">
+                          <button onClick="{{ toggleKey }}" title="Show / hide" style="position:absolute;right:8px;padding:6px 9px;border:none;background:transparent;color:var(--text-3);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;cursor:pointer;text-transform:uppercase;">{{ eyeBtn }}</button>
+                        </div>
+                        <button onClick="{{ testKey }}" style="padding:11px 16px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-2);color:var(--text);font-family:'Spectral',serif;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;" style-hover="border-color:var(--accent)">Test key</button>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:10px;margin-top:9px;min-height:18px;">
+                        <sc-if value="{{ testTesting }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-3);">Testing…</span></sc-if>
+                        <sc-if value="{{ testOk }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:6px;background:var(--green-soft);color:var(--green);"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);"></span>Key looks valid</span></sc-if>
+                        <sc-if value="{{ testErr }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:6px;background:var(--amber-soft);color:var(--amber);"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber);"></span>Couldn’t validate — check it</span></sc-if>
+                      </div>
+                      <div style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--text-3);margin-top:9px;line-height:1.5;">Stored encrypted. We only ever display the last 4 characters.</div>
+                      <button onClick="{{ saveKey }}" style="{{ saveBtnStyle }}">Save key</button>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ keySaved }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;border-radius:13px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow-sm),inset 0 1px 0 var(--glass-hi);">
+                      <span style="width:32px;height:32px;border-radius:9px;background:var(--green-soft);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:13px;flex:none;">✓</span>
+                      <div style="flex:1;min-width:0;">
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.12em;color:var(--text);">•••••••• {{ keyLast4 }}</div>
+                        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;">Saved &amp; encrypted</div>
+                      </div>
+                      <button onClick="{{ replaceKey }}" style="border:1px solid var(--border-strong);background:var(--surface-solid);color:var(--text-2);border-radius:9px;padding:7px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;">Replace</button>
+                      <button onClick="{{ removeKey }}" style="border:none;background:transparent;color:var(--amber);padding:7px 8px;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;">Remove</button>
+                    </div>
+                  </sc-if>
+                  <div style="font-size:13px;line-height:1.55;color:var(--text-2);">Your briefing runs automatically on the schedule you set.</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ isSubMode }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;gap:16px;max-width:580px;">
+
+                  <div>
+                    <label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:8px;">Ingest URL</label>
+                    <div style="display:flex;align-items:stretch;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);overflow:hidden;">
+                      <div style="flex:1;min-width:0;padding:11px 13px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:center;">{{ ingestUrl }}</div>
+                      <button onClick="{{ copyUrl }}" style="flex:none;border:none;border-left:1px solid var(--border);background:var(--surface-2);color:var(--accent-ink);padding:0 15px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;" style-hover="background:var(--accent-soft)">{{ copyUrlLabel }}</button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;">
+                      <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;">Secret token</label>
+                      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.06em;text-transform:uppercase;padding:2px 8px;border-radius:5px;background:var(--amber-soft);color:var(--amber);">Shown once — copy it now</span>
+                    </div>
+                    <div style="display:flex;align-items:stretch;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface-solid);overflow:hidden;">
+                      <div style="flex:1;min-width:0;padding:11px 13px;font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;align-self:center;">{{ tokenVal }}</div>
+                      <button onClick="{{ copyToken }}" style="flex:none;border:none;border-left:1px solid var(--border);background:var(--surface-2);color:var(--accent-ink);padding:0 15px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;" style-hover="background:var(--accent-soft)">{{ copyTokenLabel }}</button>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+                      <button onClick="{{ regen }}" style="border:none;background:transparent;color:var(--accent-ink);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.04em;cursor:pointer;text-transform:uppercase;padding:0;">↻ Regenerate</button>
+                      <sc-if value="{{ regenerated }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--amber);">Older token no longer works</span></sc-if>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:8px;">
+                      <label style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;">Routine prompt</label>
+                      <button onClick="{{ togglePrompt }}" style="border:none;background:transparent;color:var(--accent-ink);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;padding:0;">{{ promptToggle }}</button>
+                    </div>
+                    <div style="position:relative;border-radius:10px;border:1px solid var(--border-strong);background:var(--ink-panel);padding:14px 15px;">
+                      <pre style="{{ promptBoxStyle }}">{{ promptText }}</pre>
+                      <button onClick="{{ copyPrompt }}" style="position:absolute;top:9px;right:9px;border:1px solid rgba(255,255,255,0.16);background:rgba(255,255,255,0.07);color:#cfe0f2;padding:5px 11px;border-radius:7px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;">{{ copyPromptLabel }}</button>
+                    </div>
+                  </div>
+
+                  <div style="padding:16px 18px;border-radius:13px;background:var(--surface);border:1px solid var(--border);box-shadow:inset 0 1px 0 var(--glass-hi);">
+                    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--text-3);text-transform:uppercase;margin-bottom:12px;">How to set this up</div>
+                    <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px;">
+                      <li style="font-size:13.5px;line-height:1.5;color:var(--text-2);">In Claude, create a new <strong style="color:var(--text);font-weight:600;">scheduled routine</strong>.</li>
+                      <li style="font-size:13.5px;line-height:1.5;color:var(--text-2);">Paste the <strong style="color:var(--text);font-weight:600;">Routine prompt</strong> above as its instructions.</li>
+                      <li style="font-size:13.5px;line-height:1.5;color:var(--text-2);">Give it the <strong style="color:var(--text);font-weight:600;">Ingest URL</strong> and <strong style="color:var(--text);font-weight:600;">Secret token</strong> so it can post each edition.</li>
+                      <li style="font-size:13.5px;line-height:1.5;color:var(--text-2);">Schedule it just before your delivery time and save.</li>
+                    </ol>
+                  </div>
+
+                  <button onClick="{{ toggleConfirm }}" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:12px;border:1px solid var(--border-strong);background:var(--surface-solid);cursor:pointer;text-align:left;">
+                    <span style="{{ confirmTickStyle }}">✓</span>
+                    <span style="font-size:14.5px;font-weight:600;color:var(--text);">I’ve set up my routine.</span>
+                  </button>
+
+                  <div style="display:flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--text-3);">
+                    <span style="width:7px;height:7px;border-radius:50%;background:var(--grey-dot);"></span>Last received: {{ lastReceivedText }}
+                  </div>
+
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <!-- (h) REVIEW -->
+          <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+            <div class="mb-step" style="display:flex;flex-direction:column;gap:11px;">
+              <sc-for list="{{ reviewRows }}" as="r" hint-placeholder-count="6">
+                <div style="display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:13px;background:var(--surface-solid);border:1px solid var(--border);">
+                  <div style="flex:none;width:104px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.08em;color:var(--text-3);text-transform:uppercase;padding-top:2px;">{{ r.label }}</div>
+                  <div style="flex:1;font-size:14.5px;line-height:1.5;color:var(--text);">{{ r.value }}</div>
+                  <button onClick="{{ r.onEdit }}" style="flex:none;border:none;background:transparent;color:var(--accent-ink);font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;text-transform:uppercase;letter-spacing:0.06em;">Edit</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+        </div>
+
+        <!-- footer -->
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 30px;border-top:1px solid var(--border);background:var(--surface-2);">
+          <button onClick="{{ back }}" style="{{ backStyle }}">← Back</button>
+          <div style="display:flex;gap:5px;">
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="7"><span style="{{ d.style }}"></span></sc-for>
+          </div>
+          <button onClick="{{ next }}" style="padding:12px 22px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px var(--accent-soft);" style-hover="filter:brightness(1.08)">{{ nextLabel }}</button>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:800,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  state = {
+    theme:'light', step:0, done:false,
+    topics:[
+      {name:'AI & Compute', desc:'Frontier models, chips, inference'},
+      {name:'Markets', desc:'Rates, equities, macro prints'},
+      {name:'Biotech', desc:'Trials, approvals, readouts'},
+      {name:'Energy', desc:'Grid, oil, the transition'},
+    ],
+    dragIndex:null, overIndex:null,
+    sources:[0,1,3,5], custom:[], sourceDraft:'',
+    sections:{ top:true, sector:true, week:true, pattern:false, deep:true, signal:true },
+    voices:[
+      {name:'Dario A.', links:['x.com/…','essay']},
+      {name:'Janet Y.', links:['transcripts']},
+    ],
+    voiceName:'', voiceLink:'',
+    schedTime:'07:00', schedTz:'America/New_York', days:['Mon','Tue','Wed','Thu','Fri'],
+    mode:'subscription',
+    apiKey:'', showKey:false, keySaved:false, testState:'idle',
+    ingestUrl:'https://in.morningbriefing.app/u/3f9c2a/ingest',
+    token:'mbr_live_8x2k9q4vt1pz', tokenRegen:0,
+    promptOpen:false, copied:'', routineConfirmed:false,
+  };
+
+  componentDidMount(){ this._t(); }
+  componentDidUpdate(){ this._t(); }
+  _t(){ try{ document.documentElement.setAttribute('data-theme', this.state.theme); }catch(e){} }
+
+  _move(from,to){
+    this.setState(s=>{ if(to<0||to>=s.topics.length) return {}; const a=[...s.topics]; const [m]=a.splice(from,1); a.splice(to,0,m); return {topics:a}; });
+  }
+  _setTopic(i,field,val){ this.setState(s=>({ topics: s.topics.map((t,x)=> x===i ? {...t,[field]:val} : t) })); }
+  _genToken(){ const c='abcdefghijkmnpqrstuvwxyz23456789'; let r=''; for(let i=0;i<18;i++) r+=c[Math.floor(Math.random()*c.length)]; return 'mbr_live_'+r; }
+  _copy(key,text){ try{ if(navigator.clipboard) navigator.clipboard.writeText(text); }catch(e){} this.setState({copied:key}); clearTimeout(this._cpT); this._cpT=setTimeout(()=>this.setState({copied:''}),1600); }
+  _test(){ this.setState({testState:'testing'}); clearTimeout(this._tT); this._tT=setTimeout(()=>{ const k=(this.state.apiKey||'').trim(); this.setState({testState:(k.startsWith('sk-')&&k.length>=12)?'ok':'err'}); },800); }
+
+  renderVals(){
+    const s=this.state, dark=s.theme==='dark';
+    const SRC=['Bloomberg','Reuters','The Information','Stratechery','Hacker News','arXiv','Financial Times','The Verge','Axios','Semafor'];
+    const STEPS=['Topics','Sources','Sections','Voices','Schedule','Mode','Connect','Review'];
+    const TITLES=[
+      ['What do you want to follow?','Add the themes that matter. Drag to rank them — priority shapes your briefing.'],
+      ['Where should it read from?','Pick trusted sources, or add your own by name or URL.'],
+      ['Which sections appear?','Toggle the parts of your daily edition on or off.'],
+      ['Whose signal do you track?','Follow specific people; we surface when they say something new.'],
+      ['When does it arrive?','Choose a time, timezone and the days you want delivery.'],
+      ['How should it run?','Pick how your briefing is generated.'],
+      ['',''],
+      ['Looks good?','Review your edition, then start your mornings.'],
+    ];
+
+    // stepper
+    const stepBtn=(i)=>{
+      const cur=i===s.step, doneStep=i<s.step;
+      return {
+        num:String(i+1),
+        label:STEPS[i],
+        onClick:()=>this.setState({step:i}),
+        btnStyle:{ display:'flex',alignItems:'center',gap:'8px',padding:'7px 11px',borderRadius:'9px',border:'none',cursor:'pointer',whiteSpace:'nowrap',background: cur?'var(--accent-soft)':'transparent' },
+        numStyle:{ width:'21px',height:'21px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:'10.5px',fontWeight:600,flex:'none',background: (cur||doneStep)?'var(--accent)':'var(--bg-2)',color:(cur||doneStep)?'#fff':'var(--text-3)',border:(cur||doneStep)?'none':'1px solid var(--border)' },
+        labelStyle:{ fontFamily:"'IBM Plex Mono',monospace",fontSize:'11px',letterSpacing:'0.04em',textTransform:'uppercase',color: cur?'var(--accent-ink)':'var(--text-3)',fontWeight: cur?600:400 },
+      };
+    };
+
+    // topics
+    const topics=s.topics.map((t,i)=>({
+      name:t.name, desc:t.desc, rank:String(i+1),
+      rowStyle:{ display:'flex',alignItems:'center',gap:'12px',padding:'12px 14px',borderRadius:'13px',background:'var(--surface-solid)',border:'1px solid '+(s.overIndex===i&&s.dragIndex!==null&&s.dragIndex!==i?'var(--accent)':'var(--border)'),boxShadow: s.dragIndex===i?'var(--shadow)':'none',opacity: s.dragIndex===i?0.5:1,transition:'border-color .12s ease' },
+      onDragStart:()=>this.setState({dragIndex:i}),
+      onDragOver:(e)=>{ e.preventDefault(); if(s.overIndex!==i) this.setState({overIndex:i}); },
+      onDrop:()=>{ if(s.dragIndex!==null&&s.dragIndex!==i) this._move(s.dragIndex,i); this.setState({dragIndex:null,overIndex:null}); },
+      onDragEnd:()=>this.setState({dragIndex:null,overIndex:null}),
+      onUp:()=>this._move(i,i-1),
+      onDown:()=>this._move(i,i+1),
+      onName:(e)=>this._setTopic(i,'name',e.target.value),
+      onDesc:(e)=>this._setTopic(i,'desc',e.target.value),
+      onRemove:()=>this.setState(st=>({topics: st.topics.filter((_,x)=>x!==i)})),
+    }));
+
+    // sources
+    const srcChip=(on)=>({ display:'inline-flex',alignItems:'center',gap:'7px',padding:'8px 14px',borderRadius:'999px',cursor:'pointer',fontFamily:"'Spectral',serif",fontSize:'14px',border:'1px solid '+(on?'var(--accent)':'var(--border-strong)'),background:on?'var(--accent-soft)':'transparent',color:on?'var(--accent-ink)':'var(--text-2)',transition:'all .12s ease' });
+    const srcDot=(on)=>({ width:'6px',height:'6px',borderRadius:'50%',background:on?'var(--accent)':'var(--text-3)' });
+    const sourceChips=SRC.map((label,i)=>{ const on=s.sources.includes(i); return { label, style:srcChip(on), dotStyle:srcDot(on), onClick:()=>this.setState(st=>({sources: st.sources.includes(i)?st.sources.filter(x=>x!==i):[...st.sources,i]})) }; });
+    const customChips=s.custom.map((label,i)=>({ label, onRemove:()=>this.setState(st=>({custom: st.custom.filter((_,x)=>x!==i)})) }));
+    const doAddSource=()=>{ const v=(s.sourceDraft||'').trim(); if(!v) return; this.setState(st=>({custom:[...st.custom, v], sourceDraft:''})); };
+
+    // sections
+    const SEC=[['top','Top Stories','The day’s most important developments, ranked'],['sector','Sector Scan','A grid of your topics with fresh-signal dots'],['week','Week Ahead','Upcoming earnings, releases, hearings'],['pattern','Pattern Watch','Speculative, connect-the-dots analysis'],['deep','Deep Dive','One long-form synthesis each day'],['signal','Signal Scan','Updates from the voices you track']];
+    const track=(on)=>({ width:'46px',height:'27px',borderRadius:'999px',flex:'none',background:on?'var(--accent)':'var(--border-strong)',position:'relative',cursor:'pointer',transition:'background .2s ease' });
+    const knob=(on)=>({ position:'absolute',top:'3px',left:on?'22px':'3px',width:'21px',height:'21px',borderRadius:'50%',background:'#fff',transition:'left .2s ease',boxShadow:'0 1px 3px rgba(0,0,0,.3)' });
+    const sectionRows=SEC.map(([key,label,desc])=>{ const on=s.sections[key]; return { label, desc, trackStyle:track(on), knobStyle:knob(on), onClick:()=>this.setState(st=>({sections:{...st.sections,[key]:!st.sections[key]}})) }; });
+
+    // voices
+    const voices=s.voices.map((v,i)=>({ name:v.name, links:v.links, initials:v.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(), onRemove:()=>this.setState(st=>({voices: st.voices.filter((_,x)=>x!==i)})) }));
+    const doAddVoice=()=>{ const n=(s.voiceName||'').trim(); if(!n) return; const lk=(s.voiceLink||'').trim(); this.setState(st=>({voices:[...st.voices,{name:n,links: lk?[lk]:[]}], voiceName:'', voiceLink:''})); };
+
+    // schedule
+    const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const dayChip=(on)=>({ minWidth:'52px',padding:'10px 4px',borderRadius:'10px',cursor:'pointer',fontFamily:"'IBM Plex Mono',monospace",fontSize:'12px',letterSpacing:'0.04em',textTransform:'uppercase',border:'1px solid '+(on?'var(--accent)':'var(--border-strong)'),background:on?'var(--accent-soft)':'var(--surface-solid)',color:on?'var(--accent-ink)':'var(--text-2)',fontWeight:on?600:400,transition:'all .12s ease' });
+    const dayChips=DAYS.map(label=>{ const on=s.days.includes(label); return { label, style:dayChip(on), onClick:()=>this.setState(st=>({days: st.days.includes(label)?st.days.filter(x=>x!==label):[...st.days,label]})) }; });
+
+    // mode
+    const modeCard=(on)=>({ textAlign:'left',cursor:'pointer',padding:'20px',borderRadius:'15px',background: on?'var(--accent-soft)':'var(--surface-solid)',border:'1.5px solid '+(on?'var(--accent)':'var(--border-strong)'),boxShadow: on?'0 4px 18px var(--accent-soft)':'var(--shadow-sm)',transition:'all .15s ease' });
+    const check=(on)=>({ width:'22px',height:'22px',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700,background: on?'var(--accent)':'transparent',color:'#fff',border: on?'none':'1.5px solid var(--border-strong)' });
+
+    // review
+    const selSources=[...s.sources.map(i=>SRC[i]), ...s.custom];
+    const onSections=SEC.filter(([k])=>s.sections[k]).map(([,l])=>l);
+    const reviewRows=[
+      { label:'Topics', value:s.topics.map(t=>t.name).join(' › '), onEdit:()=>this.setState({step:0}) },
+      { label:'Sources', value: selSources.join(', '), onEdit:()=>this.setState({step:1}) },
+      { label:'Sections', value: onSections.join(', '), onEdit:()=>this.setState({step:2}) },
+      { label:'Voices', value: s.voices.map(v=>v.name).join(', ')||'None', onEdit:()=>this.setState({step:3}) },
+      { label:'Schedule', value: `${s.schedTime} · ${s.schedTz.split('/').pop().replace('_',' ')} · ${s.days.join(' ')}`, onEdit:()=>this.setState({step:4}) },
+      { label:'Mode', value: s.mode==='subscription'?'Claude subscription (routine)':'Own API key', onEdit:()=>this.setState({step:5}) },
+      { label: s.mode==='apikey'?'API key':'Routine', value: s.mode==='apikey' ? (s.keySaved ? '•••• '+((s.apiKey||'').slice(-4)||'????') : 'Not saved yet') : (s.routineConfirmed ? 'Routine configured' : 'Not set up yet'), onEdit:()=>this.setState({step:6}) },
+    ];
+
+    const dots=STEPS.map((_,i)=>({ style:{ width: i===s.step?'18px':'6px',height:'6px',borderRadius:'999px',background: i<=s.step?'var(--accent)':'var(--border-strong)',transition:'all .25s ease' } }));
+
+    let stepTitle=TITLES[s.step][0], stepSub=TITLES[s.step][1];
+    if(s.step===6){
+      if(s.mode==='apikey'){ stepTitle='Add your API key'; stepSub='You enter one secret — stored encrypted, and we only ever show the last 4 characters.'; }
+      else { stepTitle='Connect your routine'; stepSub='We give you three values. Paste them into a scheduled Claude routine and editions start arriving.'; }
+    }
+
+    const PROMPT = `You are my Morning Briefing editor.
+Each run: pull new items from my configured sources, then write a calm, editorial
+briefing with the sections I enabled — Top Stories, Sector Scan, Week Ahead,
+Pattern Watch, Deep Dive, Signal Scan.
+POST the result as JSON to my Ingest URL with header:  Authorization: Bearer <token>`;
+    const reveal = s.mode==='apikey'
+      ? { icon:'{ }', title:'Own API key — full control', body:'You’ll add one secret next. You pick the model and pay your provider directly.' }
+      : { icon:'✦', title:'Claude subscription — zero secrets to store', body:'You’ll copy three values into a scheduled Claude routine. Nothing sensitive to keep.' };
+
+    const last=s.step===STEPS.length-1;
+
+    return {
+      themeLabel:dark?'Dark':'Light',
+      toggleTheme:()=>this.setState({theme:dark?'light':'dark'}),
+      done:s.done, active:!s.done,
+      restart:()=>this.setState({done:false, step:0}),
+      summaryLine:`${s.topics.length} topics · ${selSources.length} sources · ${onSections.length} sections · ${s.voices.length} voices tracked.`,
+
+      progress: ((s.step+1)/STEPS.length*100)+'%',
+      steps:STEPS.map((_,i)=>stepBtn(i)),
+      stepNo:String(s.step+1), stepLabel:STEPS[s.step], stepCount:String(STEPS.length),
+      stepTitle, stepSub,
+
+      isTopics:s.step===0, isSources:s.step===1, isSections:s.step===2,
+      isVoices:s.step===3, isSchedule:s.step===4, isMode:s.step===5,
+      isConnect:s.step===6, isReview:s.step===7,
+      isApiKeyMode:s.mode==='apikey', isSubMode:s.mode==='subscription',
+      modeRevealIcon:reveal.icon, modeRevealTitle:reveal.title, modeRevealBody:reveal.body,
+
+      keyEditing: !s.keySaved, keySaved:s.keySaved,
+      keyType:s.showKey?'text':'password', eyeBtn:s.showKey?'Hide':'Show',
+      toggleKey:()=>this.setState(st=>({showKey:!st.showKey})),
+      apiKey:s.apiKey, onApiKey:(e)=>this.setState({apiKey:e.target.value, testState:'idle'}),
+      testKey:()=>this._test(), testTesting:s.testState==='testing', testOk:s.testState==='ok', testErr:s.testState==='err',
+      canSave: !!(s.apiKey||'').trim(),
+      saveKey:()=>{ if((s.apiKey||'').trim()) this.setState({keySaved:true}); },
+      saveBtnStyle:{ marginTop:'14px', alignSelf:'flex-start', padding:'11px 18px', border:'none', borderRadius:'10px', background:'var(--text)', color:'var(--bg)', fontFamily:"'Spectral',serif", fontSize:'14.5px', fontWeight:600, cursor:(s.apiKey||'').trim()?'pointer':'not-allowed', opacity:(s.apiKey||'').trim()?1:0.4 },
+      keyLast4:(s.apiKey||'').slice(-4)||'????',
+      replaceKey:()=>this.setState({keySaved:false}),
+      removeKey:()=>this.setState({keySaved:false, apiKey:'', testState:'idle'}),
+
+      ingestUrl:s.ingestUrl, tokenVal:s.token, promptText:PROMPT,
+      copyUrl:()=>this._copy('url', s.ingestUrl), copyToken:()=>this._copy('token', s.token), copyPrompt:()=>this._copy('prompt', PROMPT),
+      copyUrlLabel:s.copied==='url'?'Copied ✓':'Copy', copyTokenLabel:s.copied==='token'?'Copied ✓':'Copy', copyPromptLabel:s.copied==='prompt'?'Copied ✓':'Copy',
+      regen:()=>this.setState(st=>({token:this._genToken(), copied:'', tokenRegen:st.tokenRegen+1})),
+      regenerated:s.tokenRegen>0,
+      promptOpen:s.promptOpen, togglePrompt:()=>this.setState(st=>({promptOpen:!st.promptOpen})),
+      promptToggle:s.promptOpen?'Collapse ▲':'Expand ▼',
+      promptBoxStyle:{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', lineHeight:1.6, color:'#cfe0f2', whiteSpace:'pre-wrap', margin:0, paddingRight:'70px', maxHeight:s.promptOpen?'400px':'74px', overflow:'hidden', transition:'max-height .25s ease' },
+      routineConfirmed:s.routineConfirmed, toggleConfirm:()=>this.setState(st=>({routineConfirmed:!st.routineConfirmed})),
+      confirmTickStyle:{ width:'22px', height:'22px', borderRadius:'7px', flex:'none', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', fontWeight:700, color:s.routineConfirmed?'#fff':'transparent', background:s.routineConfirmed?'var(--accent)':'transparent', border:s.routineConfirmed?'none':'1.5px solid var(--border-strong)', transition:'all .15s ease' },
+      lastReceivedText:'—',
+
+      topics,
+      addTopic:()=>this.setState(st=>({topics:[...st.topics,{name:'',desc:''}]})),
+      sourceChips, customChips, sourceDraft:s.sourceDraft,
+      onSourceDraft:(e)=>this.setState({sourceDraft:e.target.value}),
+      onSourceKey:(e)=>{ if(e.key==='Enter') doAddSource(); },
+      addSource:doAddSource,
+
+      sectionRows,
+
+      voices, voiceName:s.voiceName, voiceLink:s.voiceLink,
+      onVoiceName:(e)=>this.setState({voiceName:e.target.value}),
+      onVoiceLink:(e)=>this.setState({voiceLink:e.target.value}),
+      onVoiceKey:(e)=>{ if(e.key==='Enter') doAddVoice(); },
+      addVoice:doAddVoice,
+
+      schedTime:s.schedTime, schedTz:s.schedTz, dayChips,
+      onTime:(e)=>this.setState({schedTime:e.target.value}),
+      onTz:(e)=>this.setState({schedTz:e.target.value}),
+
+      apiKeyStyle:modeCard(s.mode==='apikey'), apiKeyCheck:check(s.mode==='apikey'), pickApiKey:()=>this.setState({mode:'apikey'}),
+      subStyle:modeCard(s.mode==='subscription'), subCheck:check(s.mode==='subscription'), pickSub:()=>this.setState({mode:'subscription'}),
+
+      reviewRows,
+
+      dots,
+      back:()=>this.setState(st=>({step:Math.max(0,st.step-1)})),
+      backStyle:{ padding:'12px 18px',borderRadius:'11px',border:'1px solid var(--border-strong)',background:'var(--surface-solid)',color:'var(--text)',fontSize:'15px',fontWeight:600,cursor: s.step===0?'not-allowed':'pointer',opacity: s.step===0?0.4:1 },
+      next:()=>{ if(last){ this.setState({done:true}); } else { this.setState(st=>({step:Math.min(STEPS.length-1,st.step+1)})); } },
+      nextLabel: last?'Start my mornings →':'Continue →',
+    };
+  }
+}
+</script>
+</body>
+</html>

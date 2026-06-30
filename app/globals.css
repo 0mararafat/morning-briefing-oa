@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens (from design_handoff_morning_briefing/tokens.css) ──────────
+   Light is :root; dark is applied by setting [data-theme="dark"] on <html>. */
+:root {
+  --bg: #ffffff;
+  --bg-2: #f3f5f7;
+  --surface: rgba(255, 255, 255, 0.72);
+  --surface-2: rgba(255, 255, 255, 0.92);
+  --surface-solid: #ffffff;
+
+  --text: #000000;
+  --text-2: #565b64;
+  --text-3: #8b909a;
+
+  --border: rgba(18, 22, 28, 0.12);
+  --border-strong: rgba(18, 22, 28, 0.2);
+  --rule: rgba(18, 22, 28, 0.85);
+
+  --accent: #005a9c;
+  --accent-ink: #00497f;
+  --accent-soft: rgba(0, 90, 156, 0.1);
+  --accent-soft-2: rgba(0, 90, 156, 0.05);
+
+  --green: #0e8a4f;
+  --green-soft: rgba(14, 138, 79, 0.13);
+  --amber: #bd7f0e;
+  --amber-soft: rgba(189, 127, 14, 0.15);
+  --grey-dot: #bcc1c9;
+
+  --glass-hi: rgba(255, 255, 255, 0.9);
+  --shadow: 0 12px 40px rgba(18, 22, 28, 0.1);
+  --shadow-sm: 0 1px 3px rgba(18, 22, 28, 0.08);
+
+  --ink-panel: #15171b;
+
+  /* Back-compat aliases for components built before the design landed. */
+  --ink: var(--text);
+  --muted: var(--text-2);
+  --signal-strong: var(--green);
+  --signal-light: var(--amber);
+  --signal-none: var(--grey-dot);
+}
+
+html[data-theme="dark"] {
+  --bg: #0c0e11;
+  --bg-2: #13161b;
+  --surface: rgba(30, 35, 42, 0.55);
+  --surface-2: rgba(34, 40, 48, 0.74);
+  --surface-solid: #15181d;
+
+  --text: #edeff3;
+  --text-2: #9ba1ac;
+  --text-3: #6a7079;
+
+  --border: rgba(255, 255, 255, 0.13);
+  --border-strong: rgba(255, 255, 255, 0.22);
+  --rule: rgba(237, 239, 243, 0.82);
+
+  --accent: #3d8fdb;
+  --accent-ink: #74b2ea;
+  --accent-soft: rgba(61, 143, 219, 0.18);
+  --accent-soft-2: rgba(61, 143, 219, 0.09);
+
+  --green: #2ec27e;
+  --green-soft: rgba(46, 194, 126, 0.18);
+  --amber: #e0a52f;
+  --amber-soft: rgba(224, 165, 47, 0.18);
+  --grey-dot: #5b626c;
+
+  --glass-hi: rgba(255, 255, 255, 0.08);
+  --shadow: 0 16px 46px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+
+  --ink-panel: #1b1f26;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Spectral", Georgia, serif;
+}
+
+/* Liquid-glass surface utility (cards, nav, choice tiles). */
+.glass {
+  background: var(--surface);
+  backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--glass-hi);
+  border-radius: 16px;
+}
+
+/* Status-dot "new" pulse. */
+@keyframes mb-pulse {
+  0% {
+    box-shadow: 0 0 0 0 var(--green-soft);
+  }
+  70% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}

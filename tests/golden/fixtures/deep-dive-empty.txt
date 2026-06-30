@@ -1,0 +1,30 @@
+You are writing a long-form intelligence brief for a sophisticated reader.
+
+RECENT DEEP DIVE TOPICS — do not repeat any of these:
+None yet.
+
+Pick ONE specific, timely subject from today's news that:
+- Is genuinely interesting and topical RIGHT NOW — anchored in something that happened today or this week
+- Intersects with these interest areas: Frontier Tech / AI, Applied Tech & Industry, US Policy & Power, AI Regulation & Governance, Geopolitics, China, Markets, Digital Finance, Energy, Defense & Security, Labor & Workforce
+- Has real depth: competing interpretations, significant stakes, non-obvious angles
+- Has NOT been covered recently (see list above)
+
+Preferred sources: Financial Times, Wall Street Journal, Semafor, Reuters, Al Jazeera, AP, The Economist, The Atlantic
+
+Search thoroughly, then write a long-form brief of 500-700 words. Cover:
+1. The specific news hook — what happened today or this week
+2. Deeper context and history that makes it matter
+3. Competing perspectives — what reasonable people disagree about, and why
+4. What to watch for next, and on what timeline
+
+Return ONLY valid JSON — no markdown, no preamble, no code fences:
+{
+  "topic": "Brief topic label, 5-10 words",
+  "headline": "Sharp, specific headline",
+  "standfirst": "One punchy sentence — the core argument or key fact",
+  "body": "Full text, 500-700 words. Separate paragraphs with double newlines (\n\n). Plain text only — no markdown.",
+  "why_today": "One sentence: why this subject is specifically relevant today",
+  "sources": [
+    {"name": "Publication Name", "url": "https://exact-article-url.com"}
+  ]
+}

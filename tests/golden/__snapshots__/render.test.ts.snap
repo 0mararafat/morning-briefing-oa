@@ -1,0 +1,597 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`buildDashboardHtml > renders a stable, well-formed document 1`] = `
+"<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Morning Briefing — Monday, June 29, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--surface:#fff;--ink:#15171b;--muted:#565b64;--border:rgba(18,22,28,0.12);--accent:#00497f;
+--urgent:#dc2626;--high:#bd7f0e;--tracking:#8b909a;--sig-strong:#0e8a4f;--sig-light:#bd7f0e;--sig-none:#bcc1c9;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Spectral,Georgia,serif;line-height:1.55}
+a{color:var(--accent)}
+.wrap{max-width:840px;margin:0 auto;padding:28px 20px 80px}
+.masthead{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
+.masthead h1{font-family:Spectral,Georgia,serif;font-size:34px;margin:0 0 4px}
+.masthead .date{color:var(--muted);font-size:14px}
+.stats{display:flex;gap:18px;margin-top:10px;font-size:13px;color:var(--muted)}
+.stats b{color:var(--ink)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 22px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.tab{border:1px solid var(--border);background:var(--surface);color:var(--muted);padding:7px 13px;border-radius:999px;
+font-size:13px;font-weight:600;cursor:pointer}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.panel{display:none}
+.panel.active{display:block}
+h3{font-family:Spectral,Georgia,serif;font-size:20px;margin:4px 0}
+.hint{color:var(--muted);font-style:italic}
+/* cards */
+.story,.pattern{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;cursor:pointer}
+.card-top{display:flex;gap:12px;align-items:flex-start}
+.story-dot{width:10px;height:10px;border-radius:50%;margin-top:7px;flex:none}
+.dot-urgent{background:var(--urgent)}.dot-high{background:var(--high)}.dot-tracking{background:var(--tracking)}
+.story-content{flex:1}
+.story-meta{display:flex;gap:10px;align-items:center;margin-bottom:4px}
+.priority-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;color:#fff;letter-spacing:.04em}
+.tag-urgent{background:var(--urgent)}.tag-high{background:var(--high)}.tag-tracking{background:var(--tracking)}
+.sector-label{font-size:12px;color:var(--muted)}
+.one-liner{color:var(--muted);font-size:14px}
+.chevron{color:var(--muted);transition:transform .2s}
+.open .chevron{transform:rotate(180deg)}
+.card-detail{max-height:0;overflow:hidden;transition:max-height .25s ease}
+.open .card-detail{max-height:4000px}
+.card-detail-inner{padding-top:12px}
+.card-detail-inner p{margin:0 0 10px}
+/* sources */
+.story-sources,.deep-dive-sources{margin-top:12px;font-size:13px}
+.sources-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin-right:8px}
+.source-sep{margin:0 7px;color:var(--border)}
+/* sectors */
+.sector-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.sector-top{display:flex;gap:9px;align-items:center}
+.sector-dot{width:9px;height:9px;border-radius:50%}
+.sector-dot.active{background:var(--sig-strong)}.sector-dot.quiet{background:var(--sig-none)}
+.sector-name{font-weight:600}
+.sector-summary{color:var(--muted);font-size:14px;margin-top:6px;padding-left:18px}
+/* week */
+.week-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.week-item.critical{font-weight:600}
+.week-day{font-family:"IBM Plex Mono",monospace;font-size:13px;width:54px;flex:none;color:var(--muted)}
+.week-event{flex:1}
+.week-tag{font-size:11px;padding:2px 8px;border-radius:5px;text-transform:capitalize}
+/* patterns */
+.pattern{background:#211e17;color:#f2ede2;border-color:#33302a}
+.pattern h3{color:#fff}
+.pattern-label{font-size:11px;letter-spacing:.08em;color:#d9b160;font-weight:700}
+.subtitle{color:#b8b3aa;font-size:14px;margin:2px 0 6px}
+.pattern-cat{display:inline-block;font-size:11px;background:#33302a;color:#d8d2c6;padding:2px 8px;border-radius:5px;margin-right:6px}
+/* deep dive */
+.deep-dive{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px}
+.deep-dive-kicker{font-size:12px;font-weight:700;letter-spacing:.06em;color:var(--accent);display:flex;align-items:center;gap:7px}
+.deep-dive-kicker-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.deep-dive h2{font-family:Spectral,Georgia,serif;font-size:28px;margin:10px 0 6px}
+.standfirst{font-size:17px;color:var(--muted);margin-bottom:14px}
+.deep-dive-why{font-size:13px;color:var(--accent);margin-bottom:14px}
+.deep-dive .body p{margin:0 0 12px}
+/* signal */
+.sig-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.sig-card.sig-quiet{opacity:.6}
+.sig-header{display:flex;justify-content:space-between;align-items:center}
+.sig-left{display:flex;gap:9px;align-items:center}
+.sig-dot{width:9px;height:9px;border-radius:50%}
+.sig-strong{background:var(--sig-strong)}.sig-light{background:var(--sig-light)}.sig-none{background:var(--sig-none)}
+.sig-name{font-weight:600}
+.sig-handle{color:var(--muted);font-size:13px;margin-left:7px}
+.sig-source-badge{font-size:10px;font-weight:700;color:var(--muted);border:1px solid var(--border);padding:2px 6px;border-radius:5px}
+.sig-title{display:block;margin-top:8px;font-weight:600}
+.sig-summary{color:var(--muted);font-size:14px;margin-top:5px}
+.sig-connection{color:var(--accent);font-size:13px;margin-top:6px}
+.sig-quiet-section{margin-top:16px}
+.sig-quiet-label{font-size:11px;font-weight:700;letter-spacing:.06em;color:var(--muted);margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <h1>Morning Briefing</h1>
+    <div class="date">Monday, June 29, 2026</div>
+    <div class="stats">
+      <span><b>1</b> urgent</span>
+      <span><b>10</b>/11 sectors active</span>
+    </div>
+  </header>
+  <nav class="tabs"><button class="tab active" data-tab="top-stories" onclick="showTab('top-stories')">Top Stories</button><button class="tab" data-tab="sector-scan" onclick="showTab('sector-scan')">Sector Scan</button><button class="tab" data-tab="week-ahead" onclick="showTab('week-ahead')">Week Ahead</button><button class="tab" data-tab="pattern-watch" onclick="showTab('pattern-watch')">Pattern Watch</button><button class="tab" data-tab="deep-dive" onclick="showTab('deep-dive')">Deep Dive</button><button class="tab" data-tab="signal-scan" onclick="showTab('signal-scan')">Signal Scan</button></nav>
+  <section class="panel active" id="top-stories">
+    <div class="story" data-priority="urgent" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div class="story-dot dot-urgent"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-urgent">URGENT</span>
+            <span class="sector-label">Geopolitics</span>
+          </div>
+          <h3>US-Iran MOU Holds — But Switzerland Talks Already Hitting Turbulence</h3>
+          <div class="one-liner">Trump and Iran&#39;s president signed a 60-day ceasefire MOU on June 17, but the first technical talks in Switzerland stalled almost immediately, leaving the fragile peace in question as this week opens.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>On June 17, 2026, US President Trump and Iranian President signed a memorandum of understanding to end the 2026 Iran war — a conflict initiated by the joint US-Israeli &#39;Operation Epic Fury&#39; strikes on February 28. The MOU established a 60-day ceasefire extension, called for reopening the Strait of Hormuz to commercial shipping toll-free, lifted the US naval blockade of Iranian ports, and set the stage for negotiations on a permanent nuclear agreement. However, the MOU notably excludes Iran&#39;s ballistic missile program and its network of regional proxies, two of the most contentious issues.</p>
+<p>The new deal almost immediately ran into turbulence. According to AP, technical talks scheduled in Switzerland on June 18 were postponed. Trump issued threats that further complicated the atmosphere, while also denying a reported $300 billion government fund to Iran as &#39;fake news.&#39; Trump defended the MOU at the G7 in France by arguing that a prolonged war could have caused an &#39;economic catastrophe.&#39; Iran&#39;s Supreme National Security Council warned that ceasefire violations would not be tolerated and that Iranian forces would &#39;soon respond&#39; to any provocations.</p>
+<p>Israel remains a critical wild card. Netanyahu publicly stated that &#39;we still have goals to complete,&#39; including securing enriched nuclear material within Iran — which Israel&#39;s Foreign Minister called a &#39;precondition&#39; to end the conflict. The IAEA still has not been able to resume inspections of Iran&#39;s nuclear program since the June 2025 Twelve-Day War. On June 19, Israel and Hezbollah agreed to halt fighting, per AP, though Lebanon&#39;s status relative to any broader deal remains disputed.</p>
+<p>The economic consequences of the war have been severe. Iran&#39;s blockade of the Strait of Hormuz — one of the world&#39;s most vital oil chokepoints — triggered fuel shortages across Asia and rippling disruptions globally. Markets responded dramatically to signs of de-escalation: the Dow hit an all-time high and oil dropped roughly 33% after the peace deal appeared imminent. The next 60-day window is now the most critical diplomatic period in the Middle East in years, and Congress is already asking whether the war was &#39;worth it,&#39; per AP reporting.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://en.wikipedia.org/wiki/2026_Iran_war_ceasefire" target="_blank" rel="noopener">Wikipedia – 2026 Iran War Ceasefire</a><span class="source-sep">·</span><a class="source-link" href="https://www.britannica.com/event/2026-Iran-war" target="_blank" rel="noopener">Britannica – 2026 Iran War</a><span class="source-sep">·</span><a class="source-link" href="https://en.wikipedia.org/wiki/2025%E2%80%932026_Iran%E2%80%93United_States_negotiations" target="_blank" rel="noopener">Wikipedia – 2025-2026 Iran-US Negotiations</a><span class="source-sep">·</span><a class="source-link" href="https://commonslibrary.parliament.uk/research-briefings/cbp-10637/" target="_blank" rel="noopener">House of Commons Library</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">Markets</span>
+          </div>
+          <h3>Fed Chair Warsh&#39;s Hawkish Debut Rocks Markets and Crypto</h3>
+          <div class="one-liner">In his first FOMC meeting, new Fed Chair Kevin Warsh held rates at 3.5%-3.75% but signaled possible hikes, rattling equities and sending Bitcoin through key support levels.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>Kevin Warsh, Trump&#39;s pick to succeed Jerome Powell, chaired his first FOMC meeting on June 17 and delivered a decidedly hawkish signal. The Fed held rates unanimously at 3.50%-3.75%, but the updated dot plot — the Fed&#39;s forecast of future rates — shocked markets: the median projection now puts the year-end federal funds rate at 3.8%, up from 3.4% in March, with nine of 18 officials penciling in at least one rate hike in 2026. Warsh withheld his own dot-plot estimate, becoming the first Fed chair in over a decade to do so, and abandoned the extensive forward guidance that Powell favored — adding a layer of uncertainty investors found deeply unsettling.</p>
+<p>Markets moved swiftly. Bitcoin fell through the key $63,000 support level, with market maker Wintermute warning that a slide into the $50s &#39;is not ruled out.&#39; The Nasdaq and S&amp;P 500 each fell over 1% on the day. CME FedWatch data put the odds of a rate hike as early as October at roughly 60%. The two-year Treasury yield surged 14 basis points. Five AI-oriented stocks, which had been responsible for roughly half of the S&amp;P 500&#39;s year-to-date return, joined the broader selloff.</p>
+<p>Just days after Warsh&#39;s meeting, the Fed proposed new stablecoin KYC rulemaking under the GENIUS Act — a joint effort with Treasury and the FDIC. All Fed governors voted in favor except Warsh himself, who abstained without explanation, raising immediate questions about how the new chair intends to exercise influence across the financial regulatory stack.</p>
+<p>The macro backdrop is now sharply different from expectations entering June. The peace deal with Iran had eased oil prices and inflation fears, but a Fed now leaning toward hikes has replaced cut bets that crypto and growth equities had been pricing in. Rabobank and other forecasters had predicted Warsh would pivot dovish; that thesis is now firmly off the table. Watch July FOMC odds and Q2 CPI data as the next key catalysts.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.banklesstimes.com/articles/2026/06/21/crypto-market-recap-tether-kills-ausdt-mstr-could-sink-below-100-cme-sues-over-crypto-futures-classification-and-more-june-15-20-2026/" target="_blank" rel="noopener">BanklessTimes – Crypto Recap June 15-20</a><span class="source-sep">·</span><a class="source-link" href="https://www.coindesk.com/tech/2026/06/18/live-markets-bitcoin-and-ether-etfs-lost-usd111-million-combined-as-rate-cut-hopes-died" target="_blank" rel="noopener">CoinDesk – Bitcoin &amp; Ether ETF Outflows</a><span class="source-sep">·</span><a class="source-link" href="https://finance.yahoo.com/markets/crypto/articles/bitcoin-price-falls-below-key-121215163.html" target="_blank" rel="noopener">Yahoo Finance – Bitcoin Falls Below $63K</a><span class="source-sep">·</span><a class="source-link" href="https://finance.yahoo.com/markets/crypto/articles/jerome-powell-supports-feds-stablecoin-153327407.html" target="_blank" rel="noopener">Yahoo Finance – Powell Supports Stablecoin Rules, Warsh Abstains</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">Applied Tech &amp; Industry</span>
+          </div>
+          <h3>Anthropic Hits $965B Valuation, Files Confidentially for IPO</h3>
+          <div class="one-liner">Anthropic&#39;s $65B Series H round eclipsed OpenAI&#39;s valuation for the first time and was quickly followed by a confidential IPO filing, igniting the most consequential tech public market race in years.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>On May 28, Anthropic closed a $65 billion Series H round at a $965 billion post-money valuation, surpassing rival OpenAI&#39;s $852 billion valuation for the first time. The round was co-led by Altimeter Capital, Dragoneer, Greenoaks, and Sequoia Capital, with broad participation from institutional investors including Baillie Gifford, Blackstone, Brookfield, DST Global, Fidelity, and Temasek. Strategic infrastructure partners — Samsung, SK Hynix, and Micron — also joined, reflecting Anthropic&#39;s compute scaling ambitions. The round includes $15 billion in previously committed hyperscaler investments, including $5 billion from Amazon.</p>
+<p>The valuation almost triples Anthropic&#39;s February 2026 figure of $380 billion. Revenue growth has been explosive: the company reported a $47 billion annualized run rate, up from $30 billion earlier in 2026 and just $10 billion in full-year 2025. Claude Code — the AI coding assistant — has been the primary driver, with the Wall Street Journal reporting that Anthropic expects a 130% revenue surge that would bring it to its first operating profit. Claude Opus 4.8, released alongside the funding announcement, leads agentic coding benchmarks.</p>
+<p>By June 1, Anthropic had confidentially filed IPO paperwork with the SEC, potentially leapfrogging OpenAI in the race to public markets. OpenAI, valued at $852 billion after its $122 billion March round, is also preparing its own confidential IPO filing. SpaceX/xAI is targeting a $2 trillion valuation in its pending IPO. The AI IPO window, if it opens, would represent the most significant cluster of tech listings since the early 2000s.</p>
+<p>Anthropics faces one notable headwind: a legal dispute with the Pentagon, which designated it a &#39;supply chain risk&#39; over its refusal to allow unrestricted military access to its tools. The company is also reportedly planning to more widely deploy models on par with its cybersecurity-focused Mythos model — a move that will directly intersect with Trump&#39;s June 2 AI executive order requiring voluntary pre-release government review of frontier models.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.anthropic.com/news/series-h" target="_blank" rel="noopener">Anthropic – Series H Announcement</a><span class="source-sep">·</span><a class="source-link" href="https://techcrunch.com/2026/05/28/anthropic-raises-65-billion-nears-1t-valuation-ahead-of-ipo/" target="_blank" rel="noopener">TechCrunch – Anthropic Raises $65B</a><span class="source-sep">·</span><a class="source-link" href="https://www.cnbc.com/2026/05/28/anthropic-open-ai-startup-value.html" target="_blank" rel="noopener">CNBC – Anthropic Tops OpenAI</a><span class="source-sep">·</span><a class="source-link" href="https://fortune.com/2026/06/01/anthropic-confidentially-files-ipo-965-billion-valuation/" target="_blank" rel="noopener">Fortune – Anthropic Confidential IPO Filing</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="high" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div class="story-dot dot-high"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-high">HIGH</span>
+            <span class="sector-label">AI Regulation &amp; Governance</span>
+          </div>
+          <h3>Colorado AI Act Gutted and Reset to Jan 2027 — State AI Regulation in Full Retreat</h3>
+          <div class="one-liner">Colorado Governor Polis signed a bill in May that substantially scaled back the nation&#39;s first comprehensive AI law and pushed its effective date to January 2027, as federal preemption pressure mounts from Washington.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>On May 14, 2026, Colorado Governor Jared Polis signed SB 189, a significant revision to the landmark 2024 Colorado AI Act (SB 24-205). The amendment delays the effective date from June 30, 2026 to January 1, 2027, and substantially scales back its original requirements. The revised law eliminates the risk-based framework&#39;s &#39;duty of care&#39; against algorithmic discrimination, scraps mandatory risk management programs and impact assessments for deployers, and drops certain reporting obligations to the Colorado AG. What remains is a narrower transparency and disclosure regime focused on automated decision-making technologies.</p>
+<p>The gutting of the Colorado AI Act is a significant bellwether for the entire US state AI regulation landscape. The law was intended to be the nation&#39;s first comprehensive AI regulatory framework — covering employment, housing, healthcare, education, and credit decisions. It faced relentless industry opposition and a federal headwind from the Trump administration, which in December 2025 created an AI Litigation Task Force to challenge state laws deemed to conflict with federal AI policy, and explicitly targeted the Colorado act in executive orders.</p>
+<p>The White House&#39;s March 2026 National Policy Framework for AI urged Congress to preempt state AI laws, calling them an &#39;inherently interstate phenomenon.&#39; This dynamic is now reshaping the regulatory landscape: as Colorado retreats, California&#39;s Transparency in Frontier AI Act and New York&#39;s RAISE Act remain on the books but face similar pressure. The EU AI Act transparency rules, by contrast, are marching toward their August 2026 compliance deadline — creating an increasingly asymmetric regulatory environment where European enterprises face hard obligations while US companies navigate a patchwork in retreat.</p>
+<p>For enterprises, the Colorado SB 189 signing offers short-term relief, but the January 2027 date and ongoing federal-state tension mean compliance uncertainty is far from resolved. Cooley and other law firms advising clients note that businesses should &#39;continue to closely monitor both state and federal legislative developments.&#39;</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.hunton.com/privacy-and-cybersecurity-law-blog/colorado-ai-act-amended-and-effective-date-delayed" target="_blank" rel="noopener">Hunton – Colorado AI Act Amended</a><span class="source-sep">·</span><a class="source-link" href="https://www.cooley.com/news/insight/2026/2026-04-24-state-ai-laws-where-are-they-now" target="_blank" rel="noopener">Cooley – State AI Laws Update</a><span class="source-sep">·</span><a class="source-link" href="https://www.skadden.com/insights/publications/2026/06/new-ai-executive-order" target="_blank" rel="noopener">Skadden – Trump AI Executive Order</a><span class="source-sep">·</span><a class="source-link" href="https://www.whitehouse.gov/releases/2026/03/president-donald-j-trump-unveils-national-ai-legislative-framework/" target="_blank" rel="noopener">White House – AI National Policy Framework</a></div></div></div>
+      </div>
+    </div>
+    <div class="story" data-priority="tracking" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div class="story-dot dot-tracking"></div>
+        <div class="story-content">
+          <div class="story-meta">
+            <span class="priority-tag tag-tracking">TRACKING</span>
+            <span class="sector-label">Frontier Tech / AI</span>
+          </div>
+          <h3>EU Picks EUROPA Consortium for Sovereign Open-Source Frontier AI Model</h3>
+          <div class="one-liner">The European Commission selected the Domyn-led EUROPA consortium to build a 400B+ parameter open-source model across all 24 EU languages, backed by a dedicated Nvidia Blackwell cluster and EuroHPC compute.</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>On June 19, the European Commission announced it had selected the EUROPA consortium, led by Italian company Domyn, as the winner of its Frontier AI Grand Challenge. The consortium is tasked with building a sovereign, open-source AI model exceeding 400 billion parameters — making it comparable in scale to the world&#39;s most capable frontier systems. The model will be trained natively across all 24 official EU languages, enabling European public institutions, universities, and hospitals to access frontier-grade AI without routing sensitive data through non-EU cloud infrastructure.</p>
+<p>The project is backed by a dedicated 6,000-chip Nvidia Blackwell cluster and access to up to 2.5% of EuroHPC&#39;s high-performance supercomputing capacity. It sits within the broader European Technological Sovereignty Package announced June 3, which includes a proposed Cloud and AI Development Act (CADA) with four &#39;Union assurance levels&#39; for cloud sovereignty, and a Chips Act 2.0 aimed at building European semiconductor capacity.</p>
+<p>The EUROPA selection comes as the EU AI Act&#39;s transparency provisions approach their August 2026 compliance deadline — putting European enterprise AI governance on a very different trajectory than the US, where voluntary frameworks and state law retreats dominate. In May 2026, the European Parliament also reached political agreement to simplify AI Act rules via an &#39;AI omnibus,&#39; streamlining compliance for smaller companies.</p>
+<p>The context is stark: private AI investment in the US runs approximately 24 times higher than in Europe. The EUROPA project and the broader sovereignty stack — including Mistral AI&#39;s €830 million institutional debt raise to build a major Paris-area data center — represent the EU&#39;s most concerted effort yet to close that gap on its own terms.</p><div class="story-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://commission.europa.eu/news-and-media/news/strengthening-europes-tech-sovereignty-2026-06-03_en" target="_blank" rel="noopener">European Commission – Tech Sovereignty Package</a><span class="source-sep">·</span><a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence" target="_blank" rel="noopener">EU Digital Strategy – EUROPA Consortium Selection</a><span class="source-sep">·</span><a class="source-link" href="https://ieu-monitoring.com/editorial/eu-commission-picks-europa-consortium-led-by-domyn-to-build-open-frontier-ai-model/1243623" target="_blank" rel="noopener">Insight EU – EUROPA Consortium</a><span class="source-sep">·</span><a class="source-link" href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">EU AI Act Page</a></div></div></div>
+      </div>
+    </div></section>
+<section class="panel" id="sector-scan">
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Frontier Tech / AI</span>
+      </div>
+      <div class="sector-summary">The EU selected the EUROPA consortium to build a 400B+ parameter open-source sovereign AI model across all 24 EU languages, backed by EuroHPC compute and a dedicated Nvidia Blackwell cluster. Separately, Google DeepMind&#39;s Gemini 3.5 Pro (2M context window, &#39;Deep Think&#39; mode) and Apple&#39;s rebuilt Siri AI (launched June 8) continue to reshape the competitive frontier. xAI is training Grok 5 on expanded 1.5GW Colossus 2 infrastructure, with a late-summer release projected.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Applied Tech &amp; Industry</span>
+      </div>
+      <div class="sector-summary">Anthropic&#39;s $65B Series H at a $965B valuation eclipsed OpenAI for the first time, followed immediately by a confidential IPO filing — igniting a race to public markets alongside OpenAI and SpaceX/xAI. Anthropic&#39;s $47B annualized run rate, powered by Claude Code enterprise adoption, marks an 80-fold revenue increase. GitHub Copilot&#39;s switch to per-token &#39;AI Credits&#39; billing is generating significant backlash from power users reporting 10x-50x cost increases.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">US Policy &amp; Power</span>
+      </div>
+      <div class="sector-summary">Trump&#39;s June 2 AI executive order created a voluntary 30-day pre-release review framework for frontier models, with NSA leading a classified benchmarking process to designate &#39;covered frontier models.&#39; The August 1 deadline for agency deliverables is now eight weeks away. The Department of War has signed AI access agreements with OpenAI, Google, Amazon, Microsoft, NVIDIA, Oracle, SpaceX, and Reflection to bring AI to classified networks.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">AI Regulation &amp; Governance</span>
+      </div>
+      <div class="sector-summary">Colorado gutted and delayed its landmark AI Act to January 2027, largely stripping its risk-management and anti-discrimination provisions under federal and industry pressure. The EU AI Act&#39;s transparency rules take effect in August 2026, creating a sharp transatlantic regulatory divergence. The White House continues to push for federal preemption of state AI laws, with its National Policy Framework urging Congress to act.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Geopolitics</span>
+      </div>
+      <div class="sector-summary">The US-Iran MOU signed June 17 established a 60-day ceasefire and framework for nuclear talks, but Switzerland technical talks stalled almost immediately. Israel and Hezbollah agreed to halt fighting on June 19 per AP, but Lebanon&#39;s status under any final deal remains contested. The Strait of Hormuz is nominally reopened toll-free for the ceasefire period, with Trump warning tolls could be imposed if peace talks fail.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">China</span>
+      </div>
+      <div class="sector-summary">Beijing is deepening its double-down on technological self-sufficiency across rare earths, batteries, AI, and robotics, according to Rabobank&#39;s analysis. McKinsey data show the 2025 tariff regime pushed over $165 billion in trade away from the US-China corridor. EU-China tensions are widening beyond EVs to wind, solar, and mature-node semiconductors, per Lazard&#39;s geopolitical outlook.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Markets</span>
+      </div>
+      <div class="sector-summary">Fed Chair Warsh&#39;s first FOMC meeting held rates at 3.50%-3.75% but the dot plot surprised hawkishly, with the median now projecting 3.8% year-end and 9 of 18 officials penciling in a hike. CME FedWatch puts October hike odds near 60%. The 10-year Treasury yield hit 4.46%, the 2-year 4.14%. Goldman Sachs cut its 2026 gold target to $4,900 from $5,400 on fading rate-cut odds. Five AI stocks remain responsible for roughly half the S&amp;P 500&#39;s year-to-date return.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Digital Finance</span>
+      </div>
+      <div class="sector-summary">The Federal Reserve proposed GENIUS Act stablecoin KYC rulemaking jointly with Treasury and FDIC — all governors voted yes except new Chair Warsh, who abstained without explanation. Bitcoin fell through $63,000 support following the hawkish FOMC, with Wintermute warning of a possible slide into the $50s. Tokenized real-world assets grew ~589% from early 2025 to June 2026, with public equities tokenization expanding 422%. Tether shut down its gold-backed aUSDT stablecoin, redirecting to Tether Gold.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Energy</span>
+      </div>
+      <div class="sector-summary">Oil dropped roughly 33% as the US-Iran MOU signaled Strait of Hormuz reopening, though the ceasefire&#39;s fragility keeps energy markets on edge. Trump announced no Hormuz tolls during the 60-day ceasefire window but reserved the right to implement them if peace talks fail. The EU&#39;s tech sovereignty package includes a strategic roadmap for digitalizing the energy sector and integrating AI into power grid management.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot active"></div>
+        <span class="sector-name">Defense &amp; Security</span>
+      </div>
+      <div class="sector-summary">Anthropic&#39;s Project Glasswing reported Claude Mythos Preview found over 10,000 high/critical severity vulnerabilities in a single month, a capability that drove Trump&#39;s June 2 frontier AI executive order. The Department of War signed AI access agreements with eight major tech firms for classified network deployment. Iran&#39;s IRGC-linked crypto platforms Wallex, Bitpin, and Ramzinex were sanctioned by Treasury&#39;s OFAC for processing transactions for the Revolutionary Guard.</div>
+    </div>
+    <div class="sector-item">
+      <div class="sector-top">
+        <div class="sector-dot quiet"></div>
+        <span class="sector-name">Labor &amp; Workforce</span>
+      </div>
+      
+    </div></section>
+<section class="panel" id="week-ahead">
+    <div class="week-item">
+      <span class="week-day">Mon Jun 22</span>
+      <span class="week-event">US-Iran Switzerland technical talks: status uncertain after June 18 postponement; watch for resumption announcement or further breakdown</span>
+      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Mon Jun 22</span>
+      <span class="week-event">EU AI Act transparency rules compliance clock ticking — August 2 full applicability deadline now 6 weeks away; businesses finalizing readiness</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Tue Jun 23</span>
+      <span class="week-event">Merrill Lynch / BofA 2026 Midyear Outlook webcast — &#39;Shifting Gears: New Drivers of Market Expansion&#39;; Fed, AI, and midterms in focus</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Wed Jun 24</span>
+      <span class="week-event">Fed speakers expected post-FOMC meeting cycle — watch for Warsh or governor appearances clarifying hawkish dot-plot interpretation</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Thu Jun 25</span>
+      <span class="week-event">Watch for Anthropic IPO registration updates; company confidentially filed June 1 with SEC, first public S-1 details may emerge</span>
+      <span class="week-tag" style="color:#fff;background:#D97706">earnings</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Thu Jun 25</span>
+      <span class="week-event">CFTC/SEC 60-day public comment period opens on &#39;swap&#39; definition for crypto/prediction markets, following CME lawsuit against CFTC over Kalshi bitcoin futures classification</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Fri Jun 27</span>
+      <span class="week-event">US PCE inflation data release — key input for Fed; any upside surprise reinforces October hike odds now priced at ~60%</span>
+      <span class="week-tag" style="color:#fff;background:#059669">data</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Fri Jun 27</span>
+      <span class="week-event">Colorado AI Act amended version (SB 189) — now reset to Jan 2027 — watch for industry and advocacy group responses as original June 30 deadline passes</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Ongoing</span>
+      <span class="week-event">Trump AI EO 60-day clock: NSA, CISA, Treasury must deliver classified frontier model benchmarking framework and AI Cybersecurity Clearinghouse by ~August 1</span>
+      <span class="week-tag" style="color:#fff;background:#6366F1">policy</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Ongoing</span>
+      <span class="week-event">US-Iran ceasefire MOU: 60-day negotiation window underway; watch Strait of Hormuz traffic data, IAEA inspection access, and Israel-Hezbollah Lebanon developments</span>
+      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Ongoing</span>
+      <span class="week-event">OpenAI confidential IPO filing expected imminently per CNBC; SpaceX/xAI prospectus already filed — dual AI mega-IPO race live this week</span>
+      <span class="week-tag" style="color:#fff;background:#D97706">earnings</span>
+    </div>
+    <div class="week-item">
+      <span class="week-day">Jul 30</span>
+      <span class="week-event">Potomac Officers Club 2026 Air and Space Summit — military AI strategy, commercial space, and cross-domain operations on agenda</span>
+      <span class="week-tag" style="color:#fff;background:#7C3AED">defense</span>
+    </div></section>
+<section class="panel" id="pattern-watch">
+    <div class="pattern" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>The Warsh Trap: Fed Hawkishness Just Killed the Iran Peace Dividend</h3>
+          <div class="subtitle">Warsh&#39;s surprise rate-hike signals are collapsing the oil-fueled rally that made the Iran MOU politically viable—forcing Trump to either back down or face a market reckoning that delegitimizes the deal.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Markets</span><span class="pattern-cat">Geopolitics</span><span class="pattern-cat">Energy</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>SPECULATIVE: Kevin Warsh&#39;s hawkish debut and abstention on stablecoin KYC rules aren&#39;t random. They&#39;re calculated moves to reset market expectations before the Iran ceasefire unravels—which it will, because the economic math no longer works. Oil crashed 33% on hopes of Hormuz reopening, but Warsh&#39;s dot plot just signaled potential rate hikes starting October, which will (a) reignite USD strength, crushing emerging market risk assets that depend on cheap dollar funding, and (b) reverse the equity rally that gave Trump political cover to sell the Iran deal to his base. Netanyahu&#39;s public statement that &#39;we still have goals to complete&#39; and Israel&#39;s demand for Iranian enriched uranium access was never going to survive 60 days anyway. What makes this dangerous: Trump will face pressure to either provoke a restart of hostilities to justify holding oil prices up for political reasons, or accept that the Iran peace was a feint—a way to cool markets before the real fiscal shock hits. Warsh&#39;s refusal to commit his own rate forecast is the tell. He&#39;s positioning the Fed to pivot hawkish just as the ceasefire deadline approaches, creating political cover for a Trump-ordered provocation. Watch whether Trump tweets threats at Iran in late August, synchronized with Fed communications. The Strait of Hormuz toll threat becomes the narrative escape hatch.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>Anthropic&#39;s IPO Play Is a Sovereign Wealth Trap</h3>
+          <div class="subtitle">Anthropic&#39;s $965B valuation and confidential IPO filing mask a critical vulnerability: it&#39;s built its $47B ARR on Claude Code enterprise adoption that depends entirely on US cloud dominance—which the EU&#39;s EUROPA project is deliberately dismantling.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Applied Tech &amp; Industry</span><span class="pattern-cat">AI Regulation &amp; Governance</span><span class="pattern-cat">US Policy &amp; Power</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>SPECULATIVE: Anthropic&#39;s confidential IPO filing is aggressive theater masking a structural problem. The company claims a $47B annualized run rate (130% growth), but 70-80% of that is Claude Code—an enterprise coding assistant whose entire addressable market sits within US tech companies operating under Trump&#39;s new voluntary AI review framework. Now examine the timing: Anthropic files for IPO confidentially on June 1, the same week Trump&#39;s AI executive order lands with NSA-led benchmarking and a classified model registry. Anthropic gets immediately mentioned as a &#39;covered frontier model&#39; candidate, and the Pentagon brands it a &#39;supply chain risk&#39; over its refusal to grant unrestricted military access. This isn&#39;t a bug; it&#39;s a feature. Anthropic wants IPO legitimacy precisely because it&#39;s about to lose US government cloud volume to open-source alternatives. The EU, meanwhile, just handed EUROPA (Domyn-led consortium) a 6,000-chip Nvidia Blackwell cluster and EuroHPC access to build a 400B+ parameter sovereign AI model across all 24 EU languages. Within 18 months, European enterprises will have an on-premise, non-US-routed alternative for coding assistance, compliance automation, and healthcare AI. Anthropic&#39;s IPO price depends on investor belief that US enterprise lock-in is permanent. It isn&#39;t. Watch whether Anthropic&#39;s prospectus emphasizes international revenue concentration or tries to hide it. That metric will determine whether the IPO holds its valuation or crashes post-launch when institutional investors discover the revenue is structurally US-dependent.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>Colorado Capitulation Signals the Real AI Regulation Is Now Transnational, Not Federal</h3>
+          <div class="subtitle">US state AI law is dead; the EU AI Act&#39;s August 2026 transparency deadline is the only binding framework—meaning US companies will soon have to certify EU compliance anyway, making Colorado&#39;s retreat irrelevant.</div>
+          <div class="pattern-cats"><span class="pattern-cat">AI Regulation &amp; Governance</span><span class="pattern-cat">Frontier Tech / AI</span><span class="pattern-cat">US Policy &amp; Power</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>SPECULATIVE: Colorado Governor Polis&#39;s signing of SB 189 to gut and delay the Colorado AI Act is being read as a Trump administration victory. Wrong. It&#39;s a confession that the real regulatory battle is already lost—and it&#39;s being fought in Brussels, not Washington. The EU AI Act&#39;s transparency requirements go live August 2026. That&#39;s eight weeks. They mandate disclosures on automated decision-making, algorithmic discrimination risk, and model training data provenance across any company operating in the EU. The White House&#39;s March 2026 National Policy Framework pushed Congress to preempt state laws as &#39;inherently interstate.&#39; But the EU has already preempted everyone: any US AI company that wants EU market access (which all of them do) will have to build compliance infrastructure that exceeds Colorado&#39;s original SB 24-205 requirements. Anthropic, OpenAI, Google, Meta—they&#39;ll all be running dual stacks: US &#39;voluntary framework&#39; for domestic deployments, EU AI Act hard compliance for everything else. Once that infrastructure exists, it becomes cheaper to run it globally than to maintain separate codebases. This means the real AI regulation won&#39;t be set by Congress or red-state governors. It&#39;ll be set by the EU Commission&#39;s enforcement of the August 2026 deadline and Ursula von der Leyen&#39;s &#39;AI omnibus&#39; simplifications. Colorado&#39;s retreat signals the death of US state-level AI law not as a victory for industry, but as an admission that the US regulatory playbook is already obsolete. Watch whether OpenAI and Anthropic list their EU compliance officers and disclosure infrastructure in their IPO prospectuses. If they do, institutional investors will understand that EU regulation is now the de facto global standard.</p></div>
+      </div>
+    </div>
+    <div class="pattern" onclick="toggleCard(this)">
+      <div class="card-top">
+        <div>
+          <div class="pattern-label">SPECULATIVE ANALYSIS</div>
+          <h3>Warsh&#39;s Abstention on Stablecoin KYC Is a Warning Shot at Treasury—and a Power Play for the Fed</h3>
+          <div class="subtitle">New Fed Chair Warsh abstaining on GENIUS Act stablecoin rules while the Fed holds rates hawkish signals he&#39;s repositioning the Fed as the dominant AI-finance regulator, not Treasury.</div>
+          <div class="pattern-cats"><span class="pattern-cat">Digital Finance</span><span class="pattern-cat">Markets</span><span class="pattern-cat">US Policy &amp; Power</span></div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="card-detail">
+        <div class="card-detail-inner"><p>SPECULATIVE: Kevin Warsh&#39;s abstention on the Federal Reserve&#39;s joint GENIUS Act stablecoin KYC rulemaking—while all other governors voted yes—was weaponized theater. The move signals that Warsh is building a coalition to separate Fed monetary policy authority from Treasury&#39;s digital asset oversight. Here&#39;s why it matters: Treasury and the FDIC wanted to impose strict KYC (know-your-customer) rules on stablecoins, effectively making them impossible to deploy at scale without TradFi infrastructure. Warsh abstaining without explanation is a message that the Fed has different priorities. Bitcoin collapsed through $63,000 on his hawkish FOMC signals, and Wintermute warned of a $50k floor. But that same day, tokenized real-world assets grew 589% year-to-date. Warsh is signaling: we&#39;re not going to let Treasury regulate AI-fintech out of existence, because the Fed sees AI-powered decentralized finance as a necessary counterweight to TradFi concentration during a period of rate hikes and fiscal stress. Tether shutting down its gold-backed aUSDT (redirecting to Tether Gold) looks like a retreat, but it&#39;s actually a repositioning: Tether is moving away from commodity-backed synthetic assets toward pure stablecoin infrastructure, exactly the model Warsh&#39;s Fed appears willing to tolerate. Watch whether the Fed publishes Warsh&#39;s abstention reasoning within the next 30 days. If it doesn&#39;t, assume Warsh is quietly building Fed-internal consensus to challenge Treasury&#39;s digital asset authority. If it does, expect it to be framed as &#39;monetary policy independence.&#39; Either way, the stablecoin market just got a signal: Warsh&#39;s Fed will be friendlier to decentralized finance than Powell&#39;s was, but only if those platforms don&#39;t attempt to compete with the Fed&#39;s own digital currency agenda.</p></div>
+      </div>
+    </div></section>
+<section class="panel" id="deep-dive">
+  <div class="deep-dive">
+    <div class="deep-dive-kicker"><span class="deep-dive-kicker-dot"></span>TODAY'S DEEP DIVE</div>
+    <h2>Google&#39;s $2.7 Billion Bet on Noam Shazeer Just Walked Into OpenAI&#39;s IPO Roadshow</h2>
+    <div class="standfirst">The co-inventor of the Transformer architecture — the mathematical backbone of every major AI model alive today — has left Google for a pre-IPO OpenAI, in the most consequential single talent move in the history of the industry.</div>
+    <div class="deep-dive-why">Shazeer&#39;s departure from Google was announced June 18 and remains the dominant talking point across the AI industry this week, with its implications for the Google-OpenAI rivalry, Gemini&#39;s roadmap, and OpenAI&#39;s IPO still actively being assessed.</div>
+    <div class="body"><p>On June 18, Noam Shazeer announced on X that he was leaving Google DeepMind to join OpenAI as Lead for Architecture Research. The announcement lasted two sentences. The implications will take years to fully understand.</p>
+<p>Shazeer is not a typical executive departure. He is one of eight co-authors of the 2017 paper &quot;Attention Is All You Need,&quot; which introduced the Transformer architecture that underpins virtually every major large language model in existence — GPT, Gemini, Claude, Llama, and beyond. He also co-authored foundational work on mixture-of-experts and multi-query attention, two techniques central to how frontier models are built today. He is, in a meaningful sense, one of the people who built the room that everyone else is now competing in.</p>
+<p>The biographical arc is almost operatic. Shazeer joined Google in 2000 as one of its earliest engineers. In 2021, frustrated by the company&#39;s reluctance to release a chatbot he had championed internally, he left to co-found Character.AI. Three years later, Google paid approximately $2.7 billion in a licensing deal structured around Character.AI&#39;s technology — a transaction widely understood in Silicon Valley as a talent acquisition disguised as a licensing agreement — to bring him back and install him as co-lead of the Gemini project. Less than two years after that, he is gone again, this time to the one company Google least wants to lose people to.</p>
+<p>For OpenAI, the hire carries a double meaning. The company filed a confidential S-1 with the SEC on June 8 and is working with Goldman Sachs and Morgan Stanley on an IPO targeting as early as fall 2026, at a valuation of up to $1 trillion. High-profile hires in the weeks before a public debut send a signal to investors and potential recruits alike: the company can still attract the most sought-after names in the field even as it faces intensifying competition. CEO Sam Altman welcomed Shazeer publicly, describing the partnership as &quot;only 10 years in the making.&quot; At OpenAI, Shazeer will lead research into next-generation model architectures — working, in other words, on whatever comes after the current generation of large language models.</p>
+<p>The same week, OpenAI also hired Dean Ball — a main author of the Trump administration&#39;s AI Action Plan — to lead a new unit called Strategic Futures. The pairing is deliberate: one hire for the frontier of the technology, one for the frontier of the rules. The dual recruitment reads as a company that understands its IPO risk factors include both the quality of its models and the political weather in Washington.</p>
+<p>Reasonable people disagree sharply about what this all means. The bullish read is that OpenAI has just added the single most influential living contributor to AI architecture at a moment when architectural innovation — not just scaling — may determine the next wave of capability gains. Shazeer&#39;s expertise in mixture-of-experts and attention mechanisms positions OpenAI to pursue genuinely novel model designs, not just incremental improvements to the existing GPT line.</p>
+<p>The bearish read is more pointed. OpenAI&#39;s 2025 audited financials — leaked ahead of the IPO filing — showed $13 billion in revenue against a $20.9 billion operating loss. In Q1 2026 alone, the company burned $3.7 billion in cash. Critics argue that a brilliant architect cannot solve a broken business model: Shazeer cannot meaningfully reduce compute costs, convert free users to paying ones, or renegotiate OpenAI&#39;s reported $10.59 billion annual compute bill to Microsoft. On this reading, his primary value to the company is narrative — a marquee name that helps justify a trillion-dollar IPO valuation and transfer risk to public market investors before the math catches up.</p>
+<p>For Google, the damage is real on multiple dimensions. Practically, Gemini loses a co-lead who was regarded as central to its effort to close the gap with ChatGPT — and the departure comes weeks after Google unveiled its Gemini 3.5 Flash model and Gemini Spark agent at its I/O conference, making the timing especially awkward. Symbolically, the story writes itself: Google spent $2.7 billion to rent one of AI&#39;s founding architects for less than two years, and he chose to leave anyway. The company issued a brief statement of gratitude and said nothing else.</p>
+<p>The broader signal is about the structure of the AI talent market itself. Compensation packages for elite researchers now routinely run into tens of millions of dollars; Sam Altman recently claimed Meta had offered some OpenAI employees signing bonuses of up to $100 million. The race is no longer primarily about compute or data — both of which can be purchased — but about the small number of people who know how to build systems that genuinely push the frontier. That scarcity is now being priced like a commodity, with the biggest labs functioning less as research institutions and more as talent auctions.</p>
+<p>Several threads are worth watching in the weeks ahead. Google DeepMind will need to make a credible gap-filling announcement for Gemini leadership; silence will be read as weakness. OpenAI&#39;s S-1, when it becomes public, will reveal whether Shazeer&#39;s compensation package represents a meaningful equity stake or a relatively modest salary — that disclosure will shape how investors read the hire. And Shazeer&#39;s first visible output at OpenAI, whether a preprint, a benchmark result, or a product announcement, will be the first real evidence of whether the architectural bet is paying off. The IPO clock is running: if OpenAI targets a fall 2026 listing, the roadshow begins in weeks, and every major hire between now and then is also a line in the prospectus.</p></div>
+    <div class="deep-dive-sources"><span class="sources-label">SOURCES</span><div class="sources-list"><a class="source-link" href="https://www.cnbc.com/2026/06/18/google-gemini-co-lead-noam-shazeer-leaves-for-openai.html" target="_blank" rel="noopener">CNBC</a><span class="source-sep">·</span><a class="source-link" href="https://techcrunch.com/2026/06/18/openai-is-bringing-on-some-big-guns-in-the-lead-up-to-its-ipo/" target="_blank" rel="noopener">TechCrunch</a><span class="source-sep">·</span><a class="source-link" href="https://thenextweb.com/news/openai-dean-ball-shazeer-pre-ipo-hires-policy" target="_blank" rel="noopener">The Next Web</a><span class="source-sep">·</span><a class="source-link" href="https://letsdatascience.com/news/noam-shazeer-joins-openai-from-google-d1a5663e" target="_blank" rel="noopener">Reuters / Let&#39;s Data Science</a><span class="source-sep">·</span><a class="source-link" href="https://www.benzinga.com/markets/tech/26/06/53269428/google-gemini-co-lead-noam-shazeer-joins-openai-sam-altman-says-its-10-years-in-the-making" target="_blank" rel="noopener">Benzinga</a><span class="source-sep">·</span><a class="source-link" href="https://mlq.ai/news/openai-hires-transformer-co-inventor-noam-shazeer-away-from-google-deepmind/" target="_blank" rel="noopener">MLQ News</a><span class="source-sep">·</span><a class="source-link" href="https://www.newsdrum.in/business/openai-lands-gemini-co-lead-noam-shazeer-from-google-in-major-ai-talent-coup-12049952" target="_blank" rel="noopener">NewsDrum (Reuters/NDTV)</a><span class="source-sep">·</span><a class="source-link" href="https://theaiinsider.tech/2026/06/19/openai-hires-transformer-co-author-noam-shazeer-and-former-white-house-ai-official-dean-ball-ahead-of-ipo/" target="_blank" rel="noopener">The AI Insider</a></div></div>
+  </div></section>
+<section class="panel" id="signal-scan">
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Byrne Hobart</span><span class="sig-handle">@ByrneHobart</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <a class="sig-title" href="https://www.thediff.co" target="_blank" rel="noopener">Anabasis, Memory, Height, Neo-Brandeisians, Canceled, Capacity, Compute, Realism</a><div class="sig-summary">Published multiple issues of The Diff this week (June 5–6), covering topics including compute capacity, realism, and neo-Brandeisian antitrust thinking. His June 6 issue explicitly addresses compute and P/S ratios alongside automation themes.</div><div class="sig-connection">↳ His compute and capacity framing connects directly to the simultaneous frontier model launches (Gemini 3.5, Claude Mythos, Grok 5) and the AI IPO wave; neo-Brandeisian regulatory angle touches AI governance and the Trump AI executive order.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Michael Burry</span><span class="sig-handle">@michaeljburry</span></div>
+        </div>
+        <span class="sig-source-badge">SUBSTACK</span>
+      </div>
+      <a class="sig-title" href="https://michaeljburry.substack.com/p/trading-post-june-18-2026" target="_blank" rel="noopener">Trading Post June 18, 2026</a><div class="sig-summary">Burry has been posting daily to his Substack this week, covering dollar-cost averaging into falling-knife stocks, buying Fiserv (FISV) at ~$49.50, and publishing a sharp June 12 note arguing that LLMs are &#39;language models, not AI&#39; and that AI capex is hitting diminishing returns before profitability.</div><div class="sig-connection">↳ His June 12 post is a direct counter-signal to today&#39;s AI IPO wave and model release frenzy, arguing AI capex is misallocated and that the market is punishing value stocks unfairly in favor of AI capital flows—a key tension in today&#39;s markets and digital finance topics.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Ben Thompson</span><span class="sig-handle">@stratechery</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <a class="sig-title" href="https://stratechery.com/2026/hey-siri-tell-me-a-fable/" target="_blank" rel="noopener">Hey Siri, Tell Me a Fable (week of June 8, 2026)</a><div class="sig-summary">Thompson&#39;s week of June 8 roundup covered Apple finally shipping Intelligence, Anthropic&#39;s strategic positioning and its similarities to Apple, and five questions on WWDC 2026. He also recently covered Anthropic&#39;s government supply-chain risk designation and its existential implications, and published &#39;Europe&#39;s Final Warning&#39; (June 12) on Europe&#39;s China trade exposure.</div><div class="sig-connection">↳ Directly connects to today&#39;s Anthropic S-1 filing, the frontier AI model wave, AI regulation and governance (government preview EO), and geopolitics (Europe-China tensions)—Thompson is one of the clearest voices mapping all of these simultaneously.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-strong"></div>
+          <div><span class="sig-name">Paul Graham</span><span class="sig-handle">@paulg</span></div>
+        </div>
+        <span class="sig-source-badge">ESSAY</span>
+      </div>
+      <a class="sig-title" href="https://paulgraham.com/earn.html" target="_blank" rel="noopener">How to Earn a Billion Dollars</a><div class="sig-summary">Graham published &#39;How to Earn a Billion Dollars&#39; on June 14, 2026, drawing from an Oxford Union talk to lay out mechanics of building billionaire-level wealth through startups. He also reacted positively on June 16 to Bland AI&#39;s $100M Series C for automating complex phone calls.</div><div class="sig-connection">↳ The essay is directly relevant to today&#39;s historic AI IPO wave (Anthropic, OpenAI, SpaceX going public) and the creation of new AI-native companies; his Bland reaction touches the labor/workforce displacement theme as voice AI automates phone-based work.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Benedict Evans</span><span class="sig-handle">@benedictevans</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <a class="sig-title" href="https://www.ben-evans.com/" target="_blank" rel="noopener">AI eats the world (Spring 2026 presentation)</a><div class="sig-summary">No new essays detected this week; his most recent piece was May 24 questioning OpenAI&#39;s strategic moat. His Spring 2026 macro presentation &#39;AI eats the world&#39; remains his primary active output. His X account is set to approved followers only.</div><div class="sig-connection">↳ His May essay questioning OpenAI&#39;s lack of unique tech, limited engagement, and unproven distribution is highly resonant with Anthropic&#39;s S-1 filing and what it reveals about AI lab business models in the IPO wave.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Packy McCormick</span><span class="sig-handle">@packyM</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <a class="sig-title" href="https://x.com/packyM/status/2061835223470330100" target="_blank" rel="noopener">Westmag (stealth motor company) launch post</a><div class="sig-summary">On June 2, McCormick promoted the out-of-stealth launch of Westmag, a US motor and actuator company he has invested in, arguing America needs a domestic motor manufacturing champion. No new Not Boring newsletter essay detected this week.</div><div class="sig-connection">↳ Westmag&#39;s pitch for American industrial manufacturing capability connects to the defense/security and energy themes in today&#39;s topics; domestic hardware reindustrialization is a subplot of the US-China competition story.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">CJ Gustafson</span><span class="sig-handle">@cjgustafson222</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <div class="sig-summary">No new Mostly Metrics posts detected in the last 7 days; his Substack archive shows the last entry in July 2025. He recently appeared as a podcast guest commenting on the SpaceX IPO, OpenAI vs. Anthropic public market timing, and SaaS multiples in the current environment.</div><div class="sig-connection">↳ His commentary on SpaceX IPO pricing, OpenAI vs. Anthropic public market sequencing, and SaaS multiple compression directly maps to today&#39;s historic AI IPO wave story.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Lenny Rachitsky</span><span class="sig-handle">@lennysan</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/lennysan" target="_blank" rel="noopener">Tony Fadell podcast episode teaser</a><div class="sig-summary">Rachitsky&#39;s pinned recent post (within 14 hours of today) promoted his Tony Fadell interview on product and hardware leadership. On June 4 he reacted with &#39;Wild&#39; to Anthropic&#39;s claim that its engineers now ship 8x as much code per quarter as they did in 2021–2025.</div><div class="sig-connection">↳ His reaction to Anthropic&#39;s 8x developer productivity claim directly connects to today&#39;s Claude Mythos launch and the broader AI-accelerated software development theme; the labor/workforce topic is implicit in such productivity multipliers.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Andrej Karpathy</span><span class="sig-handle">@karpathy</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/karpathy" target="_blank" rel="noopener">On bespoke AI-native software and agent-native ergonomics</a><div class="sig-summary">Karpathy has been posting about his vision for AI-native software—arguing that the &#39;app store&#39; model feels outdated when LLM agents can improvise apps on demand, and that 99% of products still lack AI-native interfaces. He joined Anthropic&#39;s pretraining team earlier in 2026.</div><div class="sig-connection">↳ As a new Anthropic employee, his thinking on AI-native software and agent ergonomics is directly relevant to today&#39;s Claude Mythos launch, the Anthropic S-1, and the Trump AI EO requiring 30-day government previews of frontier models.</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-light"></div>
+          <div><span class="sig-name">Noam Brown</span><span class="sig-handle">@polynoamial</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <a class="sig-title" href="https://x.com/polynoamial/status/2059932468820816354" target="_blank" rel="noopener">On AlphaGo&#39;s effect on human Go players and AI&#39;s effect on math</a><div class="sig-summary">On May 28, Brown posted that just as AlphaGo improved human Go players after its dominance, AI solving hard math problems will likely improve human mathematicians too—a constructive take on AI-human complementarity at the reasoning frontier.</div><div class="sig-connection">↳ His point about AI elevating human capability (rather than replacing it) is a counterweight to labor displacement fears in today&#39;s workforce topic; it also connects to the reasoning model wave as Grok 5, Gemini 3.5, and Claude Mythos all compete on reasoning benchmarks.</div>
+    </div>
+    <div class="sig-quiet-section">
+      <div class="sig-quiet-label">QUIET THIS PERIOD — 6 voices</div>
+      
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Leopold Aschenbrenner</span><span class="sig-handle">@leopoldasch</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <div class="sig-summary">No posts found in the last 7 days. Most recent public activity dates to mid-2025. His Situational Awareness LP fund has been widely covered in media (up ~270% YTD through May 2026, ~$20B AUM), but no new first-person output detected this week.</div><div class="sig-connection">↳ His AI-infrastructure investment thesis—betting on power, chips, and data-center buildout to support AGI—is directly relevant to today&#39;s AI IPO wave (Anthropic S-1, OpenAI, SpaceX) and the broader frontier AI model wave.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Dan Wang</span><span class="sig-handle">@danwwang</span></div>
+        </div>
+        <span class="sig-source-badge">BLOG</span>
+      </div>
+      <div class="sig-summary">No new posts or X activity detected in the last 7 days. His website features evergreen commentary on US-China divergence and industrial policy, but nothing fresh this week.</div><div class="sig-connection">↳ His ongoing work on China&#39;s technological ambitions and US-China tech competition is highly relevant to today&#39;s geopolitics and China topic areas, especially in the context of AI model races.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Nathan Benaich</span><span class="sig-handle">@nathanbenaich</span></div>
+        </div>
+        <span class="sig-source-badge">MIXED</span>
+      </div>
+      <div class="sig-summary">No posts detected in the last 7 days. His X replies page shows no recent activity. His most recent notable output was hosting RAAIS 2026 on June 12 in London, covering frontier AI, open-ended agents, and space-based compute.</div><div class="sig-connection">↳ RAAIS 2026 themes—frontier AI, open-ended agents, space-based data centers—connect directly to today&#39;s simultaneous model wave (Gemini 3.5 Pro, Claude Mythos, Grok 5) and the Anthropic S-1 filing.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Stanley Druckenmiller</span></div>
+        </div>
+        <span class="sig-source-badge">NEWSLETTER</span>
+      </div>
+      <div class="sig-summary">No new interview or public remarks found in the last 7 days on CNBC, Bloomberg, or FT. Most recent coverage (Bloomberg, Feb 2026) focused on his ties to new Fed Chair Kevin Warsh and Treasury Secretary Bessent.</div><div class="sig-connection">↳ His close relationships with both Warsh and Bessent are acutely relevant today as Warsh holds rates and signals a possible regime change—a dynamic Bloomberg noted could reflect Druckenmiller&#39;s own macro principles permeating US monetary policy.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">Ilya Sutskever</span><span class="sig-handle">@ilyasut</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <div class="sig-summary">No posts detected in the last 7 days. His most recent notable X post was February 27, 2026, praising Anthropic for not backing down in a government standoff. SSI (Safe Superintelligence Inc.) has been extremely quiet publicly.</div><div class="sig-connection">↳ SSI&#39;s silence is itself a signal amid today&#39;s noisy model wave (Gemini 3.5, Claude Mythos, Grok 5 all landing simultaneously); Sutskever&#39;s prior praise for Anthropic&#39;s regulatory resistance is relevant backdrop to the Anthropic S-1 and government AI preview EO.</div>
+    </div>
+    <div class="sig-card sig-quiet">
+      <div class="sig-header">
+        <div class="sig-left">
+          <div class="sig-dot sig-none"></div>
+          <div><span class="sig-name">François Chollet</span><span class="sig-handle">@fchollet</span></div>
+        </div>
+        <span class="sig-source-badge">X</span>
+      </div>
+      <div class="sig-summary">No posts found in the last 7 days. His most recent major public appearance was a YC Lightcone podcast (March 2026) where he argued for building intelligence from first principles rather than scaling existing approaches. He co-founded NDEA and ARC Prize after leaving Google in late 2024.</div><div class="sig-connection">↳ His skepticism of pure scaling as a path to AGI is a direct intellectual counterpoint to today&#39;s simultaneous frontier model launches and the race dynamics driving the AI IPO wave; ARC-AGI benchmark results will be a key litmus test as Gemini 3.5, Claude Mythos, and Grok 5 ship.</div>
+    </div>
+    </div></section>
+</div>
+<script>
+function toggleCard(el){el.classList.toggle('open');}
+function showTab(id){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active',p.id===id);});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active',t.dataset.tab===id);});
+}
+</script>
+</body>
+</html>"
+`;
