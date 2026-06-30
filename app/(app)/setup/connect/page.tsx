@@ -96,7 +96,7 @@ export default async function ConnectPage() {
   const keyInfo = await getKeyInfo(userId);
   return (
     <Shell title="Add your API key" sub="You enter one secret — stored encrypted, and we only ever show the last 4 characters.">
-      <ApiKeyConnect initialLast4={keyInfo.last4} />
+      <ApiKeyConnect initialLast4={keyInfo.last4} initialEnabled={cfg.enabled} />
     </Shell>
   );
 }

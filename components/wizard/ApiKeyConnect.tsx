@@ -2,6 +2,8 @@
 
 import { useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
+import { ScheduleControl } from "@/components/ScheduleControl";
+import { RunProgress } from "@/components/RunProgress";
 
 // Matches the API-key path of the Connect step in
 // design_handoff_morning_briefing/designs/Setup Wizard.dc.html.
@@ -12,7 +14,13 @@ const mono = (extra: CSSProperties = {}): CSSProperties => ({
   ...extra,
 });
 
-export function ApiKeyConnect({ initialLast4 }: { initialLast4: string | null }) {
+export function ApiKeyConnect({
+  initialLast4,
+  initialEnabled,
+}: {
+  initialLast4: string | null;
+  initialEnabled: boolean;
+}) {
   const router = useRouter();
   const [key, setKey] = useState("");
   const [last4, setLast4] = useState(initialLast4);
@@ -21,6 +29,7 @@ export function ApiKeyConnect({ initialLast4 }: { initialLast4: string | null })
   const [status, setStatus] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [running, setRunning] = useState(false);
 
   const canSave = key.trim().length > 0;
 
@@ -57,17 +66,22 @@ export function ApiKeyConnect({ initialLast4 }: { initialLast4: string | null })
   async function runNow() {
     setBusy(true);
     setError(null);
+    setStatus(null);
     try {
       const res = await fetch("/api/run", { method: "POST" });
-      if (!res.ok) throw new Error("Could not start generation");
-      setStatus("Generation started — your briefing will appear on the dashboard shortly.");
-      setTimeout(() => router.push("/dashboard"), 1500);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error ?? "Could not start generation");
+      }
+      setRunning(true); // hand off to the full-screen loading overlay
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed");
     } finally {
       setBusy(false);
     }
   }
+
+  if (running) return <RunProgress />;
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 14, maxWidth: 560 }}>
@@ -125,6 +139,8 @@ export function ApiKeyConnect({ initialLast4 }: { initialLast4: string | null })
       )}
 
       <div style={{ fontSize: 13, lineHeight: 1.55, color: "var(--text-2)" }}>Your briefing runs automatically on the schedule you set.</div>
+
+      {last4 && <ScheduleControl initialEnabled={initialEnabled} />}
 
       {last4 && (
         <button

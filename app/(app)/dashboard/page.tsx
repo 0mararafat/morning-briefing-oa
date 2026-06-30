@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { getLatestBriefing } from "@/lib/briefings";
 import { BriefingView } from "@/components/viewer/BriefingView";
 import { ShareControl } from "@/components/viewer/ShareControl";
+import { ScheduleControl } from "@/components/ScheduleControl";
 import type { Briefing } from "@/lib/generator/types";
 
 export default async function DashboardPage() {
@@ -14,7 +15,7 @@ export default async function DashboardPage() {
   // First-time users (no saved config) go straight to the setup wizard.
   const config = await prisma.userConfig.findUnique({
     where: { userId: session.user.id },
-    select: { mode: true, lastRunStatus: true, lastRunError: true, lastRunAt: true },
+    select: { mode: true, enabled: true, lastRunStatus: true, lastRunError: true, lastRunAt: true },
   });
   if (!config) redirect("/setup");
 
@@ -25,10 +26,18 @@ export default async function DashboardPage() {
       <FailureBanner error={config.lastRunError} at={config.lastRunAt} />
     ) : null;
 
+  const schedule =
+    config.mode === "API_KEY" ? (
+      <ScheduleControl initialEnabled={config.enabled} variant="card" />
+    ) : null;
+
   if (!briefing) {
     return (
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "60px 28px", textAlign: "center" }}>
         {failure}
+        {schedule && (
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>{schedule}</div>
+        )}
         <h1 style={{ fontSize: 40, fontWeight: 700, letterSpacing: "-0.02em" }}>No edition yet</h1>
         <p style={{ color: "var(--text-2)", marginTop: 10 }}>
           Finish <Link href="/setup" style={{ color: "var(--accent-ink)" }}>setup</Link> and run your first
@@ -42,7 +51,8 @@ export default async function DashboardPage() {
     <>
       <div style={{ maxWidth: 980, margin: "0 auto", padding: "16px 28px 0" }}>
         {failure}
-        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+          {schedule ?? <span />}
           <ShareControl date={briefing.date} initialToken={briefing.shareToken} />
         </div>
       </div>
