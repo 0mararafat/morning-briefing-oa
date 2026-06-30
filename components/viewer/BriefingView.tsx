@@ -309,18 +309,42 @@ export function BriefingView({ data, dateIso }: { data: Briefing; dateIso: strin
           <SectionHead num="04" label="Pattern Watch" right="Speculative" />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             {patterns.map((p, i) => (
-              <article key={i} style={{ borderRadius: 4, padding: "22px 24px", background: "var(--ink-panel)", position: "relative", overflow: "hidden" }}>
-                <div style={mono({ fontSize: 9.5, letterSpacing: "0.14em", color: "#74b2ea", marginBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.14)", paddingBottom: 10 })}>
-                  {p.subtitle || "Analysis — hold loosely"}
+              <article
+                key={i}
+                style={{
+                  borderRadius: 16,
+                  padding: "22px 24px",
+                  background: "var(--surface)",
+                  backdropFilter: "blur(20px) saturate(1.3)",
+                  WebkitBackdropFilter: "blur(20px) saturate(1.3)",
+                  border: "1px solid var(--border)",
+                  boxShadow: "var(--shadow), inset 0 1px 0 var(--glass-hi)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                {/* Speculative tint — soft blue glow in the top corner. */}
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    pointerEvents: "none",
+                    background: "radial-gradient(380px 180px at 92% -30%, var(--accent-soft), transparent 70%)",
+                  }}
+                />
+                <div style={{ position: "relative" }}>
+                  <div style={mono({ fontSize: 9.5, letterSpacing: "0.14em", color: "var(--accent-ink)", marginBottom: 10, borderBottom: "1px solid var(--border)", paddingBottom: 10 })}>
+                    {p.subtitle || "Analysis — hold loosely"}
+                  </div>
+                  <h3 style={{ fontSize: 20, lineHeight: 1.26, fontWeight: 600, letterSpacing: "-0.01em", margin: "0 0 9px", color: "var(--text)" }}>
+                    {p.title}
+                  </h3>
+                  {paras(p.content).map((para, j) => (
+                    <p key={j} style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text-2)", margin: "0 0 8px" }}>
+                      {para}
+                    </p>
+                  ))}
                 </div>
-                <h3 style={{ fontSize: 20, lineHeight: 1.26, fontWeight: 600, letterSpacing: "-0.01em", margin: "0 0 9px", color: "#eef0f3" }}>
-                  {p.title}
-                </h3>
-                {paras(p.content).map((para, j) => (
-                  <p key={j} style={{ fontSize: 14, lineHeight: 1.6, color: "rgba(255,255,255,0.62)", margin: "0 0 8px" }}>
-                    {para}
-                  </p>
-                ))}
               </article>
             ))}
           </div>
