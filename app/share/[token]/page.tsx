@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 import { getSharedBriefing } from "@/lib/share";
+import { BriefingView } from "@/components/viewer/BriefingView";
+import type { Briefing } from "@/lib/generator/types";
 
 // Public, unauthenticated view of a shared briefing. Lives outside the (app)
-// route group so the auth guard doesn't apply. Renders the stored standalone
-// HTML document in an isolated full-viewport iframe.
+// route group so the auth guard doesn't apply. Renders the same BriefingView
+// component as the dashboard (from the stored briefing JSON) — just without the
+// app chrome and owner-only controls (share/schedule buttons).
 export default async function SharePage({
   params,
 }: {
@@ -14,11 +17,8 @@ export default async function SharePage({
   if (!briefing) notFound();
 
   return (
-    <iframe
-      title="Shared briefing"
-      srcDoc={briefing.html}
-      sandbox="allow-same-origin"
-      style={{ position: "fixed", inset: 0, width: "100%", height: "100%", border: "none" }}
-    />
+    <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
+      <BriefingView data={briefing.data as unknown as Briefing} dateIso={briefing.date} />
+    </div>
   );
 }
