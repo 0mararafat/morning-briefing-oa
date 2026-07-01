@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { listBriefings, type ArchiveEntry } from "@/lib/briefings";
 
+// Archive index (/briefings): a reverse-chronological list of the user's past
+// editions, each summarised with a status dot (urgent / active / quiet).
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
   textTransform: "uppercase" as const,

@@ -3,6 +3,8 @@ import { auth, signIn } from "@/lib/auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { GitHubMark, GoogleMark } from "@/components/ProviderMarks";
 
+// Dedicated sign-in page (/signin): GitHub and Google OAuth entry. Mirrors the
+// (app) layout's auth guard exactly so the two can't redirect-loop each other.
 const mono: React.CSSProperties = {
   fontFamily: "'IBM Plex Mono', monospace",
   textTransform: "uppercase",

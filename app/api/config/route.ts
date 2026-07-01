@@ -3,6 +3,8 @@ import { ZodError } from "zod";
 import { auth } from "@/lib/auth";
 import { getWizardValues, saveUserConfig } from "@/lib/config";
 
+// /api/config — read (GET) and save (PUT) the signed-in user's wizard config.
+// Every operation is scoped to the authenticated user; PUT validates with Zod.
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) {

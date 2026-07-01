@@ -15,6 +15,10 @@ import type {
   SignalCache,
 } from "./types";
 
+// Briefing generation pipeline — orchestrates the per-section generators
+// (briefing, deep dive, patterns, signal scan) into a single edition. Transport-
+// agnostic: a pure function of (config, state, today) returning the briefing data,
+// rendered HTML, and updated state. No file or DB access.
 export interface RunBriefingInput {
   config: Config;
   state: GeneratorState;

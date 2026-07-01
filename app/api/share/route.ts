@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { enableShare, disableShare } from "@/lib/share";
 
+// /api/share — enable (POST) or revoke (DELETE) a public share link for one of the
+// signed-in user's briefings, identified by date.
 function shareUrl(token: string): string {
   return `${process.env.NEXT_PUBLIC_APP_URL ?? ""}/share/${token}`;
 }

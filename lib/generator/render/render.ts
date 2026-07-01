@@ -9,6 +9,10 @@ import {
 } from "./builders";
 import { htmlShell, type Tab } from "./template";
 
+// Standalone HTML renderer — assembles a briefing into a self-contained HTML
+// document that is stored alongside each edition (the share snapshot / legacy
+// iframe viewer). The live app renders from JSON via BriefingView instead.
+
 // build_dashboard() — assemble the full standalone HTML document for a briefing.
 // Tabs are included per the user's enabled sections.
 export function buildDashboardHtml(

@@ -2,6 +2,8 @@
 
 import { useState, type CSSProperties } from "react";
 
+// Owner-only share toggle shown above a briefing: enables or revokes a public
+// /share/<token> link via /api/share, and copies the URL to the clipboard.
 const mono = (extra: CSSProperties = {}): CSSProperties => ({
   fontFamily: "'IBM Plex Mono', monospace",
   fontSize: 10.5,

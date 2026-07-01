@@ -3,6 +3,8 @@ import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
+// Layout for the authenticated app (the (app) route group): guards every child
+// route behind sign-in and renders the shared top navigation bar.
 const linkStyle = {
   fontFamily: "'IBM Plex Mono', monospace",
   fontSize: 10,

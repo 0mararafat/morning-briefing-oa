@@ -4,6 +4,8 @@ import { getWizardValues } from "@/lib/config";
 import { PRESET_SOURCES } from "@/lib/config-schema";
 import { Wizard } from "@/components/wizard/Wizard";
 
+// Setup wizard page (/setup): loads the user's saved config (if any) and hands it
+// to the multi-step Wizard (topics, sources, sections, voices, schedule, mode).
 const TIMEZONES = [
   "Pacific/Honolulu", "America/Anchorage", "America/Los_Angeles", "America/Denver",
   "America/Chicago", "America/New_York", "America/Sao_Paulo", "Europe/London",

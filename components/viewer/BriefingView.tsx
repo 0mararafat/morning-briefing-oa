@@ -3,6 +3,10 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import type { Briefing, Signal, Story } from "@/lib/generator/types";
 
+// The canonical briefing renderer: turns a Briefing JSON object into the full
+// editorial layout — masthead, the six sections, and footer. Shared by the
+// dashboard, the per-date archive view, and public share pages, so it is the
+// single source of truth for how an edition looks.
 const mono = (extra: CSSProperties = {}): CSSProperties => ({
   fontFamily: "'IBM Plex Mono', monospace",
   textTransform: "uppercase",

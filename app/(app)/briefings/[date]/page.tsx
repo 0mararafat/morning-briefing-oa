@@ -5,6 +5,9 @@ import { BriefingView } from "@/components/viewer/BriefingView";
 import { ShareControl } from "@/components/viewer/ShareControl";
 import type { Briefing } from "@/lib/generator/types";
 
+// Authenticated viewer for a single past edition (/briefings/<date>). Renders the
+// stored briefing JSON with the same BriefingView as the dashboard, plus the
+// owner's share control.
 export default async function BriefingByDatePage({
   params,
 }: {

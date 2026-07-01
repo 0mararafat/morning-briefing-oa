@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { saveApiKey, getKeyInfo, deleteApiKey } from "@/lib/secrets";
 
+// /api/key — manage the user's Anthropic API key (status / save / delete). The
+// key is encrypted at rest; only its last four digits are ever returned.
 export async function GET() {
   const session = await auth();
   if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

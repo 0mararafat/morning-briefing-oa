@@ -3,6 +3,8 @@ import { auth, signIn } from "@/lib/auth";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { GitHubMark, GoogleMark } from "@/components/ProviderMarks";
 
+// Public landing page (/): the front-page masthead and sign-in entry point.
+// Redirects straight to the dashboard once the visitor is authenticated.
 const mono: React.CSSProperties = {
   fontFamily: "'IBM Plex Mono', monospace",
   textTransform: "uppercase",

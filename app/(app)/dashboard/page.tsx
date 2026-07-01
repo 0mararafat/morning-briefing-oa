@@ -8,6 +8,9 @@ import { ShareControl } from "@/components/viewer/ShareControl";
 import { ScheduleControl } from "@/components/ScheduleControl";
 import type { Briefing } from "@/lib/generator/types";
 
+// The dashboard (/dashboard): the signed-in user's home. Sends first-time users to
+// setup, otherwise shows the latest edition (or an empty state) along with the
+// schedule, last-run failure, and share controls.
 export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/signin");

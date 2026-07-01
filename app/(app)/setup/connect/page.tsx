@@ -6,6 +6,9 @@ import { RoutineConnect } from "@/components/wizard/RoutineConnect";
 import { ApiKeyConnect } from "@/components/wizard/ApiKeyConnect";
 import { getKeyInfo } from "@/lib/secrets";
 
+// Final setup step (/setup/connect): the run-mode connection screen. Either paste
+// an Anthropic API key, or generate a routine prompt + token for running the
+// briefing from a Claude subscription.
 const mono = {
   fontFamily: "'IBM Plex Mono', monospace",
   textTransform: "uppercase" as const,
